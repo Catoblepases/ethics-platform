@@ -1,5 +1,5 @@
 # Ethics-Platform
-
+[The original location of this project (pure java version with javafx)](https://github.com/Catoblepases/EthiqueInterface)
 ## To-do
 ### Front-end
 - [ ] position of vertex(save their position in the file)
