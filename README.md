@@ -21,5 +21,3 @@
 This project uses the following two open source projects:
 
 [electron-vue-spring](https://github.com/wuruoyun/electron-vue-spring) licence: [MIT](LICENSE)
-
-[v3-electron](https://github.com/un-pany/v3-electron) licence: [MIT](LICENSE)
