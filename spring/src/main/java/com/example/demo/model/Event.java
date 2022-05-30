@@ -1,3 +1,3 @@
-package etu.upmc.ethique.model.component;
+package com.example.demo.model;
 
 public interface Event {}

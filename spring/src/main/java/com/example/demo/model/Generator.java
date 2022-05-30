@@ -1,4 +1,4 @@
-package etu.upmc.ethique.model.component;
+package com.example.demo.model;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -208,7 +208,7 @@ public class Generator {
             case ACT -> readAct(matcher);
             case PREC -> readPrec(matcher);
             case EFFECT -> readEffect(matcher);
-            case default -> System.out.println("nothing");
+//            case default -> System.out.println("nothing");
         }
     }
 
@@ -311,6 +311,16 @@ public class Generator {
         return -1;
     }
 
+    public Track findTrack(String name) {
+        Track[] l= tracks.toArray(new Track[tracks.size()]);
+        for (int i = 0; i < l.length; i++) {
+            if (l[i].getName().equals(name)) {
+                return tracks.get(i);
+            }
+        }
+        return null;
+    }
+
     public void readTrack(Matcher m) {
         int num = -1;
         String name;
@@ -354,6 +364,15 @@ public class Generator {
                         m.group(2));
             }
         }
+    }
+
+    public Position readPosition(String line) {
+        Matcher matcher = PATTERN.matcher(line);
+        matcher.find();
+        String position = matcher.group();
+        matcher.find();
+        String number = matcher.group();
+        return readPosition(position, number);
     }
 
     public Position readPosition(Matcher matcher) {

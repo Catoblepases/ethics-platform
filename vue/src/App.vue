@@ -63,12 +63,12 @@ function save() {
 
     <h1>Set badge count (Mac Only)</h1>
     <p>Click buttons below to set app badge count (calling Electron via preload script)</p>
-    <button @click="increase">Increase</button>
-    <button @click="decrease" :disabled="count <= 0">Decrease</button>
+    <el-button type="primary" @click="increase">Increase</el-button>
+    <el-button type="primary" @click="decrease" :disabled="count <= 0">Decrease</el-button>
 
     <h1>File dialog</h1>
-    <button @click="open">Show Open Dialog</button>
-    <button @click="save">Show Save Dialog</button>
+    <el-button type="primary" @click="open">Show Open Dialog</el-button>
+    <el-button type="primary" @click="save">Show Save Dialog</el-button>
     <p>
       <strong>Selected File(s)</strong>
       : {{ selectedFile }}

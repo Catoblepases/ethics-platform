@@ -1,7 +1,7 @@
-package etu.upmc.ethique.model.component;
+package com.example.demo.model;
 
 
-import etu.upmc.ethique.model.graph.CShape;
+
 
 public class Carriage extends Position {
     private String track;
@@ -10,15 +10,7 @@ public class Carriage extends Position {
     private Switch sw;
     private Bridge bridge;
     private int index;
-    private CShape cshape;
 
-    public CShape getCShape() {
-        return cshape;
-    }
-
-    public void setCShape(CShape cshape) {
-        this.cshape = cshape;
-    }
 
     public Carriage(String name, String track, int index) {
         super(name);

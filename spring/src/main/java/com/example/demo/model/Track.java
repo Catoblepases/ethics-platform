@@ -1,6 +1,6 @@
-package etu.upmc.ethique.model.component;
+package com.example.demo.model;
 
-import etu.upmc.ethique.model.graph.CShape;
+
 
 import java.util.ArrayList;
 
@@ -8,15 +8,7 @@ import java.util.ArrayList;
 public class Track extends ArrayList<Carriage> implements ComponentTrolley {
     private static final long serialVersionUID = 1L;
     private String name;
-    private CShape cshape;
 
-    public CShape getCShape() {
-        return cshape;
-    }
-
-    public void setCShape(CShape cshape) {
-        this.cshape = cshape;
-    }
 
     public Track(String name, int length) {
         this.name = name;
@@ -43,7 +35,7 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
     }
 
     public void addNewCarriage() {
-        add(new Carriage(name + "(" + size() + ")", name, size() - 1));
+        add(new Carriage(name + "(" + size() + ")", name, size()));
         if (size() >= 2) {
             get(size() - 2).suivant = get(size() - 1);
         }
@@ -53,7 +45,7 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
     }
 
     public void addNewCarriage(int idx) {
-        add(idx, new Carriage(name + "(" + size() + ")", name, size() - 1));
+        add(idx, new Carriage(name + "(" + size() + ")", name, size()));
         if (idx >= 1) {
             get(idx - 1).suivant = get(idx);
         }

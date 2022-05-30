@@ -1,4 +1,4 @@
-package etu.upmc.ethique.model.component;
+package com.example.demo.model;
 
 public class Botton {
     private Position position;

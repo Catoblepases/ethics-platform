@@ -1,4 +1,4 @@
-package etu.upmc.ethique.model.component;
+package com.example.demo.model;
 
 public class Switch implements Event {
 
@@ -23,6 +23,14 @@ public class Switch implements Event {
     public void addCarriage(Carriage carriage) {
         track2 = carriage;
         carriage.add(this);
+    }
+
+    public String getTrackBegin() {
+        return track1.getName();
+    }
+
+    public String getTrackEnd() {
+        return track2.getName();
     }
 
     public void changeTrack(String track) {
@@ -50,6 +58,17 @@ public class Switch implements Event {
         } else {
             return track1;
         }
+    }
+
+
+    public void setTrackBegin(Carriage track1) {
+        this.track1 = track1;
+        track1.setSwitch(this);
+    }
+
+    public void setTrackEnd(Carriage track2) {
+        this.track2 = track2;
+        track2.setSwitch(this);
     }
 
     @Override
