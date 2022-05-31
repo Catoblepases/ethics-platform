@@ -19,14 +19,15 @@ public class Node {
 
     private String fill;
 
-    public Node(String id, int x, int y, String typeName, String label,String fill) {
+    private InfoCarriage infoCarriage;
+
+    public Node(String id, int x, int y, String typeName, String label, String fill, Carriage carriage) {
         this.x = x;
         this.y = y;
         this.label = label;
         this.id = id;
         this.typeName = typeName;
-        this.fill=fill;
+        this.fill = fill;
+        this.infoCarriage=new InfoCarriage(carriage);
     }
-
-
 }
