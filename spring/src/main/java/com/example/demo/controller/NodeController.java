@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.mapper.EdgeMapper;
 import com.example.demo.mapper.NodeMapper;
 import com.example.demo.model.*;
+import com.example.demo.model.menu.Edge;
+import com.example.demo.model.menu.Node;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -69,7 +71,7 @@ public class NodeController {
         int i = 0;
         for (Track track : tracks) {
             for (Carriage carriage : track) {
-                Node node = new Node(carriage.getName(), 0, 0, "track", carriage.getInformation(), fills[i]);
+                Node node = new Node(carriage.getName(), 0, 0, "track", carriage.getInformation(), fills[i], carriage);
                 nodeMapper.addNode(node);
             }
             i++;

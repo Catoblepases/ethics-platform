@@ -1,6 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.model.Edge;
+import com.example.demo.model.menu.Edge;
 
 import java.util.ArrayList;
 import java.util.List;

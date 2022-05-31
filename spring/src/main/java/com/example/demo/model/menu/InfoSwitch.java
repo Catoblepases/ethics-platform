@@ -1,6 +1,9 @@
-package com.example.demo.model;
+package com.example.demo.model.menu;
 
 
+import com.example.demo.model.Carriage;
+import com.example.demo.model.Generator;
+import com.example.demo.model.Switch;
 import lombok.Builder;
 import lombok.Data;
 

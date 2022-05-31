@@ -1,7 +1,4 @@
 <template>
-  <!-- <el-button text @click="dialogFormVisible = true"
-    >open a Form nested Dialog</el-button
-  > -->
   <el-dialog v-model="dialogFormVisible">
     <el-button>{{ nodeId }}</el-button>
     <el-tabs type="border-card">

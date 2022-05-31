@@ -1,6 +1,8 @@
-package com.example.demo.model;
+package com.example.demo.model.menu;
 
 
+import com.example.demo.model.Group;
+import com.example.demo.model.Position;
 import lombok.Builder;
 import lombok.Data;
 

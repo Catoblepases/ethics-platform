@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Item;
+import com.example.demo.model.menu.Item;
 import com.example.demo.service.ItemService;
 
 @RestController

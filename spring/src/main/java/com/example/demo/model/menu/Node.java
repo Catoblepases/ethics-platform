@@ -1,11 +1,8 @@
-package com.example.demo.model;
+package com.example.demo.model.menu;
 
 
-import com.example.demo.mapper.NodeMapper;
+import com.example.demo.model.Carriage;
 import lombok.Data;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 @Data
 public class Node {

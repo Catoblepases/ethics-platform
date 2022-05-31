@@ -5,11 +5,9 @@
     :dialogFormVisible="dialogFormVisible"
     :nodeId="nodeId"
   ></edit-menu>
-  <import-file></import-file>
 </template>
 
 <script setup lang="ts">
-import ImportFile from "./ImportFile.vue";
 import {
   defineComponent,
   onBeforeMount,
@@ -59,12 +57,73 @@ function runnigAlgorithme(position: Array<Item>, graph: Graph): void {
   }, 600);
 }
 
+G6.registerNode(
+  "carriageWithGroup",
+  {
+    draw(cfg, group) {
+      let y: number = Math.round(7 / 2);
+      let nb = cfg?.nb;
+      const size = cfg?.size[0];
+      var nbLine = Math.round(Math.sqrt(nb)) + 1;
+      var h = Math.round(size / (nbLine + 1));
+
+      const rect = group.addShape("rect", {
+        zIndex: 10,
+        attrs: {
+          x: -12,
+          y: -12,
+          width: cfg?.size[0],
+          height: cfg?.size[1],
+          fill: cfg?.fill,
+        },
+      });
+
+      for (let i = 0; i < nbLine; i++) {
+        if (nb <= 0) {
+          break;
+        }
+        for (let j = 0; j < nbLine; j++) {
+          if (nb <= 0) {
+            break;
+          }
+          group.addShape("circle", {
+            zIndex: 10,
+            attrs: {
+              x: h * j,
+              y: h * i,
+              r: 5,
+              fill: "lightgreen",
+            },
+          });
+          nb--;
+        }
+      }
+
+      group.addShape("text", {
+        attrs: {
+          text: cfg?.label,
+          x: -10,
+          y: 0,
+          fontSize: 8,
+          textAlign: "left",
+          textBaseline: "middle",
+          fill: "white",
+        },
+        // must be assigned in G6 3.3 and later versions. it can be any value you want
+        name: "text-shape",
+      });
+
+      return rect;
+    },
+  },
+  "rect"
+);
+
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
     if (!node.style) {
       node.style = { fill: node.fill };
     }
-
     node.x = 120;
     node.y = 120;
     switch (
@@ -73,6 +132,10 @@ function changeStyleByType(nodes: Array<Node>) {
       case "track": {
         node.type = "rect";
         node.size = [35, 20];
+        if (node.infoCarriage.group != null) {
+          node.type = "carriageWithGroup";
+          node.nb = node.infoCarriage.group.size;
+        }
         break;
       }
       case "bridge": {
@@ -99,18 +162,6 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
     height: 400,
     // fitView: true,
     plugins: [contextMenu, toolbar],
-    // layout: {
-    //   type: "grid",
-    //   begin: [0, 0],
-    //   preventOverlap: true, // nodeSize
-    //   preventOverlapPdding: 20,
-    //   nodeSize: 30,
-    //   condense: false,
-    //   rows: 5,
-    //   cols: 5,
-    //   sortBy: "degree",
-    //   workerEnabled: true, // web-worker
-    // },
     layout: {
       type: "dagre",
       rankdir: "LR", // 可选，默认为图的中心

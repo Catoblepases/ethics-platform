@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.mapper.EdgeMapper;
-import com.example.demo.model.*;
+import com.example.demo.model.menu.Edge;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

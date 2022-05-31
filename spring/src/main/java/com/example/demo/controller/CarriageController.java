@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.*;
+import com.example.demo.model.menu.EventForm;
+import com.example.demo.model.menu.EventItem;
+import com.example.demo.model.menu.InfoCarriage;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,5 +155,28 @@ public class CarriageController {
     @GetMapping("/number/{trackId}")
     int getTrackNumber(@PathVariable String trackId) {
         return generator.findTrack(trackId).size();
+    }
+
+    @GetMapping("/events")
+    List<EventItem> getEventsForm() {
+        EventForm eventForm = new EventForm(generator);
+        return eventForm.getEventItemList();
+    }
+
+    @PostMapping("/command")
+    String postCommand(@RequestBody String line) {
+        generator.readInformation(line, 0);
+        return "success";
+    }
+
+    @PostMapping("/lp")
+    String saveFile(@RequestBody String path){
+        try{
+            File file=new File(path);
+            generator.saveFile(file);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "success";
     }
 }

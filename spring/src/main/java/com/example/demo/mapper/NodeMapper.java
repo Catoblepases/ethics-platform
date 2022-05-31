@@ -1,32 +1,46 @@
 package com.example.demo.mapper;
 
-import com.example.demo.model.Node;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.example.demo.model.menu.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface NodeMapper {
+public class NodeMapper {
+    public List<Node> nodes;
 
-    @Select("Select * from Node")
-    List<Node> findAllNode();
+    public NodeMapper() {
+        nodes = new ArrayList<>();
+    }
 
-    @Update("insert into Node values (#{id},#{x},#{y},#{label},#{typeName},#{fill})")
-    @Transactional
-    void addNode(Node node);
+    public List<Node> findAllNode() {
+        return nodes;
+    }
 
-    @Update("Update Node set x=#{x},y=#{y},label=#{label},typeName=#{typeName},fill=#{fill} where id=#{id}")
-    @Transactional
-    void updateNode(Node node);
+    public void addNode(Node node) {
+        nodes.add(node);
+    }
 
-    @Delete("Delete from Node")
-    void deleteAllNodes();
+    public void updateNode(Node node) {
+        Node e = findNodeById(node.getId());
+        nodes.remove(node);
+        nodes.add(e);
+    }
 
-    @Select("Select * from node where id=#{id};")
-    Node findNodeById(String id);
-    @Delete("Delete from User where id=#{id}")
-    void deleteNodeById(String idx);
+    public void deleteAllNodes() {
+        nodes.clear();
+    }
+
+    public Node findNodeById(String id) {
+        for (int i = 0; i < nodes.size(); i++) {
+            if (id.equals(nodes.get(i).getId())) {
+                return nodes.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void deleteNodeById(String id) {
+        Node node = findNodeById(id);
+        nodes.remove(node);
+    }
 }

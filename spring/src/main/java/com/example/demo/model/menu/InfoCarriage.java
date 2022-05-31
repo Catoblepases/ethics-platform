@@ -1,5 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.model.menu;
 
+import com.example.demo.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -44,7 +45,7 @@ public class InfoCarriage {
         }
     }
 
-    public void updateCarriage(Carriage carriage,Generator generator) {
+    public void updateCarriage(Carriage carriage, Generator generator) {
         if (group != null) {
             group.updateGroup(carriage);
         } else {
