@@ -17,7 +17,6 @@ import {
   ref,
   defineAsyncComponent,
 } from "vue";
-
 import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 import axios from "axios";
 import EditMenu from "./EditMenu.vue";
@@ -28,6 +27,7 @@ insertCss(`
     list-style-type: none !important;
   }
 `);
+// import func from "../../vue-temp/vue-editor-bridge";
 
 const childRef = ref<any>();
 
@@ -216,12 +216,52 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
   graph.render();
 
   let canvas = graph.get("canvas");
+
+  // let item = graph.findById("node1");
+  // let posX = item.get("model").x;
+  // let posY = item.get("model").y;
+  // canvas.addShape("circle", {
+  //   attrs: {
+  //     x: 150 + 200,
+  //     y: 150,
+  //     r: 10,
+  //     stroke: "black",
+  //   },
+  // });
+  // graph.refresh();
   return graph;
 };
 
+// const tc = document.createElement("div");
+// tc.id = "toolbarContainer";
+// document.body.appendChild(tc);
 const toolbar = new G6.ToolBar({
   position: { x: 0, y: 400 },
 });
+
+// const toolbar = new G6.ToolBar({
+//   container: tc,
+//   getContent: () => {
+//     return `
+//       <ul>
+//         <li code='add'>增加节点</li>
+//         <li code='undo'>撤销</li>
+//       </ul>
+//     `;
+//   },
+//   handleClick: (code, graph) => {
+//     if (code === "add") {
+//       graph.addItem("node", {
+//         id: "node2",
+//         label: "node2",
+//         x: 300,
+//         y: 150,
+//       });
+//     } else if (code === "undo") {
+//       toolbar.undo();
+//     }
+//   },
+// });
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

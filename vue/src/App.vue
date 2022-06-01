@@ -1,77 +1,66 @@
-<script setup lang="ts">
-import { inject, ref } from 'vue'
-import { useFetch } from '@vueuse/core'
-
-import { KEY_INTEROP, KEY_LOG } from './keys'
-import type { Item } from './types/Item'
-
-const $interop = inject(KEY_INTEROP)
-const $log = inject(KEY_LOG)
-
-const {
-  isFetching,
-  error,
-  data: items,
-  onFetchResponse,
-  onFetchError
-} = useFetch('/api/items', { timeout: 1000 }).get().json<Item[]>()
-
-onFetchResponse((response) => {
-  $log?.info('Received items from server.')
-})
-
-onFetchError((error) => {
-  $log?.error('Failed to fetech items from server.')
-})
-
-const count = ref(0)
-const selectedFile = ref<string | string[] | undefined>()
-
-function increase() {
-  count.value++
-  $interop?.setBadgeCount(count.value)
-}
-
-function decrease() {
-  if (count.value > 0) {
-    count.value--
-    $interop?.setBadgeCount(count.value)
-  }
-}
-
-function open() {
-  $interop?.showOpenDialog()
-    .then(result => selectedFile.value = result)
-}
-
-function save() {
-  $interop?.showSaveDialog()
-    .then(result => selectedFile.value = result)
-}
-</script>
-
 <template>
-  <div>
-    <h1>Items from Server</h1>
-    <p v-if="isFetching">Fetching items...</p>
-    <template v-else>
-      <p v-if="error">Failed to receive items. {{ error }}</p>
-      <ul v-else>
-        <li v-for="item in items" :key="item.id">{{ item.name }}</li>
-      </ul>
-    </template>
-
-    <h1>Set badge count (Mac Only)</h1>
-    <p>Click buttons below to set app badge count (calling Electron via preload script)</p>
-    <el-button type="primary" @click="increase">Increase</el-button>
-    <el-button type="primary" @click="decrease" :disabled="count <= 0">Decrease</el-button>
-
-    <h1>File dialog</h1>
-    <el-button type="primary" @click="open">Show Open Dialog</el-button>
-    <el-button type="primary" @click="save">Show Save Dialog</el-button>
-    <p>
-      <strong>Selected File(s)</strong>
-      : {{ selectedFile }}
-    </p>
+  <div class="common-layout">
+    <el-container>
+      <el-header height="74px"><main-header @onChange="onChange"></main-header></el-header>
+      <el-container>
+        <el-aside v-show="collapse" width="300px">
+          <el-scrollbar><side-menu></side-menu></el-scrollbar>
+        </el-aside>
+        <el-main>
+          <el-scrollbar> <main-canvas></main-canvas> </el-scrollbar
+        ></el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
+
+<script setup lang="ts">
+import SideMenu from "./component/SideMenu.vue";
+import MainCanvas from "./component/g6Canvas.vue";
+import MainHeader from "./component/Header.vue";
+import axios from "axios";
+import { ref, onMounted } from "vue";
+
+const childRef = ref();
+
+const collapse = ref(true);
+
+const onChange = (params: boolean) => {
+  console.log("onchange", params);
+  collapse.value = params;
+};
+
+</script>
+
+<style scoped>
+svg {
+  width: 20px;
+  height: 20px;
+  color: rgb(90, 99, 121);
+}
+
+.layout-container-demo .el-header {
+  position: relative;
+  background-color: var(--el-color-primary-light-7);
+  color: var(--el-text-color-primary);
+}
+.layout-container-demo .el-aside {
+  color: var(--el-text-color-primary);
+  background: var(--el-color-primary-light-8);
+}
+.layout-container-demo .el-menu {
+  border-right: none;
+}
+.layout-container-demo .el-main {
+  padding: 0;
+}
+.layout-container-demo .toolbar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  right: 20px;
+}
+</style>
+
+function mounted() { throw new Error('Function not implemented.'); }
