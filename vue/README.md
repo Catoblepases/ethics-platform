@@ -22,7 +22,7 @@
 - [ ] analyse result
   - [ ] tree causual(causual trace: senario cause death of how many people)
 - [ ] jugement
-  - [ ] table
+  - [ ] A table of different principles (corresponding to different actions).
 
 ## Project setup
 
