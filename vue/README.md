@@ -1,19 +1,28 @@
 # front-end
+## Partie 1
 - [x] mysql
 - [ ] Importing Data
   - [ ] basic
   - [ ] choose mode
-- [ ] load data
-  - [ ] basic
-  - [ ] choose mode
-- [ ] train animation
-- [ ] contextMenu implementation
-- [ ] ==show bridge==
-- [ ] ==show group==
-- [ ] ==commande line==
-- [ ] ==event menu==
-- [ ] edit mode and animation mode
-- [ ] run clingo
+- [x] load data
+  - [x] basic
+  - [x] choose mode
+- [x] ==commande line==
+- [x] run clingo
+## partie 2
+- [ ] excuter train animation
+  - [ ] use trace generated with clingo 
+  - [ ] navigator (run/run one step/go back)
+  - [ ] edit mode and animation mode
+  - [ ] ==show bridge==
+  - [x] ==show group==
+- [ ] senario menu
+  - [ ] table of senario and the choices of user
+  - [ ] with default file
+- [ ] analyse result
+  - [ ] tree causual(causual trace: senario cause death of how many people)
+- [ ] jugement
+  - [ ] table
 
 ## Project setup
 
