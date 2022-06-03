@@ -142,7 +142,7 @@ import {
   onBeforeMount,
 } from "vue";
 import axios from "axios";
-import { castArray } from "element-plus/lib/utils";
+
 let dialogFormVisible = inject("dialogFormVisible");
 const nodeId = inject("nodeId");
 const carriageData = inject("carriageData");
