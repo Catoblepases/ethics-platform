@@ -4,6 +4,7 @@
     ref="childRef"
     :dialogFormVisible="dialogFormVisible"
     :nodeId="nodeId"
+    @onUpdate="onUpdate"
   ></edit-menu>
 </template>
 
@@ -16,6 +17,7 @@ import {
   provide,
   ref,
   defineAsyncComponent,
+  onBeforeUpdate,
 } from "vue";
 
 import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
@@ -29,11 +31,15 @@ insertCss(`
   }
 `);
 
+const onUpdate = () => {
+  initGraph();
+  console.log("update:Graph");
+};
+
 const childRef = ref<any>();
 
 const updateEditMenu = () => {
   childRef.value.update();
-  console.log("update editmenu");
 };
 
 var carriageData = ref({});
@@ -157,6 +163,7 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
     container: "mountNode",
     width: 1300,
     height: 400,
+    fitViewPadding: [ 20, 40, 50, 200 ],
     // fitView: true,
     plugins: [contextMenu, toolbar],
     layout: {
@@ -296,28 +303,37 @@ async function getData() {
   return data;
 }
 
-axios.post("api/Node/addAll/test").then((res) => {
-  axios.get("api/Node").then((res1) => {
-    axios.get("api/Edge").then((res2) => {
-      var _nodes = res1.data;
-      var _edges = res2.data;
-      changeStyleByType(_nodes);
-      data = { nodes: _nodes, edges: _edges };
-      graph = g6(data);
-      graph.on("node:contextmenu", function (evt) {
-        openContextMenu();
-      });
-      graph.on("node:dblclick", function (evt) {
-        var id: string = evt.item?.getModel().id!;
-        setNodeId(id);
-        axios.get("api/carriage/" + id).then((res) => {
-          setCarriageData(res.data);
-          updateEditMenu();
-          openMenu();
+const initGraph = () => {
+  axios.post("api/Node/addAll/test").then((res) => {
+    axios.get("api/Node").then((res1) => {
+      axios.get("api/Edge").then((res2) => {
+        var _nodes = res1.data;
+        var _edges = res2.data;
+        changeStyleByType(_nodes);
+        data = { nodes: _nodes, edges: _edges };
+        graph = g6(data);
+        graph.on("node:contextmenu", function (evt) {
+          openContextMenu();
+        });
+        graph.on("node:dblclick", function (evt) {
+          var id: string = evt.item?.getModel().id!;
+          setNodeId(id);
+          axios.get("api/carriage/" + id).then((res) => {
+            setCarriageData(res.data);
+            updateEditMenu();
+            openMenu();
+          });
         });
       });
     });
   });
+  console.log("run:initGraph");
+};
+
+initGraph();
+
+onBeforeUpdate(() => {
+  initGraph();
 });
 </script>
 
@@ -354,16 +370,6 @@ axios.post("api/Node/addAll/test").then((res) => {
   display: block;
   line-height: 34px;
   text-align: center;
-}
-
-.contextmenu_item:not(:last-child) {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.contextmenu_item:hover {
-  cursor: pointer;
-  background: #66b1ff;
-  border-color: #66b1ff;
-  color: #fff;
 }
 
 .el-row {

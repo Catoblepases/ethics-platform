@@ -71,7 +71,8 @@ public class NodeController {
         int i = 0;
         for (Track track : tracks) {
             for (Carriage carriage : track) {
-                Node node = new Node(carriage.getName(), 0, 0, "track", carriage.getInformation(), fills[i], carriage);
+                boolean original = carriage.equals(generator.train.getOriginPosition());
+                Node node = new Node(carriage.getName(), 0, 0, "track", carriage.getInformation(), fills[i], carriage, original);
                 nodeMapper.addNode(node);
             }
             i++;

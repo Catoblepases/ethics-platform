@@ -3,7 +3,7 @@
     <el-container>
       <el-header height="74px"><main-header @onChange="onChange"></main-header></el-header>
       <el-container>
-        <el-aside v-show="collapse" width="300px">
+        <el-aside v-show="collapse">
           <el-scrollbar><side-menu></side-menu></el-scrollbar>
         </el-aside>
         <el-main>

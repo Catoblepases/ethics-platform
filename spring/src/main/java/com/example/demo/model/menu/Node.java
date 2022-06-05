@@ -18,13 +18,13 @@ public class Node {
 
     private InfoCarriage infoCarriage;
 
-    public Node(String id, int x, int y, String typeName, String label, String fill, Carriage carriage) {
+    public Node(String id, int x, int y, String typeName, String label, String fill, Carriage carriage, boolean orginal) {
         this.x = x;
         this.y = y;
         this.label = label;
         this.id = id;
         this.typeName = typeName;
         this.fill = fill;
-        this.infoCarriage=new InfoCarriage(carriage);
+        this.infoCarriage = new InfoCarriage(carriage, orginal);
     }
 }

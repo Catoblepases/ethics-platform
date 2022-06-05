@@ -8,7 +8,7 @@
             label="Carriage Connected"
             :label-width="formLabelWidth"
           >
-            : {{ switchTrackValue }}({{ switchTrackNumber }})
+            <el-input v-model="switchTrackValue" autocomplete="off" disabled />
           </el-form-item>
           <el-form-item label="Name of Track" :label-width="formLabelWidth">
             <el-select
@@ -125,7 +125,7 @@
                 <el-input v-model="createGroup.size" placeholder="size" />
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="onSubmitGroup"
+                <el-button type="primary" @click="onSubmit"
                   >Create/Update</el-button
                 >
               </el-form-item>
@@ -151,40 +151,17 @@ import {
   onMounted,
   reactive,
   ref,
-  Ref,
   inject,
   onBeforeMount,
 } from "vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import {
-  Data,
-  Bridge,
-  Group,
-  Switch,
-  setDataRef,
-  updateBridge,
-  updateGroup,
-  updateSwitch,
-  updateData,
-  setOriginal,
-  changeString,
-  setGroup,
-} from "./JavaComponents";
-
-const formLabelWidth = "140px";
-
-// components from mother
+// import { castArray } from "element-plus/lib/utils";
 let dialogFormVisible = inject("dialogFormVisible");
 const nodeId = inject("nodeId");
-let _carriageData = inject("carriageData");
-let carriageData: Data = _carriageData._rawValue;
+let carriageData = inject("carriageData");
 
-// ref
-const data = new Data();
-let createGroup = ref(new Group());
-let p = ref("");
-
+const formLabelWidth = "140px";
 const orignalPosition = ref(false);
 const switchTrackValue = ref("");
 const nameBridge = ref("");
@@ -192,57 +169,130 @@ const pos = ref("");
 const switchTrackNumber = ref(0);
 const group = ref({ name: null, size: null });
 const groupBridge = ref({ name: null, size: null });
+const createGroup = ref({ name: null, size: null });
 
-const dataRef = {
-  orignalPosition: orignalPosition,
-  switchTrackValue: switchTrackValue,
-  switchTrackNumber: switchTrackNumber,
-  nameBridge: nameBridge,
-  group: group,
-  groupBridge: groupBridge,
+const notEqualNull = (val: any) => {
+  if (val === "" || val === "-1" || val === null) {
+    return false;
+  }
+  return true;
 };
-
-var TrackItems = [];
-var TrackLength = [];
-var TrackNumberItems = [];
 
 const setCarriageData = (data: any) => {
   carriageData = data;
 };
-// useful funtion
 
-// update
+const data = {
+  id: nodeId._rawValue,
+  track: "",
+  index: -1,
+  switchs: {
+    trackBegin: "",
+    trackEnd: "",
+    trackBeginName: "",
+    trackBeginNumber: 0,
+    trackEndName: "",
+    trackEndNumber: 0,
+  },
+
+  group: {
+    name: "",
+    size: 0,
+  },
+
+  bridge: null,
+};
+
+var node = {
+  switchTrack: switchTrackValue,
+  switchNumber: switchTrackNumber,
+  track: "main",
+  trackNumber: 10,
+  allTrack: ["side", "main"],
+  bridge: nameBridge,
+  group: group,
+  groupBridge: groupBridge,
+};
+
+switchTrackNumber.value = -1;
+switchTrackValue.value = "";
+nameBridge.value = "";
+
+var TrackItems = [];
+var TrackNumberItems = [];
+var TrackLength = [];
+
 const update = () => {
-  carriageData = _carriageData._rawValue;
-  console.log(carriageData);
   data.id = nodeId._rawValue;
-  data.track = carriageData.track;
-  data.index = carriageData.index;
-  data.switchs = carriageData.switchs;
-  data.group = carriageData.group;
-  data.bridge = carriageData.bridge;
-  data.positionOriginal = carriageData.positionOriginal;
-  console.log(data);
-  setDataRef(data, dataRef);
-  console.log(dataRef);
+  data.track = carriageData._rawValue.track;
+  data.index = carriageData._rawValue.index;
+  data.switchs = carriageData._rawValue.switchs;
+  data.group = carriageData._rawValue.group;
+  data.bridge = carriageData._rawValue.bridge;
+  if (data.switchs != null) {
+    switchTrackValue.value = data.switchs.trackEndName;
+    switchTrackNumber.value = data.switchs.trackEndNumber;
+  } else {
+    switchTrackValue.value = "";
+    switchTrackNumber.value = -1;
+  }
+
+  if (data.group != null) {
+    group.value.name = data.group.name;
+    group.value.size = data.group.size;
+  } else {
+    group.value.name = "";
+    group.value.size = 0;
+  }
+
+  if (data.bridge != null) {
+    nameBridge.value = data.bridge;
+    if (data.bridge.group != null) {
+      groupBridge.value.name = data.bridge.group.name;
+      groupBridge.value.size = data.bridge.group.size;
+    } else {
+      groupBridge.value.name = "";
+      groupBridge.value.size = 0;
+    }
+  } else {
+    nameBridge.value = "";
+    groupBridge.value.name = "";
+    groupBridge.value.size = 0;
+  }
   console.log("EditMenu: up to date");
-  let s = "ok";
-  changeString(s, p);
+  console.log(data);
 };
 
 const apply = () => {
-  updateData(data, dataRef);
-  console.log(data);
+  if (switchTrackValue.value != "" && switchTrackNumber.value != -1) {
+    data.switchs = {
+      trackBegin: data.id,
+      trackEnd: switchTrackValue.value + "(" + switchTrackNumber.value + ")",
+    };
+  }
+  if (
+    data.group != null &&
+    (data.group.name === "" || data.group.size === -1)
+  ) {
+    data.group = null;
+  }
   axios.put("api/carriage", data).then(() => {
     console.log("submit succes");
   });
   updateGraph();
 };
 
-const onSubmitGroup = () => {
+onBeforeMount(() => {
+  axios.get("api/carriage/allTrack").then((res) => {
+    TrackItems = res.data;
+    console.log(TrackItems);
+  });
+});
+
+const onSubmit = () => {
   if (group.value.name != null && group.value.size != null) {
     if (pos.value == "c") {
-      if (data.group === null || data.group.size === -1) {
+      if (data.group === null) {
         data.group = {
           name: createGroup.value.name,
           size: createGroup.value.size,
@@ -251,7 +301,6 @@ const onSubmitGroup = () => {
         data.group.name = createGroup.value.name;
         data.group.size = createGroup.value.size;
       }
-      setGroup(data.group, group);
     } else {
       if (data.bridge === null) {
         ElMessage("this isnt a bridge");
@@ -265,38 +314,42 @@ const onSubmitGroup = () => {
         data.bridge.group.size = createGroup.value.size;
       }
     }
-    setGroup(data.bridge?.group, groupBridge);
   }
 };
 
 const onSubmitBridge = () => {
-  if (dataRef.nameBridge.value != "") {
-    if (data.bridge?.name === "" || data.bridge === null) {
-      data.bridge = { name: dataRef.nameBridge.value.valueOf(), group: null };
+  if (nameBridge.value != "") {
+    if (data.bridge == null) {
+      data.bridge = { name: nameBridge.value, group: null };
     } else {
-      data.bridge!.name = dataRef.nameBridge.value.valueOf();
+      data.bridge.name = nameBridge.value;
     }
   }
 };
 
-onBeforeMount(() => {
-  axios.get("api/carriage/allTrack").then((res) => {
-    for (let index = 0; index < res.data.length; index++) {
-      TrackItems.push({ value: res.data[index], label: res.data[index] });
-    }
-    console.log(TrackItems);
-  });
+const deleteBridge = () => {
+  data.bridge = null;
+};
 
-  axios.get("api/carriage/allTrackNumber").then((res) => {
-    TrackLength = res.data;
-    console.log(TrackLength);
-    for (let index = 0; index < TrackLength[0]; index++) {
-      TrackNumberItems.push({ value: index, key: index });
-    }
+const deleteSwitch = () => {
+  data.switchs = null;
+};
+
+const deleteCarriage = () => {
+  ElMessage("try to delete this carriage");
+  axios.delete("api/carriage/" + data.id).then(() => {
+    ElMessage("delete carriage successfully");
   });
+};
+
+onMounted(() => {
+  for (let index = 0; index < node.trackNumber; index++) {
+    TrackNumberItems.push({ value: index, key: index });
+  }
+  for (let index = 0; index < node.allTrack.length; index++) {
+    TrackItems.push({ value: node.allTrack[index], key: node.allTrack[index] });
+  }
 });
-
-onMounted(() => {});
 
 const emit = defineEmits(["onUpdate"]);
 const updateGraph = () => {
@@ -305,7 +358,6 @@ const updateGraph = () => {
 
 defineExpose({ update });
 </script>
-
 <style scoped>
 .el-button--text {
   margin-right: 15px;

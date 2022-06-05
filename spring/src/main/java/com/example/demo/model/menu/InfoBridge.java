@@ -15,13 +15,23 @@ public class InfoBridge {
 
     Bridge createBridge(Position position) {
         Bridge bridge = new Bridge(name, position);
-        Group g = group.createGroup(position);
+        Group g = null;
+        if (group != null) {
+            g = group.createGroup(position);
+        }
         bridge.setGroup(g);
         return bridge;
     }
 
     void updateBridge(Carriage carriage) {
+        if (name == "") {
+            return;
+        }
         Bridge bridge = carriage.getBridge();
+        if (bridge == null) {
+            bridge = createBridge(carriage);
+            return;
+        }
         if (!bridge.getName().equals(name)) {
             bridge.setName(name);
         }

@@ -22,7 +22,8 @@ public class CarriageController {
     @GetMapping("/{id}")
     InfoCarriage getCarriageById(@PathVariable("id") String id) {
         Carriage carriage = (Carriage) generator.readPosition(id);
-        InfoCarriage infoCarriage = new InfoCarriage(carriage);
+        Boolean isOriginal = generator.train.getOriginPosition().equals(carriage);
+        InfoCarriage infoCarriage = new InfoCarriage(carriage, isOriginal);
         return infoCarriage;
     }
 
@@ -41,6 +42,11 @@ public class CarriageController {
     @PostMapping("/add/{trackId}")
     void addCarriage(@PathVariable String trackId) {
         generator.findTrack(trackId).addNewCarriage();
+    }
+
+    @PostMapping("/reset")
+    void resetGenerator() {
+        generator.read("./data/testsw");
     }
 
     @PostMapping("/switch")
@@ -170,11 +176,11 @@ public class CarriageController {
     }
 
     @PostMapping("/lp")
-    String saveFile(@RequestBody String path){
-        try{
-            File file=new File(path);
+    String saveFile(@RequestBody String path) {
+        try {
+            File file = new File(path);
             generator.saveFile(file);
-        }catch (Exception e){
+        } catch (Exception e) {
             return e.getMessage();
         }
         return "success";

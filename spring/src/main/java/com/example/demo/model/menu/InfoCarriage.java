@@ -1,6 +1,7 @@
 package com.example.demo.model.menu;
 
 import com.example.demo.model.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -18,7 +19,10 @@ public class InfoCarriage {
     InfoGroup group;
     InfoBridge bridge;
 
-    public InfoCarriage(Carriage carriage) {
+    Boolean positionOriginal;
+
+    public InfoCarriage(Carriage carriage, Boolean positionOriginal) {
+        this.positionOriginal = positionOriginal;
         this.id = carriage.getInformation();
         this.track = carriage.getTrack();
         Group g = carriage.getGroup();
@@ -30,7 +34,10 @@ public class InfoCarriage {
         Bridge b = carriage.getBridge();
         if (b != null) {
             Group gb = b.getGroup();
-            InfoGroup igb = InfoGroup.builder().name(gb.getName()).size(gb.getNb()).build();
+            InfoGroup igb = null;
+            if (gb != null) {
+                InfoGroup.builder().name(gb.getName()).size(gb.getNb()).build();
+            }
             this.bridge = InfoBridge.builder().name(b.getName()).group(igb).build();
         } else {
             this.bridge = null;
@@ -39,7 +46,7 @@ public class InfoCarriage {
         this.index = carriage.getIndex();
 
         if (s != null) {
-            this.switchs = InfoSwitch.builder().trackBegin(s.getTrackBegin()).trackEnd(s.getTrackEnd()).build();
+            this.switchs = new InfoSwitch(s.getTrackBegin(), s.getTrackEnd());
         } else {
             this.switchs = null;
         }
@@ -57,11 +64,12 @@ public class InfoCarriage {
             carriage.setBridge(null);
         }
         if (switchs != null) {
-            switchs.update(carriage,generator);
+            switchs.update(carriage, generator);
         } else {
             carriage.setSwitch(null);
         }
+        if (positionOriginal){
+            generator.train.setOriginPosition(carriage);
+        }
     }
-
-
 }

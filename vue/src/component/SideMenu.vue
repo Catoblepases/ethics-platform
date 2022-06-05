@@ -1,34 +1,7 @@
 <template>
   <el-tabs type="border-card" tab-position="left" class="demo-tabs">
     <el-tab-pane label="Event" @click="getEvent">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="eventType" label="eventType" width="120" />
-        <el-table-column
-          prop="eventDescription"
-          label="eventDescription"
-          width="120"
-        />
-        <el-table-column align="right" width="180">
-          <template #header>
-            <el-input
-              v-model="search"
-              size="small"
-              placeholder="Type to search"
-            />
-          </template>
-          <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-              >Edit</el-button
-            >
-            <el-button
-              size="small"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >Delete</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
+      <event-menu></event-menu>
     </el-tab-pane>
     <el-tab-pane label="Comand">
       <el-input
@@ -62,6 +35,7 @@
 <script lang="ts" setup>
 import { Calendar } from "@element-plus/icons-vue";
 import ClingoMenu from "./Clingo.vue";
+import EventMenu from "./EventMenu.vue";
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 
@@ -75,42 +49,6 @@ function addToTextArea() {
   });
 }
 
-interface Event {
-  eventType: string;
-  eventDescription: string;
-}
-
-let tableData = ref([]);
-
-const setTableData = (data: any) => {
-  tableData.value = data;
-  console.log(tableData.value);
-};
-
-const getEvent = () => {
-  axios.get("api/carriage/events").then((res) => {
-    setTableData(res.data);
-  });
-};
-
-const search = ref("");
-const filterTableData = computed(() =>
-  tableData.value.filter(
-    (data) =>
-      !search.value ||
-      data.eventType.toLowerCase().includes(search.value.toLowerCase())
-  )
-);
-const handleEdit = (index: number, row: Event) => {
-  console.log(index, row);
-};
-const handleDelete = (index: number, row: Event) => {
-  console.log(index, row);
-};
-
-onMounted(() => {
-  getEvent();
-});
 </script>
 <style>
 .demo-tabs > .el-tabs__content {
