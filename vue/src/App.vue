@@ -1,9 +1,11 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header height="74px"><main-header @onChange="onChange"></main-header></el-header>
+      <el-header height="74px"
+        ><main-header @onChange="onChange"></main-header
+      ></el-header>
       <el-container>
-        <el-aside v-show="collapse">
+        <el-aside v-show="collapse" width="430px">
           <el-scrollbar><side-menu></side-menu></el-scrollbar>
         </el-aside>
         <el-main>
@@ -29,7 +31,6 @@ const onChange = (params: boolean) => {
   console.log("onchange", params);
   collapse.value = params;
 };
-
 </script>
 
 <style scoped>

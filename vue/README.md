@@ -18,7 +18,7 @@
   - [x] ==show group==
 - [ ] senario menu
   - [ ] table of senario and the choices of user
-  - [ ] with default file
+  - [x] with default file
 - [ ] analyse result
   - [ ] tree causual(causual trace: senario cause death of how many people)
 - [ ] jugement

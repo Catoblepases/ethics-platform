@@ -1,5 +1,10 @@
 <template>
-  <el-tabs type="border-card" tab-position="left" class="demo-tabs">
+  <el-tabs
+    type="border-card"
+    tab-position="left"
+    class="demo-tabs"
+    stretch="true"
+  >
     <el-tab-pane label="Event" @click="getEvent">
       <event-menu></event-menu>
     </el-tab-pane>
@@ -48,7 +53,6 @@ function addToTextArea() {
     input.value = "";
   });
 }
-
 </script>
 <style>
 .demo-tabs > .el-tabs__content {
