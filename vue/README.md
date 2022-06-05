@@ -14,7 +14,7 @@
   - [ ] use trace generated with clingo 
   - [ ] navigator (run/run one step/go back)
   - [ ] edit mode and animation mode
-  - [ ] ==show bridge==
+  - [x] ==show bridge==
   - [x] ==show group==
 - [ ] senario menu
   - [ ] table of senario and the choices of user

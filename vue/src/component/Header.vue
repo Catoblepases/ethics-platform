@@ -61,8 +61,17 @@
         </template>
       </el-upload>
     </el-col>
-    <el-col span="3">
+    <el-col :span="3">
       <el-button type="primary" @click="showDownloadMenu">download</el-button>
+    </el-col>
+    <el-col :span="1">
+      <el-button type="primary">run</el-button>
+    </el-col>
+    <el-col :span="2">
+      <el-button type="primary">run one step</el-button>
+    </el-col>
+    <el-col :span="1">
+      <el-button type="primary">go back</el-button>
     </el-col>
   </el-row>
   <el-divider />
