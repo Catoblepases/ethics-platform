@@ -47,7 +47,7 @@
         @click="update"
       />
     </el-col>
-    <el-col :span="2">
+    <el-col :span="1">
       <el-upload
         ref="upload"
         class="upload-demo"
@@ -57,21 +57,64 @@
         :auto-upload="false"
       >
         <template #trigger>
-          <el-button type="primary">select file</el-button>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="select file"
+            placement="bottom"
+          >
+            <el-button type="primary" :icon="Upload" circle></el-button>
+          </el-tooltip>
         </template>
       </el-upload>
     </el-col>
-    <el-col :span="3">
-      <el-button type="primary" @click="showDownloadMenu">download</el-button>
+    <el-col :span="1">
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="download"
+        placement="bottom"
+      >
+        <el-button
+          type="primary"
+          :icon="Download"
+          circle
+          @click="showDownloadMenu"
+        ></el-button>
+      </el-tooltip>
     </el-col>
     <el-col :span="1">
-      <el-button type="primary">run</el-button>
-    </el-col>
-    <el-col :span="2">
-      <el-button type="primary">run one step</el-button>
+      <el-divider direction="vertical" />
     </el-col>
     <el-col :span="1">
-      <el-button type="primary">go back</el-button>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="run/simulation"
+        placement="bottom"
+      >
+        <el-button :icon="VideoPlay" circle></el-button>
+      </el-tooltip>
+    </el-col>
+    <el-col :span="1">
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="run one step"
+        placement="bottom"
+      >
+        <el-button :icon="ArrowRight" circle></el-button>
+      </el-tooltip>
+    </el-col>
+    <el-col :span="1">
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="back one step"
+        placement="bottom"
+      >
+        <el-button :icon="ArrowLeft" circle></el-button>
+      </el-tooltip>
     </el-col>
   </el-row>
   <el-divider />
@@ -82,7 +125,14 @@
 
 <script lang="ts" setup>
 import { ElMessage } from "element-plus";
-import { ArrowDown } from "@element-plus/icons-vue";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  VideoPlay,
+  Upload,
+  Download,
+} from "@element-plus/icons-vue";
 import { ref, provide } from "vue";
 import { genFileId } from "element-plus";
 import downloadFile from "./downloadFile.vue";

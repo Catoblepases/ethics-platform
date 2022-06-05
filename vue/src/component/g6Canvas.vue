@@ -105,7 +105,7 @@ G6.registerNode(
         }
       }
 
-     group.addShape("text", {
+      group.addShape("text", {
         attrs: {
           text: cfg?.label,
           x: -10,
@@ -125,56 +125,74 @@ G6.registerNode(
   "rect"
 );
 
-G6.registerNode(
-  "carriageWithbridge",
-  {
-    draw(cfg, group) {
-      let y: number = Math.round(7 / 2);
-      let nb = cfg?.nb;
-      const size = cfg?.size[0];
-      var nbLine = Math.round(Math.sqrt(nb)) + 1;
-      var h = Math.round(size / (nbLine + 1));
+G6.registerNode("carriageWithbridge", {
+  draw(cfg, group) {
+    let y: number = Math.round(7 / 2);
+    let nb = cfg?.nb;
+    const size = cfg?.size[0];
+    var nbLine = Math.round(Math.sqrt(nb)) + 1;
+    var h = Math.round(size / (nbLine + 1));
 
-      const rect = group.addShape("rect", {
-        zIndex: 10,
-        attrs: {
-          x: -12,
-          y: -12,
-          width: cfg?.size[0],
-          height: cfg?.size[1],
-          fill: cfg?.fill,
-        },
-      });
+    const rect = group.addShape("rect", {
+      zIndex: 10,
+      attrs: {
+        x: -12,
+        y: -12,
+        width: cfg?.size[0],
+        height: cfg?.size[1],
+        fill: cfg?.fill,
+      },
+    });
 
-      group.addShape('rect', {
-        attrs: {
-          x: -2,
-          y: -15,
-          width: 10,
-          height: 30,
-          fill:"#6bccdb",
-        },
-      })
+    group.addShape("rect", {
+      attrs: {
+        x: -2,
+        y: -15,
+        width: 10,
+        height: 30,
+        fill: "#6bccdb",
+      },
+    });
 
-      group.addShape("text", {
-        attrs: {
-          text: cfg?.label,
-          x: -10,
-          y: 0,
-          fontSize: 8,
-          textAlign: "left",
-          textBaseline: "middle",
-          fill: "white",
-        },
-        // must be assigned in G6 3.3 and later versions. it can be any value you want
-        name: "text-shape",
-      });
-
-      return rect;
-
+    for (let i = 0; i < nbLine; i++) {
+      if (nb <= 0) {
+        break;
+      }
+      for (let j = 0; j < nbLine; j++) {
+        if (nb <= 0) {
+          break;
+        }
+        group.addShape("circle", {
+          zIndex: 10,
+          attrs: {
+            x: h * j,
+            y: h * i,
+            r: 5,
+            fill: "lightgreen",
+          },
+        });
+        nb--;
+      }
     }
-  }
-);
+
+    group.addShape("text", {
+      attrs: {
+        text: cfg?.label,
+        x: -10,
+        y: 0,
+        fontSize: 8,
+        textAlign: "left",
+        textBaseline: "middle",
+        fill: "white",
+      },
+      // must be assigned in G6 3.3 and later versions. it can be any value you want
+      name: "text-shape",
+    });
+
+    return rect;
+  },
+});
+
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
     if (!node.style) {
@@ -188,7 +206,7 @@ function changeStyleByType(nodes: Array<Node>) {
       case "track": {
         node.type = "rect";
         node.size = [35, 20];
-        if (node.infoCarriage.bridge!=null){
+        if (node.infoCarriage.bridge != null) {
           node.type = "carriageWithbridge";
           node.nb = 1;
         }
@@ -200,7 +218,7 @@ function changeStyleByType(nodes: Array<Node>) {
       }
       case "bridge": {
         node.type = "rect"; // class = 'c1' 时节点图形为 rect
-        node.size = [35,20]; // class = 'c1' 时节点大小
+        node.size = [35, 20]; // class = 'c1' 时节点大小
         break;
       }
       case "train": {
@@ -217,7 +235,7 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
     container: "mountNode",
     width: 1300,
     height: 400,
-    fitViewPadding: [ 20, 40, 50, 200 ],
+    fitViewPadding: [20, 40, 50, 200],
     // fitView: true,
     plugins: [contextMenu, toolbar],
     layout: {
