@@ -6,7 +6,17 @@
     height="90%"
     :before-close="handleClose"
   >
-    <div id="clingoContainer"></div>
+    <el-tabs v-model="editableTabsValue" type="card" class="demo-tabs">
+      <el-tab-pane
+        v-for="item in items"
+        :key="item.name"
+        :label="item.title"
+        :name="item.name"
+      >
+        <div :id="item.name"></div>
+      </el-tab-pane>
+    </el-tabs>
+
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="analyse = false">Cancel</el-button>
@@ -21,6 +31,13 @@ import { inject, onBeforeMount, onMounted, ref } from "@vue/runtime-core";
 import axios from "axios";
 
 const analyse = inject("analyse");
+const editableTabsValue = ref("s0");
+class tabItem {
+  name: string = "clingo";
+  title: string = "clingo";
+  data: any = { nodes: [], edges: [] };
+}
+var items = ref(new Array<tabItem>());
 
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
@@ -60,9 +77,9 @@ function changeEdgeStyleByType(edges: Array<Edge>) {
   });
 }
 
-const g6 = (data: GraphData | TreeGraphData | undefined) => {
+const g6 = (data: GraphData | TreeGraphData | undefined, container: string) => {
   const graph = new G6.Graph({
-    container: "clingoContainer",
+    container: container,
     width: 1200,
     height: 400,
     fitViewPadding: [20, 40, 50, 10],
@@ -131,18 +148,32 @@ const initGraphAnalyse = () => {
     let dataT = { name: "./data/ria/traceTrollC.lp" };
     axios.post("api/causal", dataT).then((res) => {
       console.log(res);
+      let causalTrees: Array<any> = res.data.causalTrees;
 
-      let casualTrees = res.data.causalTrees;
-      let nodes = casualTrees[0].nodeEventList;
-      let edges = casualTrees[0].edgeEvents;
-      changeEdgeStyleByType(edges);
-      changeStyleByType(nodes);
-      let data = {
-        nodes: nodes,
-        edges: edges,
-      };
-      console.log(data);
-      graph = g6(data);
+      for (let index = 0; index < causalTrees.length; index++) {
+        const tr = causalTrees[index];
+        console.log(tr);
+
+        const item = new tabItem();
+        item.name = tr.name;
+        item.title = tr.name;
+        let nodes = tr.nodeEventList;
+        let edges = tr.edgeEvents;
+        changeEdgeStyleByType(edges);
+        changeStyleByType(nodes);
+        item.data = {
+          nodes: nodes,
+          edges: edges,
+        };
+        items.value.push(item);
+      }
+      setTimeout(() => {
+        for (let index = 0; index < items.value.length; index++) {
+          const element = items.value[index];
+          console.log(element.data);
+          graph = g6(element.data, element.name);
+        }
+      }, 1);
     });
   }
 };
