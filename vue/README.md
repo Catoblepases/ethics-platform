@@ -21,10 +21,10 @@
 - [ ] senario menu
   - [ ] table of senario and the choices of user
   - [x] with default file
-- [ ] analyse result
-  - [ ] tree causual(causual trace: senario cause death of how many people)
+- [x] analyse result
+  - [x] tree causual(causual trace: senario cause death of how many people)
 - [ ] jugement
-  - [ ] A table of different principles (corresponding to different actions).
+  - [x] A table of different principles (corresponding to different actions).
 
 ## Project setup
 
