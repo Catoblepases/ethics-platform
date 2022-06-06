@@ -150,7 +150,7 @@ import downloadFile from "./downloadFile.vue";
 import clingoAnalyse from "./ClingoAnalyse.vue";
 import clingoResult from "./ClingoResult.vue";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
-import { tr } from "element-plus/lib/locale";
+
 
 let collapse = ref(true);
 const ARef = ref<any>();
