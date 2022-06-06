@@ -46,7 +46,7 @@ public class FichierController {
         while((str = bufferedReader.readLine()) != null)
         {
             System.out.println(str);
-            while
+
         }
 
         //close
