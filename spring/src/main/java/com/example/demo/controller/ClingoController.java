@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.clingo.ClingoResult;
 import org.python.util.PythonInterpreter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/clingo")
@@ -31,6 +33,13 @@ public class ClingoController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @PostMapping("result")
+    Map getClingoResults(@RequestBody Map params){
+        ClingoResult cr = new ClingoResult(params.get("name").toString());
+        Map map = cr.calculateMap();
+        return map;
     }
 
 }

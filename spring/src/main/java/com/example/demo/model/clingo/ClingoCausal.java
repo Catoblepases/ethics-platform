@@ -35,7 +35,7 @@ public class ClingoCausal {
      * la première étant le nom de la fonction,
      * suivie du premier argument, du deuxième et du troisième de la fonction....
      */
-    public List<String> findCompleteCommande(String line) {
+    public static List<String> findCompleteCommande(String line) {
         int bracketCount = 0;
         int begin = 0;
         List<String> list = new ArrayList<>();

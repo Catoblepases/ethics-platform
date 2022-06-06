@@ -119,14 +119,18 @@
     <el-col :span="1">
       <el-divider direction="vertical" />
     </el-col>
-    <el-col :span="1">
+    <el-col :span="2">
       <el-button type="success" @click="showAnalyse">causal tree</el-button>
+    </el-col>
+    <el-col :span="2">
+      <el-button type="success" @click="showResult">clingo result</el-button>
     </el-col>
   </el-row>
   <el-divider />
 
   <download-file></download-file>
   <clingo-analyse ref="ARef"></clingo-analyse>
+  <clingo-result ref="RRef"></clingo-result>
   <!-- </el-affix> -->
 </template>
 
@@ -144,14 +148,19 @@ import { ref, provide } from "vue";
 import { genFileId } from "element-plus";
 import downloadFile from "./downloadFile.vue";
 import clingoAnalyse from "./ClingoAnalyse.vue";
+import clingoResult from "./ClingoResult.vue";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 import { tr } from "element-plus/lib/locale";
 
 let collapse = ref(true);
 const ARef = ref<any>();
+const RRef = ref<any>();
 
 let analyse = ref(false);
 provide("analyse", analyse);
+
+let result = ref(false);
+provide("result", result);
 
 const downVisible = ref(false);
 provide("downVisible", downVisible);
@@ -177,6 +186,11 @@ const upload = ref<UploadInstance>();
 const showAnalyse = () => {
   analyse.value = true;
   ARef.value.initGraphAnalyse();
+};
+
+const showResult = () => {
+  result.value = true;
+  RRef.value.initGraphAnalyse();
 };
 
 const handleExceed: UploadProps["onExceed"] = (files) => {
