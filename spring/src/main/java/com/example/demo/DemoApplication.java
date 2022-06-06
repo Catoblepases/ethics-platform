@@ -5,6 +5,7 @@ import com.example.demo.model.Carriage;
 import com.example.demo.model.Generator;
 import com.example.demo.model.clingo.ClingoCausal;
 import com.example.demo.model.clingo.ClingoResult;
+import com.example.demo.model.clingo.ClingoTrace;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,8 @@ public class DemoApplication {
 //        ClingoResult cr = new ClingoResult("./data/ria/resultTroll.lp");
 //        List<List<String>> f = cr.calculateForm();
 //        ClingoResult.printMatrice(f);
+//        ClingoTrace ct = new ClingoTrace("./data/ria/traceTroll.lp");
+//        System.out.println(ct);
     }
 
 }

@@ -65,11 +65,12 @@ const form = reactive({
   ethicalTheories: "./restrEthicalMotor.lp",
   trace: "./traceTroll.lp",
   causalTrace: "./traceTrollC.lp",
-  results: "imp/2 per/2",
-  output: "resultTroll.lp",
+  results: "imp/2\nper/2",
+  output: "./resultTroll.lp",
 });
 
 const onSubmit = () => {
   console.log("submit!");
 };
+
 </script>
