@@ -4,6 +4,7 @@ import com.example.demo.mapper.EdgeMapper;
 import com.example.demo.mapper.NodeMapper;
 import com.example.demo.model.*;
 import com.example.demo.model.menu.Edge;
+import com.example.demo.model.menu.NodeStandard;
 import com.example.demo.model.menu.Node;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class NodeController {
     }
 
     @GetMapping("/{id}")
-    Node getNodeById(@PathVariable("id") String id) {
+    NodeStandard getNodeById(@PathVariable("id") String id) {
         return nodeMapper.findNodeById(id);
     }
 
@@ -42,7 +43,7 @@ public class NodeController {
     }
 
     @PutMapping
-    Node updateNodeById(@RequestBody Node node) {
+    NodeStandard updateNodeById(@RequestBody Node node) {
         nodeMapper.updateNode(node);
         return node;
     }
@@ -79,15 +80,15 @@ public class NodeController {
         }
         for (Track track : tracks) {
             for (Carriage carriage : track) {
-                Node node = getNodeById(carriage.getName());
+                NodeStandard node = getNodeById(carriage.getName());
                 List<Switch> ls = new ArrayList<>();
                 if (carriage.suivant != null) {
-                    Node target = getNodeById(carriage.suivant.getName());
+                    NodeStandard target = getNodeById(carriage.suivant.getName());
                     edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
                 }
                 Switch sw = carriage.getSwitch();
                 if ((sw != null) && (!ls.contains(sw))) {
-                    Node target = getNodeById(carriage.getSwitch().next(carriage).getName());
+                    NodeStandard target = getNodeById(carriage.getSwitch().next(carriage).getName());
                     edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
                     ls.add(sw);
                 }

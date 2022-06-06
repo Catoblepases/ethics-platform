@@ -9,9 +9,11 @@
   - [x] choose mode
 - [x] ==commande line==
 - [x] run clingo
+
+
 ## partie 2
 - [ ] excuter train animation
-  - [ ] use trace generated with clingo 
+  - [ ] use trace generated with clingo
   - [ ] navigator (run/run one step/go back)
   - [ ] edit mode and animation mode
   - [x] ==show bridge==

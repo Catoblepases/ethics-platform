@@ -31,8 +31,11 @@ insertCss(`
   }
 `);
 
+var graph: Graph;
+let data: GraphData;
+
 const onUpdate = () => {
-  initGraph();
+  updateGraph();
   console.log("update:Graph");
 };
 
@@ -200,9 +203,7 @@ function changeStyleByType(nodes: Array<Node>) {
     }
     node.x = 120;
     node.y = 120;
-    switch (
-      node.typeName // 根据节点数据中的 class 属性配置图形
-    ) {
+    switch (node.typeName) {
       case "track": {
         node.type = "rect";
         node.size = [35, 20];
@@ -217,13 +218,13 @@ function changeStyleByType(nodes: Array<Node>) {
         break;
       }
       case "bridge": {
-        node.type = "rect"; // class = 'c1' 时节点图形为 rect
-        node.size = [35, 20]; // class = 'c1' 时节点大小
+        node.type = "rect";
+        node.size = [35, 20];
         break;
       }
       case "train": {
-        node.type = "ellipse"; // class = 'c2' 时节点图形为 ellipse
-        node.size = [35, 20]; // class = 'c2' 时节点大小
+        node.type = "ellipse";
+        node.size = [35, 20];
         break;
       }
     }
@@ -231,20 +232,20 @@ function changeStyleByType(nodes: Array<Node>) {
 }
 
 const g6 = (data: GraphData | TreeGraphData | undefined) => {
-  const graph = new G6.Graph({
+  graph = new G6.Graph({
     container: "mountNode",
     width: 1300,
-    height: 400,
+    height: 600,
     fitViewPadding: [20, 40, 50, 200],
     // fitView: true,
     plugins: [contextMenu, toolbar],
     layout: {
       type: "dagre",
-      rankdir: "LR", // 可选，默认为图的中心
-      align: "DL", // 可选
-      nodesep: 10, // 可选
-      ranksep: 20, // 可选
-      controlPoints: true, // 可选
+      rankdir: "LR",
+      align: "DL",
+      nodesep: 10,
+      ranksep: 20,
+      controlPoints: true,
     },
     // animate: true,
     defaultNode: {
@@ -252,20 +253,18 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
       size: [100],
       color: "#5B8FF9",
       style: {
-        fill: "steelblue", // 节点填充色
-        stroke: "#666", // 节点描边色
-        lineWidth: 1, // 节点描边粗细
+        fill: "steelblue",
+        stroke: "#666",
+        lineWidth: 1,
       },
-      // 节点上的标签文本配置
+      // Label text configuration on nodes
       labelCfg: {
-        // 节点上的标签文本样式配置
         style: {
-          fill: "#fff", // 节点标签文字颜色
+          fill: "#fff",
           fontSize: 9,
         },
       },
     },
-    // 默认边集
     defaultEdge: {
       style: {
         stroke: "#e2e2e2",
@@ -279,18 +278,16 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
         "zoom-canvas",
         "drag-node",
         {
-          type: "tooltip", // 提示框
+          type: "tooltip",
           formatText(model) {
-            // 提示框文本内容
             const text =
               "label: " + model.label + "<br/> typeName: " + model.typeName;
             return text;
           },
         },
-      ], // 允许拖拽画布、放缩画布、拖拽节点
+      ],
     },
   });
-  // 数据加载和图的渲染
   graph.data(data);
   graph.render();
 
@@ -363,9 +360,6 @@ const setCarriageData = (data: any) => {
   carriageData.value = data;
 };
 
-var graph: Graph;
-let data: GraphData;
-
 async function getData() {
   await axios.post("api/Node/addAll/test").then((res) => {});
   var _nodes = (await axios.get("api/Node")).data;
@@ -402,10 +396,38 @@ const initGraph = () => {
   console.log("run:initGraph");
 };
 
+
+const updateGraph = () => {
+  axios.post("api/Node/addAll/test").then((res) => {
+    axios.get("api/Node").then((res1) => {
+      axios.get("api/Edge").then((res2) => {
+        var _nodes = res1.data;
+        var _edges = res2.data;
+        changeStyleByType(_nodes);
+        data = { nodes: _nodes, edges: _edges };
+        graph.changeData(data);
+        graph.on("node:contextmenu", function (evt) {
+          openContextMenu();
+        });
+        graph.on("node:dblclick", function (evt) {
+          var id: string = evt.item?.getModel().id!;
+          setNodeId(id);
+          axios.get("api/carriage/" + id).then((res) => {
+            setCarriageData(res.data);
+            updateEditMenu();
+            openMenu();
+          });
+        });
+      });
+    });
+  });
+  console.log("run:updateGraph");
+};
+
 initGraph();
 
 onBeforeUpdate(() => {
-  initGraph();
+  updateGraph();
 });
 </script>
 
