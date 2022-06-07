@@ -194,7 +194,8 @@ G6.registerNode("carriageWithbridgeandgroup", {
 
     return rect;
   },
-});
+},"rect"
+);
 
 G6.registerNode("carriageWithbridge", {
   draw(cfg, group) {
@@ -242,7 +243,8 @@ G6.registerNode("carriageWithbridge", {
 
     return rect;
   },
-});
+},"rect"
+);
 
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
@@ -255,20 +257,21 @@ function changeStyleByType(nodes: Array<Node>) {
       case "track": {
         node.type = "rect";
         node.size = [35, 20];
-        if (node.infoCarriage.bridge != null) {
-          if (node.infoCarriage.bridge.group!= null){
-            node.type = "carriageWithbridgeandgroup";
-            node.nb = node.infoCarriage.bridge.group.size;
-          }else{
-            node.type = "carriageWithbridge";
-            node.nb = 1;
-          }
-          
-        }
         if (node.infoCarriage.group != null) {
           node.type = "carriageWithGroup";
           node.nb = node.infoCarriage.group.size;
         }
+        if (node.infoCarriage.bridge != null) {
+          if (node.infoCarriage.bridge.group=== null){
+            node.type = "carriageWithbridgeandgroup";
+            node.nb =1;// node.infoCarriage.bridge.group.size;
+          }else{
+            node.type = "carriageWithbridge";
+            //node.nb = 1;
+          }
+          
+        }
+        
         break;
       }
       case "bridge": {
