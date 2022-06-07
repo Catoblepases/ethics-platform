@@ -6,7 +6,7 @@
     stretch="true"
   >
     <el-tab-pane label="Event" @click="getEvent">
-      <event-menu></event-menu>
+      <simulation-menu></simulation-menu>
     </el-tab-pane>
     <el-tab-pane label="Comand">
       <el-input
@@ -41,6 +41,7 @@
 import { Calendar } from "@element-plus/icons-vue";
 import ClingoMenu from "./Clingo.vue";
 import EventMenu from "./EventMenu.vue";
+import SimulationMenu from "./SimulationMenu.vue"
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 

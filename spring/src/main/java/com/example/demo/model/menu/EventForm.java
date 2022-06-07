@@ -13,12 +13,12 @@ public class EventForm {
     public EventForm(Generator generator) {
         this();
         for (Switch sw : generator.switchs) {
-            EventItem eventItem = new EventItem(sw.isValid(), "switch", sw.toString());
+            EventItem eventItem = new EventItem(false, "switch", sw.getEventInfo(), sw.getTime());
             eventItemList.add(eventItem);
         }
         for (Bridge bridge : generator.bridges) {
             if (bridge.getGroup() != null) {
-                EventItem eventItem = new EventItem(bridge.getPush(), "bridge", bridge.toString());
+                EventItem eventItem = new EventItem(false, "bridge", bridge.getEventInfo(), bridge.getTime());
                 eventItemList.add(eventItem);
             }
         }

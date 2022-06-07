@@ -1,5 +1,9 @@
 package com.example.demo.model;
 
+import com.example.demo.model.clingo.ClingoCausal;
+import com.example.demo.model.menu.EventItem;
+import org.python.bouncycastle.crypto.tls.MACAlgorithm;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -41,6 +45,49 @@ public class Generator {
     private int time;
     private boolean initial;
 
+    public final String actionSpec = "posFluent(on(train,M)):-track(M).\n" +
+            "posFluent(on(G,M)):-object(G),track(M).\n" +
+            "posFluent(on(G,b)):-object(G).\n" +
+            "posFluent(alive(G)):-group(G).\n" +
+            "negative(neg(F)):-posFluent(F).\n" +
+            "fluent(F):-posFluent(F).\n" +
+            "fluent(F):-negative(F).\n";
+
+    public final String eventSpec = "% ------------ EVENT SPECIFICATION ------------------------------ %\n" +
+            "\n" +
+            "% SWITCH\n" +
+            "act(switch(M)):-buttonOn(M).\n" +
+            "prec(on(train,M),switch(M)):-act(switch(M)).\n" +
+            "effect(switch(M),neg(on(train,M))):-act(switch(M)).\n" +
+            "effect(switch(main(N)),on(train,side(N))):-act(switch(main(N))).\n" +
+            "effect(switch(side(N)),on(train,main(N))):-act(switch(side(N))).\n" +
+            "\n" +
+            "% PUSH\n" +
+            "act(push(O,B)):-object(O),bridgeOn(B,_),initially(on(O,B)).\n" +
+            "prec(on(O,B),push(O,B)):-act(push(O,B)).\n" +
+            "effect(push(O,B),neg(on(O,B))):-act(push(O,B)).\n" +
+            "effect(push(O,B),on(O,M)):-act(push(O,B)), bridgeOn(B,M).\n" +
+            "\n" +
+            "% Automatic action : run\n" +
+            "auto(run(train,M)):-track(M).\n" +
+            "prec(on(train,M),run(train,M)):-auto(run(train,M)).\n" +
+            "effect(run(train,main(N-1)),on(train,main(N))):-auto(run(train,main(N))).\n" +
+            "effect(run(train,side(N-1)),on(train,side(N))):-auto(run(train,side(N))).\n" +
+            "effect(run(train,M),neg(on(train,M))):-auto(run(train,M)).\n" +
+            "\n" +
+            "% Automatic action : crash\n" +
+            "auto(crash(G,M)):-object(G),track(M).\n" +
+            "prec(on(G,M),crash(G,M)):-auto(crash(G,M)).\n" +
+            "prec(on(train,M),crash(G,M)):-auto(crash(G,M)).\n" +
+            "effect(crash(G,M),neg(alive(G))):-auto(crash(G,M)).\n" +
+            "effect(crash(G,M),neg(on(train,M))):-auto(crash(G,M)).\n" +
+            "\n" +
+            "%Priorities\n" +
+            "priority(crash(G,M),run(train,M)):-auto(crash(G,M)).\n" +
+            "priority(A,run(train,M)):-act(A),track(M).\n" +
+            "\n" +
+            "\n";
+
     public Generator(String fileName) {
         this();
         initial = true;
@@ -75,6 +122,7 @@ public class Generator {
             scanner.close();
         } catch (Exception e) {
             System.out.println("File does not exist or an unknown error has occurred");
+            e.printStackTrace();
         }
     }
 
@@ -84,7 +132,9 @@ public class Generator {
         } else {
             System.out.println("begin to read line " + lineNumber + " : " + line);
             Matcher matcher = PATTERN.matcher(line);
-            if (matcher.find()) read_information(matcher, line);
+            if (matcher.find()) {
+                read_information(matcher, line);
+            }
         }
     }
 
@@ -95,6 +145,7 @@ public class Generator {
             readFile(file);
         } catch (Exception e) {
             System.out.println("File does not exist or an unknown error has occurred");
+            e.printStackTrace();
         }
     }
 
@@ -113,7 +164,7 @@ public class Generator {
 
     public void save(String fileName) {
         try {
-            File file = new File("./source/" + fileName);
+            File file = new File(fileName);
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -136,9 +187,12 @@ public class Generator {
             // group
             String content = "";
             for (int i = 0; i < groups.size(); i++) {
-                if (i != 0) content += ";";
+                if (i != 0) {
+                    content += ";";
+                }
                 content += groups.get(i).getName();
             }
+            out.write(combineContent("object", content) + END);
             out.write(combineContent(GROUP, content) + END);
             // NumberIngroup
             out.write(
@@ -150,6 +204,13 @@ public class Generator {
                     combineContent(
                             BRIDGEON, writeComponentTrolley(bridges.toArray(new Bridge[bridges.size()]))) +
                             END);
+            //            switch
+            content = "";
+            for (int i = 0; i < switchs.size(); i++) {
+                content += "buttonOn(" + switchs.get(i).getTrackBegin().getName() + ")" + END;
+            }
+            out.write(content);
+            out.write("\n\n"+actionSpec);
             out.write("% " + SEPARATOR + "INITIAL SITUATION" + SEPARATOR + " %\n");
             // position of groups
             content = "";
@@ -164,8 +225,12 @@ public class Generator {
             // groups alive
             content = "";
             for (int i = 0; i < groups.size(); i++) {
-                if (i != 0) content += ";";
-                if (groups.get(i).isAlive()) content += groups.get(i).getName();
+                if (i != 0) {
+                    content += ";";
+                }
+                if (groups.get(i).isAlive()) {
+                    content += groups.get(i).getName();
+                }
             }
             out.write(combineContent(INITIALLY, combineContent(ALIVE, content)) + END);
             // initial position of train
@@ -173,6 +238,29 @@ public class Generator {
                     INITIALLY,
                     combineContent(ON, TRAIN + "," + train.getOriginPosition().getName())) +
                     END);
+            //  simulation
+            out.write("% " + SEPARATOR + "SCENARIOS" + SEPARATOR + " %\n");
+            content = "sim(";
+            for (int i = 0; i < simulations.size(); i++) {
+                if (i != 0) {
+                    content += ";";
+                }
+                content += simulations.get(i).getName();
+            }
+            content+=")" + END;
+            out.write( content);
+            for (Simulation sim : simulations) {
+                content = "performs(" + sim.getName() + ",";
+                for (int i = 0; i < sim.getActions().size(); i++) {
+                    if (i != 0) {
+                        content += ";";
+                    }
+                    content += sim.getActions().get(i).getEventDescription();
+                }
+                content += "," + sim.getActions().get(0).getTime() + ")";
+                out.write(content + END);
+            }
+            out.write(eventSpec);
             out.close();
         } catch (IOException e) {
         }
@@ -199,16 +287,78 @@ public class Generator {
     public void read_information(Matcher matcher, String line) {
         switch (matcher.group()) {
             case TRACK -> readTrack(matcher);
-//            case OBJECT->break;
             case GROUP -> readGroups(matcher);
             case NUMBERINGROUP -> readNumberInGroup(matcher);
             case BRIDGEON -> readBridges(matcher);
             case TIME -> time = Math.max(time, readNumber(line)[1]);
             case INITIALLY -> readInitial(matcher);
             case ACT -> readAct(matcher);
-            case PREC -> readPrec(matcher);
-            case EFFECT -> readEffect(matcher);
-//            case default -> System.out.println("nothing");
+            case "performs" -> readSimulationConfig(line);
+            case "sim" -> readSim(line);
+//            case PREC -> readPrec(matcher);
+//            case EFFECT -> readEffect(matcher);
+            case "buttonOn" -> readButtonOn(line);
+        }
+    }
+
+    public List<Simulation> simulations;
+
+    public Simulation findSimulation(String id) {
+        for (int i = 0; i < simulations.size(); i++) {
+            if (simulations.get(i).getName().equals(id)) {
+                return simulations.get(i);
+            }
+        }
+        return null;
+    }
+
+    private void readSim(String line) {
+        List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
+        String[] lsim = ls.get(1).split(";");
+        System.out.println("begin to create simulations");
+        for (int i = 0; i < lsim.length; i++) {
+            Simulation simulation = new Simulation(lsim[i]);
+            simulations.add(simulation);
+        }
+        System.out.println("finish creating simulations");
+    }
+
+    private void readSimulationConfig(String line) {
+        List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
+        Simulation simulation = findSimulation(ls.get(1));
+        if (simulation == null) {
+            Simulation sim = new Simulation(ls.get(1));
+            simulations.add(sim);
+
+        }
+        if (ls.get(2).contains(";")) {
+            String[] actions = ls.get(2).split(";");
+            for (int i = 0; i < actions.length; i++) {
+                try {
+                    simulation.addAction(actions[i], Integer.parseInt(ls.get(3)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            try {
+                simulation.addAction(ls.get(2), Integer.parseInt(ls.get(3)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void readButtonOn(String line) {
+        List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
+        Carriage carriage = (Carriage) readPosition(ls.get(1));
+        for (Track track : tracks) {
+            if (!track.getName().equalsIgnoreCase(carriage.getTrack())) {
+                Switch switches = new Switch(carriage, track.get(carriage.getIndex()));
+                switches.changeTrack(track.getName());
+                switchs.add(switches);
+                break;
+            }
         }
     }
 
@@ -299,7 +449,7 @@ public class Generator {
     }
 
     public static String generateNumber(int max) {
-        return "0..." + max;
+        return "0.." + max;
     }
 
     public static int find(ComponentTrolley[] l, String name) {
@@ -312,7 +462,7 @@ public class Generator {
     }
 
     public Track findTrack(String name) {
-        Track[] l= tracks.toArray(new Track[tracks.size()]);
+        Track[] l = tracks.toArray(new Track[tracks.size()]);
         for (int i = 0; i < l.length; i++) {
             if (l[i].getName().equals(name)) {
                 return tracks.get(i);
@@ -367,12 +517,18 @@ public class Generator {
     }
 
     public Position readPosition(String line) {
-        Matcher matcher = PATTERN.matcher(line);
-        matcher.find();
-        String position = matcher.group();
-        matcher.find();
-        String number = matcher.group();
-        return readPosition(position, number);
+        try {
+            Matcher matcher = PATTERN.matcher(line);
+            matcher.find();
+            String position = matcher.group();
+            matcher.find();
+            String number = matcher.group();
+            return readPosition(position, number);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Position readPosition(Matcher matcher) {
@@ -414,10 +570,11 @@ public class Generator {
             Position position = readPosition(matcher.group(2), matcher.group(3));
             int index;
             if (name.equals(TRAIN)) {
-                if (initial || train.getOriginPosition() == null)
+                if (initial || train.getOriginPosition() == null) {
                     train.setOriginPosition((Carriage) position);
-                else
+                } else {
                     train.setPresent((Carriage) position);
+                }
             } else if ((index = find(groups.toArray(new Group[groups.size()]), name)) != -1) {
                 groups.get(index).setPosition(position);
             } else {
@@ -482,6 +639,7 @@ public class Generator {
         switchs = new ArrayList<>();
         bridges = new ArrayList<>();
         groups = new ArrayList<>();
+        simulations = new ArrayList<>();
     }
 
     public void setTime(int n) {
@@ -501,6 +659,13 @@ public class Generator {
                 }
                 track.remove(carriage);
             }
+        }
+    }
+
+    public void removeSimulation(String id) {
+        Simulation sim = findSimulation(id);
+        if (sim != null) {
+            simulations.remove(sim);
         }
     }
 

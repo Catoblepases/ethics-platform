@@ -8,8 +8,11 @@ public class ClingoAction {
     String action;
     String actionType;
 
-    public ClingoAction(String actionType, String action){
+    int time;
+
+    public ClingoAction(String actionType, String action,int time){
         this.action=action;
         this.actionType=actionType;
+        this.time=time;
     }
 }
