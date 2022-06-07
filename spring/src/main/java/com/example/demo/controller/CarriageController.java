@@ -227,7 +227,7 @@ public class CarriageController {
 
     @PostMapping("/updateAction")
     String updateAction(){
-        generator.save("./data/ria/trolley1act.lp");
+        generator.save("trolley1act.lp");
         return "sucess";
     }
 }

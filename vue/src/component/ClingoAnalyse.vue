@@ -30,8 +30,9 @@ import G6, { GraphData, TreeGraphData, Graph, Item, Edge } from "@antv/g6";
 import { inject, onBeforeMount, onMounted, ref } from "@vue/runtime-core";
 import axios from "axios";
 
-const analyse = inject("analyse");
+let analyse = inject("analyse");
 const editableTabsValue = ref("s0");
+
 class tabItem {
   name: string = "clingo";
   title: string = "clingo";
@@ -143,9 +144,15 @@ const g6 = (data: GraphData | TreeGraphData | undefined, container: string) => {
 var data: GraphData = {};
 var graph: Graph | undefined = undefined;
 
+// const cancel = () => {
+//   // analyse._rawValue = false;
+//   graph = undefined;
+// };
+
 const initGraphAnalyse = () => {
+  // graph = undefined;
   if (graph === undefined) {
-    let dataT = { name: "./data/ria/traceTrollC.lp" };
+    let dataT = { name: "traceTrollC.lp" };
     axios.post("api/causal", dataT).then((res) => {
       console.log(res);
       let causalTrees: Array<any> = res.data.causalTrees;

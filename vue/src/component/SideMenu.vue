@@ -5,7 +5,7 @@
     class="demo-tabs"
     stretch="true"
   >
-    <el-tab-pane label="Event" @click="getEvent">
+    <el-tab-pane label="Simulation" @click="getEvent">
       <simulation-menu></simulation-menu>
     </el-tab-pane>
     <el-tab-pane label="Comand">

@@ -120,6 +120,9 @@
       <el-divider direction="vertical" />
     </el-col>
     <el-col :span="2">
+      <el-button type="success" @click="updateClingo">update</el-button>
+    </el-col>
+    <el-col :span="2">
       <el-button type="success" @click="showAnalyse">causal tree</el-button>
     </el-col>
     <el-col :span="2">
@@ -150,7 +153,7 @@ import downloadFile from "./downloadFile.vue";
 import clingoAnalyse from "./ClingoAnalyse.vue";
 import clingoResult from "./ClingoResult.vue";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
-
+import axios from "axios";
 
 let collapse = ref(true);
 const ARef = ref<any>();
@@ -192,6 +195,14 @@ const showResult = () => {
   result.value = true;
   RRef.value.initGraphAnalyse();
 };
+
+const updateClingo=()=>{
+  axios.post("api/carriage/updateAction").then(()=>{
+    axios.post("api/clingo/update").then(()=>{
+      console.log("update:clingo");
+    })
+  })
+}
 
 const handleExceed: UploadProps["onExceed"] = (files) => {
   upload.value!.clearFiles();

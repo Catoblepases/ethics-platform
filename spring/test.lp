@@ -24,7 +24,6 @@ sim(s0;s1).
 performs(s0,push(g3,b),0).
 performs(s1,switch(main(0)),0).
 % ------------ EVENT SPECIFICATION ------------------------------ %
-
 % SWITCH
 act(switch(M)):-buttonOn(M).
 prec(on(train,M),switch(M)):-act(switch(M)).

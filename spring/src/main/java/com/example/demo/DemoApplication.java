@@ -20,7 +20,7 @@ import java.util.List;
 public class DemoApplication {
     public static void main(String[] args) {
 
-//        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(DemoApplication.class, args);
 //        ClingoCausal c = new ClingoCausal("./data/ria/traceTrollC.lp");
 //        System.out.println(c.getCausalTrees());
 //        ClingoResult cr = new ClingoResult("./data/ria/resultTroll.lp");
@@ -31,21 +31,21 @@ public class DemoApplication {
 //        Generator generator= new Generator("./data/trolley1act.lp");
 //        generator.save("./data/test.lp");
 //        System.out.println(System.getProperty("user.dir"));
-        try {
-            Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("bash run.bat");
-            InputStream stderr = proc.getErrorStream();
-            InputStreamReader isr = new InputStreamReader(stderr);
-            BufferedReader br = new BufferedReader(isr);
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-            proc.waitFor();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Runtime rt = Runtime.getRuntime();
+//            Process proc = rt.exec("bash run.bat");
+//            InputStream stderr = proc.getErrorStream();
+//            InputStreamReader isr = new InputStreamReader(stderr);
+//            BufferedReader br = new BufferedReader(isr);
+//            String line = null;
+//            while ((line = br.readLine()) != null) {
+//                System.out.println(line);
+//            }
+//            proc.waitFor();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
