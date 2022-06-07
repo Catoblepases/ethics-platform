@@ -40,7 +40,7 @@ public class ClingoTrace {
     }
 
     public void addAction(String line) {
-        List<String> ls = ClingoCausal.findCompleteCommande(line);
+        List<String> ls = ClingoCausal.findCompleteCommande(line,',');
         if (ls.size() == 4) {
             ClingoSimulation clingoSimulation = findOrAddClingoSimulation(ls.get(1));
             int time = Integer.parseInt(ls.get(3));

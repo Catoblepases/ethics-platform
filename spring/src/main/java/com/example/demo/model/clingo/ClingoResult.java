@@ -40,7 +40,7 @@ public class ClingoResult {
     }
 
     public void readResult(String line) {
-        List<String> commands = ClingoCausal.findCompleteCommande(line);
+        List<String> commands = ClingoCausal.findCompleteCommande(line,',');
         findOrAddPPL(commands.get(1), assessments);
         findOrAddPPL(commands.get(2), eventList);
 

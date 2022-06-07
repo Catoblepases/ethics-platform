@@ -13,12 +13,20 @@
         />
       </template>
     </el-table-column>
-    <!-- <el-table-column prop="eventType" label="eventType" width="120" /> -->
     <el-table-column
       prop="eventDescription"
       label="eventDescription"
       width="120"
     />
+    <el-table-column prop="time" label="time" width="150">
+      <template #default="scope">
+        <el-input-number
+          size="small"
+          v-model="tableData[scope.$index].time"
+          controls-position="right"
+        ></el-input-number>
+      </template>
+    </el-table-column>
     <el-table-column align="right" width="180">
       <template #header>
         <el-input v-model="search" size="small" placeholder="Type to search" />
@@ -40,17 +48,17 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import { Check, Close } from '@element-plus/icons-vue'
+import { Check, Close } from "@element-plus/icons-vue";
 import axios from "axios";
 
 interface Event {
   valid: boolean;
   eventType: string;
   eventDescription: string;
+  time: number;
 }
 
 let tableData = ref([]);
-
 
 const setTableData = (data: any) => {
   tableData.value = data;
@@ -84,11 +92,8 @@ const handleValid = (index: number, row: Event) => {
   console.log(index, row.valid);
 };
 
-
 onMounted(() => {
   getEvent();
   console.log(tableData);
-  
 });
-
 </script>

@@ -20,7 +20,7 @@ public class ClingoSimulation {
     }
 
     public void addActionByTime(int t, String action, String actionType) {
-        ClingoAction clingoAction = new ClingoAction(actionType, action);
+        ClingoAction clingoAction = new ClingoAction(actionType, action,t);
         if (actionByTime.containsKey(t)) {
             actionByTime.get(t).add(clingoAction);
         } else {

@@ -6,6 +6,8 @@ public class Switch implements Event {
     private Carriage trackEnd;
     private Carriage present;
     private boolean valid;
+    private int time;
+
     public Switch(Carriage t1, Carriage t2) {
         trackBegin = t1;
         trackEnd = t2;
@@ -92,5 +94,17 @@ public class Switch implements Event {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public String getEventInfo() {
+        return "switch(" + trackBegin.toString() + ")";
     }
 }

@@ -35,7 +35,7 @@ public class ClingoCausal {
      * la première étant le nom de la fonction,
      * suivie du premier argument, du deuxième et du troisième de la fonction....
      */
-    public static List<String> findCompleteCommande(String line) {
+    public static List<String> findCompleteCommande(String line, char divider) {
         int bracketCount = 0;
         int begin = 0;
         List<String> list = new ArrayList<>();
@@ -51,7 +51,7 @@ public class ClingoCausal {
                 if (bracketCount == 0) {
                     list.add(line.substring(begin, i));
                 }
-            } else if (line.charAt(i) == ',' && bracketCount == 1) {
+            } else if (line.charAt(i) == divider && bracketCount == 1) {
                 list.add(line.substring(begin, i));
                 begin = i + 1;
             }
@@ -72,7 +72,7 @@ public class ClingoCausal {
     }
 
     public void readEvent(String line) {
-        List<String> elements = findCompleteCommande(line);
+        List<String> elements = findCompleteCommande(line,',');
         ClingoCausalTree tree = findTreebyName(elements.get(1));
         if (elements.size() == 5) {
             tree.addEvent(elements.get(2), elements.get(3), elements.get(0));

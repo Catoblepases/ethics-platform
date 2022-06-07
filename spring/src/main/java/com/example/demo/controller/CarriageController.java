@@ -1,15 +1,19 @@
 package com.example.demo.controller;
 
+import com.example.demo.mapper.SimulationMapper;
 import com.example.demo.model.*;
 import com.example.demo.model.menu.EventForm;
 import com.example.demo.model.menu.EventItem;
 import com.example.demo.model.menu.InfoCarriage;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -73,7 +77,6 @@ public class CarriageController {
         generator.groups.add(group);
     }
 
-
     @GetMapping("/{id}/switch")
     List<String> getSwitch(@PathVariable String id) {
         Carriage carriage = (Carriage) generator.readPosition(id);
@@ -104,6 +107,9 @@ public class CarriageController {
     @DeleteMapping("/{carriageId}")
     String deleteCarriageById(@PathVariable("carriageId") String carriageId) {
         Carriage carriage = (Carriage) generator.readPosition(carriageId);
+        if (carriage == null) {
+            return "fail";
+        }
         Track track = generator.findTrack(carriage.getTrack());
         carriage.deleteBridge();
         carriage.deleteGroup();
@@ -184,5 +190,44 @@ public class CarriageController {
             return e.getMessage();
         }
         return "success";
+    }
+
+    @GetMapping("/simulation")
+    Map getSimulation() {
+        SimulationMapper simulationMapper = new SimulationMapper(generator);
+        Map map = new HashMap();
+        map.put("columns", simulationMapper.getNameAndEvents());
+        map.put("data", simulationMapper.getSimulations());
+        return map;
+    }
+
+    @PutMapping("/simulation/delete/{id}")
+    String deleteSimulation(@PathVariable String id) {
+        generator.removeSimulation(id);
+        return "sucess";
+    }
+
+    @DeleteMapping("/simulation")
+    String deleteSimulation(@RequestBody Map<String, String> data) {
+        generator.removeSimulation(data.get("name"));
+        return "sucess";
+    }
+
+    @PostMapping("/simulation")
+    String addSimulation(@RequestBody Simulation simulation) {
+        Simulation sim=generator.findSimulation(simulation.getName());
+        if (sim==null){
+            generator.simulations.add(simulation);
+            System.out.println(simulation.getActions());
+        }else{
+            sim.update(simulation);
+        }
+        return "sucess";
+    }
+
+    @PostMapping("/updateAction")
+    String updateAction(){
+        generator.save("./data/ria/trolley1act.lp");
+        return "sucess";
     }
 }
