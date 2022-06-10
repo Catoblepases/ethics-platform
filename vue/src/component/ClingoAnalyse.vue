@@ -144,11 +144,6 @@ const g6 = (data: GraphData | TreeGraphData | undefined, container: string) => {
 var data: GraphData = {};
 var graph: Graph | undefined = undefined;
 
-// const cancel = () => {
-//   // analyse._rawValue = false;
-//   graph = undefined;
-// };
-
 const initGraphAnalyse = () => {
   // graph = undefined;
   if (graph === undefined) {

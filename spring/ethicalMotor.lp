@@ -58,12 +58,12 @@ involves(E,X):-bad(E,X,M).
 imp(kant,A) :- act(A), r(S,causes,A,T,E), involves(E,X), not aim(A,E).
 
 %dde
-imp(dde1,A) :- act(A), bad(A,X,M).  % ???
-imp(dde2,A) :- act(A), r(S,causes,A,T,E1), r(S,causes,E1,T2,E2), bad(E1,X1,M1), good(E2,X2,M2).
-imp(dde3,A) :- imp(benCosts,A).
-imp(dde,A) :- imp(dde1,A).
-imp(dde,A) :- imp(dde2,A).
-imp(dde,A) :- imp(dde3,A).
+violates(dde1,A) :- act(A), bad(A,X,M).  % ???
+violates(dde2,A) :- act(A), r(S,causes,A,T,E1), r(S,causes,E1,T2,E2), bad(E1,X1,M1), good(E2,X2,M2).
+violates(dde3,A) :- imp(benCosts,A).
+imp(dde,A) :- violates(dde1,A).
+imp(dde,A) :- violates(dde2,A).
+imp(dde,A) :- violates(dde3,A).
 %#show weightedEffects/2.
 %#show weightRule/2.
 %#show worstCons/4.

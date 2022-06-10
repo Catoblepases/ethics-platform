@@ -1,5 +1,25 @@
 <template>
-  <div id="mountNode"></div>
+  <el-row>
+    <el-col span="1">
+      <el-tooltip content="editMode" placement="right">
+        <el-icon :size="20" :color="color">
+          <Edit @click="switchMode" />
+        </el-icon>
+      </el-tooltip>
+    </el-col>
+    <el-col span="1">
+      <el-tooltip content="refresh layout" placement="right">
+        <el-icon :size="20" :color="color">
+          <Refresh @click="refreshLayout" />
+        </el-icon>
+      </el-tooltip>
+    </el-col>
+    <el-col span="12">
+      <el-scrollbar>
+        <div id="mountNode"></div>
+      </el-scrollbar>
+    </el-col>
+  </el-row>
   <edit-menu
     ref="childRef"
     :dialogFormVisible="dialogFormVisible"
@@ -23,16 +43,47 @@ import {
 import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 import axios from "axios";
 import EditMenu from "./EditMenu.vue";
-import insertCss from "insert-css";
-
-insertCss(`
-  .g6-component-toolbar li {
-    list-style-type: none !important;
-  }
-`);
+import { stateStyle, registerNodes } from "./nodes";
 
 var graph: Graph;
 let data: GraphData;
+
+let editMode = ref(true);
+let color = ref("#409EFC");
+
+registerNodes(G6);
+
+const switchMode = () => {
+  if (editMode.value === true) {
+    color.value = "";
+    editMode.value = false;
+    // graph.setMode("animation");
+    fixNodesPosition();
+  } else {
+    color.value = "#409EFC";
+    editMode.value = true;
+    graph.setMode("default");
+  }
+};
+
+function refreshLayout() {
+  graph.updateLayout({});
+}
+
+function fixNodesPosition() {
+  let array: Array<any> = data.nodes;
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+    let item = graph.findById(element.id);
+    const model = item.get("model");
+    
+    model.fx = model.x;
+    model.fy = model.y;
+    item.getModel().fx = model.x;
+    item.getModel().fy = model.y;
+    item.refresh();
+  }
+}
 
 const onUpdate = () => {
   updateGraph();
@@ -66,193 +117,13 @@ function runnigAlgorithme(position: Array<Item>, graph: Graph): void {
   }, 600);
 }
 
-G6.registerNode(
-  "carriageWithGroup",
-  {
-    draw(cfg, group) {
-      let y: number = Math.round(7 / 2);
-      let nb = cfg?.nb;
-      const size = cfg?.size[0];
-      var nbLine = Math.round(Math.sqrt(nb)) + 1;
-      var h = Math.round(size / (nbLine + 1));
-
-      const rect = group.addShape("rect", {
-        zIndex: 10,
-        attrs: {
-          x: -12,
-          y: -12,
-          width: cfg?.size[0],
-          height: cfg?.size[1],
-          fill: cfg?.fill,
-        },
-      });
-
-      for (let i = 0; i < nbLine; i++) {
-        if (nb <= 0) {
-          break;
-        }
-        for (let j = 0; j < nbLine; j++) {
-          if (nb <= 0) {
-            break;
-          }
-          group.addShape("circle", {
-            zIndex: 10,
-            attrs: {
-              x: h * j,
-              y: h * i,
-              r: 5,
-              fill: "lightgreen",
-            },
-          });
-          nb--;
-        }
-      }
-
-      group.addShape("text", {
-        attrs: {
-          text: cfg?.label,
-          x: -10,
-          y: 0,
-          fontSize: 8,
-          textAlign: "left",
-          textBaseline: "middle",
-          fill: "white",
-        },
-        // must be assigned in G6 3.3 and later versions. it can be any value you want
-        name: "text-shape",
-      });
-
-      return rect;
-    },
-  },
-  "rect"
-);
-
-G6.registerNode("carriageWithbridgeandgroup", {
-  draw(cfg, group) {
-    let y: number = Math.round(7 / 2);
-    let nb = cfg?.nb;
-    const size = cfg?.size[0];
-    var nbLine = Math.round(Math.sqrt(nb)) + 1;
-    var h = Math.round(size / (nbLine + 1));
-
-    const rect = group.addShape("rect", {
-      zIndex: 10,
-      attrs: {
-        x: -12,
-        y: -12,
-        width: cfg?.size[0],
-        height: cfg?.size[1],
-        fill: cfg?.fill,
-      },
-    });
-
-    group.addShape("rect", {
-      attrs: {
-        x: -30,
-        y: -15,
-        width: 10,
-        height: 30,
-        fill: "#6bccdb",
-      },
-    });
-
-    for (let i = 0; i < nbLine; i++) {
-      if (nb <= 0) {
-        break;
-      }
-      for (let j = 0; j < nbLine; j++) {
-        if (nb <= 0) {
-          break;
-        }
-        group.addShape("circle", {
-          zIndex: 10,
-          attrs: {
-            x: h * i-25,
-            y: h * j-10,
-            r: 5,
-            fill: "lightgreen",
-          },
-        });
-        nb--;
-      }
-    }
-
-    group.addShape("text", {
-      attrs: {
-        text: cfg?.label,
-        x: -10,
-        y: 0,
-        fontSize: 8,
-        textAlign: "left",
-        textBaseline: "middle",
-        fill: "white",
-      },
-      // must be assigned in G6 3.3 and later versions. it can be any value you want
-      name: "text-shape",
-    });
-
-    return rect;
-  },
-},"rect"
-);
-
-G6.registerNode("carriageWithbridge", {
-  draw(cfg, group) {
-    let y: number = Math.round(7 / 2);
-    let nb = cfg?.nb;
-    const size = cfg?.size[0];
-    var nbLine = Math.round(Math.sqrt(nb)) + 1;
-    var h = Math.round(size / (nbLine + 1));
-
-    const rect = group.addShape("rect", {
-      zIndex: 10,
-      attrs: {
-        x: -12,
-        y: -12,
-        width: cfg?.size[0],
-        height: cfg?.size[1],
-        fill: cfg?.fill,
-      },
-    });
-
-    group.addShape("rect", {
-      attrs: {
-        x: -30,
-        y: -15,
-        width: 10,
-        height: 30,
-        fill: "#6bccdb",
-      },
-    });
-
-    
-    group.addShape("text", {
-      attrs: {
-        text: cfg?.label,
-        x: -10,
-        y: 0,
-        fontSize: 8,
-        textAlign: "left",
-        textBaseline: "middle",
-        fill: "white",
-      },
-      // must be assigned in G6 3.3 and later versions. it can be any value you want
-      name: "text-shape",
-    });
-
-    return rect;
-  },
-},"rect"
-);
-
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
     if (!node.style) {
-      node.style = { fill: node.fill };
+      node.style = { fill: node.fill, cfill: node.fill, gcolor: "lightgreen" };
     }
-    node.x = 120;
-    node.y = 120;
+    node.x = undefined;
+    node.y = undefined;
     switch (node.typeName) {
       case "track": {
         node.type = "rect";
@@ -262,16 +133,11 @@ function changeStyleByType(nodes: Array<Node>) {
           node.nb = node.infoCarriage.group.size;
         }
         if (node.infoCarriage.bridge != null) {
-          if (node.infoCarriage.bridge.group=== null){
+          if (node.infoCarriage.bridge.group != null) {
             node.type = "carriageWithbridgeandgroup";
-            node.nb =1;// node.infoCarriage.bridge.group.size;
-          }else{
-            node.type = "carriageWithbridge";
-            //node.nb = 1;
+            node.infoCarriage.bridge.group.size;
           }
-          
         }
-        
         break;
       }
       case "bridge": {
@@ -288,6 +154,16 @@ function changeStyleByType(nodes: Array<Node>) {
   });
 }
 
+const dagreLayout = {
+  type: "dagre",
+  rankdir: "LR",
+  align: "DL",
+  layer: 0,
+  nodesep: 10,
+  ranksep: 20,
+  controlPoints: true,
+};
+
 const g6 = (data: GraphData | TreeGraphData | undefined) => {
   graph = new G6.Graph({
     container: "mountNode",
@@ -295,16 +171,9 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
     height: 600,
     fitViewPadding: [20, 40, 50, 200],
     // fitView: true,
-    plugins: [contextMenu, toolbar],
-    layout: {
-      type: "dagre",
-      rankdir: "LR",
-      align: "DL",
-      nodesep: 10,
-      ranksep: 20,
-      controlPoints: true,
-    },
-    // animate: true,
+    plugins: [toolbar],
+    layout: dagreLayout,
+    animate: true,
     defaultNode: {
       shape: "circle",
       size: [100],
@@ -329,6 +198,7 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
         startArrow: false,
       },
     },
+    nodeStateStyles: stateStyle,
     modes: {
       default: [
         "drag-canvas",
@@ -343,12 +213,34 @@ const g6 = (data: GraphData | TreeGraphData | undefined) => {
           },
         },
       ],
+      animation: ["click-select"],
     },
   });
   graph.data(data);
   graph.render();
 
   let canvas = graph.get("canvas");
+  let circle = canvas.addShape("circle", {
+    attrs: {
+      x: 150 + 200,
+      y: 150,
+      r: 20,
+      stroke: "black",
+    },
+  });
+  graph.refresh();
+
+  let item: Item = graph.findById("main(3)");
+  // graph.setItemState(item, "group", "dead");
+
+  setTimeout(() => {
+    let item: Item = graph.findById("main(3)");
+    // let posX = item.get("model").x;
+    // let posY = item.get("model").y;
+
+    graph.setItemState(item, "group", "dead");
+  }, 1000);
+
   return graph;
 };
 
@@ -359,51 +251,6 @@ const toolbar = new G6.ToolBar({
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-const contextMenu = new G6.Menu({
-  getContent(evt) {
-    let header;
-    if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
-      header = "Canvas ContextMenu";
-    } else if (evt.item) {
-      const itemType = evt.item.getType();
-      header = `${itemType.toUpperCase()} ContextMenu`;
-    }
-    return `
-  <div id="contextmenu" class="menu">
-      <div class="contextmenu_item" @click="cha(currentData)">edit carriage</div>
-      <div class="contextmenu_item" @click="cha(currentData)">edit bridge</div>
-      <div class="contextmenu_item" @click="cha(currentData)">edit switch</div>
-      <div class="contextmenu_item" @click="cha(currentData)">edit group</div>
-      <div class="contextmenu_item" @click="cha(currentData)">original position</div>
-  </div>
-  `;
-  },
-  handleMenuClick: (target, item) => {
-    console.log(target.innerText, item.getModel().id);
-    switch (target.innerText) {
-      case "edit carriage":
-        break;
-      case "edit bridge":
-        console.log(2);
-        break;
-      case "edit switch":
-        console.log(3);
-        break;
-      case "edit group":
-        console.log(4);
-        break;
-      case "original position":
-        console.log(5);
-        break;
-    }
-  },
-  // offsetX and offsetY include the padding of the parent container
-  offsetY: 0,
-  itemTypes: ["node"],
-});
-
-const openContextMenu = () => {};
 
 const openMenu = () => {
   dialogFormVisible.value = true;
@@ -435,9 +282,6 @@ const initGraph = () => {
         changeStyleByType(_nodes);
         data = { nodes: _nodes, edges: _edges };
         graph = g6(data);
-        graph.on("node:contextmenu", function (evt) {
-          openContextMenu();
-        });
         graph.on("node:dblclick", function (evt) {
           var id: string = evt.item?.getModel().id!;
           setNodeId(id);
@@ -453,7 +297,6 @@ const initGraph = () => {
   console.log("run:initGraph");
 };
 
-
 const updateGraph = () => {
   axios.post("api/Node/addAll/test").then((res) => {
     axios.get("api/Node").then((res1) => {
@@ -463,9 +306,6 @@ const updateGraph = () => {
         changeStyleByType(_nodes);
         data = { nodes: _nodes, edges: _edges };
         graph.changeData(data);
-        graph.on("node:contextmenu", function (evt) {
-          openContextMenu();
-        });
         graph.on("node:dblclick", function (evt) {
           var id: string = evt.item?.getModel().id!;
           setNodeId(id);

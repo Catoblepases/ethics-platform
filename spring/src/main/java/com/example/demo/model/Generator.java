@@ -210,7 +210,7 @@ public class Generator {
                 content += "buttonOn(" + switchs.get(i).getTrackBegin().getName() + ")" + END;
             }
             out.write(content);
-            out.write("\n\n"+actionSpec);
+            out.write("\n\n" + actionSpec);
             out.write("% " + SEPARATOR + "INITIAL SITUATION" + SEPARATOR + " %\n");
             // position of groups
             content = "";
@@ -247,8 +247,8 @@ public class Generator {
                 }
                 content += simulations.get(i).getName();
             }
-            content+=")" + END;
-            out.write( content);
+            content += ")" + END;
+            out.write(content);
             for (Simulation sim : simulations) {
                 content = "performs(" + sim.getName() + ",";
                 for (int i = 0; i < sim.getActions().size(); i++) {
@@ -463,10 +463,18 @@ public class Generator {
 
     public Track findTrack(String name) {
         Track[] l = tracks.toArray(new Track[tracks.size()]);
-        for (int i = 0; i < l.length; i++) {
-            if (l[i].getName().equals(name)) {
-                return tracks.get(i);
-            }
+        int idx = find(l, name);
+        if (idx != -1) {
+            return l[idx];
+        }
+        return null;
+    }
+
+    public Group findGroup(String name) {
+        Group[] l = groups.toArray(new Group[groups.size()]);
+        int idx = find(l, name);
+        if (idx != -1) {
+            return l[idx];
         }
         return null;
     }

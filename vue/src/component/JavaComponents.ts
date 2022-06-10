@@ -1,6 +1,5 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import { sr } from "element-plus/lib/locale";
 import { Ref, ref } from "vue";
 
 export class Group {

@@ -33,35 +33,28 @@ const onChange = (params: boolean) => {
 };
 </script>
 
-<style scoped>
-svg {
-  width: 20px;
-  height: 20px;
-  color: rgb(90, 99, 121);
+<style lang="scss">
+:root {
+  --el-color-primary: #595f80;
+  // --el-color-success: #52775d;
+}
+.el-button--primary {
+  --el-button-font-color: #ffffff;
+  --el-button-background-color: #595f80;
+  --el-button-border-color: #595f80;
+  --el-button-hover-color: #595f80;
+  --el-button-active-font-color: #e6e6e6;
+  --el-button-active-background-color: #595f80;
+  --el-button-active-border-color: #595f80;
 }
 
-.layout-container-demo .el-header {
-  position: relative;
-  background-color: var(--el-color-primary-light-7);
-  color: var(--el-text-color-primary);
-}
-.layout-container-demo .el-aside {
-  color: var(--el-text-color-primary);
-  background: var(--el-color-primary-light-8);
-}
-.layout-container-demo .el-menu {
-  border-right: none;
-}
-.layout-container-demo .el-main {
-  padding: 0;
-}
-.layout-container-demo .toolbar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  right: 20px;
+.el-button--success {
+  --el-button-font-color: #ffffff;
+  --el-button-background-color: #52775d;
+  --el-button-border-color: #52775d;
+  --el-button-hover-color: #52775d;
+  --el-button-active-font-color: #e6e6e6;
+  --el-button-active-background-color: #52775d;
+  --el-button-active-border-color: #52775d;
 }
 </style>
-
-function mounted() { throw new Error('Function not implemented.'); }

@@ -36,6 +36,7 @@
         :cmodel="form.causalTrace"
         disabled="true"
       ></ClingoItem>
+      
       <ClingoItem
         clabel="output"
         :cmodel="form.output"

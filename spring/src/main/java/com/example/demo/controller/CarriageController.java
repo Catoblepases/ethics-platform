@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.mapper.SimulationMapper;
 import com.example.demo.model.*;
+import com.example.demo.model.clingo.ClingoSimulation;
+import com.example.demo.model.clingo.ClingoTrace;
+import com.example.demo.model.clingo.G6Info;
 import com.example.demo.model.menu.EventForm;
 import com.example.demo.model.menu.EventItem;
 import com.example.demo.model.menu.InfoCarriage;
@@ -215,19 +218,26 @@ public class CarriageController {
 
     @PostMapping("/simulation")
     String addSimulation(@RequestBody Simulation simulation) {
-        Simulation sim=generator.findSimulation(simulation.getName());
-        if (sim==null){
+        Simulation sim = generator.findSimulation(simulation.getName());
+        if (sim == null) {
             generator.simulations.add(simulation);
             System.out.println(simulation.getActions());
-        }else{
+        } else {
             sim.update(simulation);
         }
         return "sucess";
     }
 
     @PostMapping("/updateAction")
-    String updateAction(){
+    String updateAction() {
         generator.save("trolley1act.lp");
         return "sucess";
+    }
+
+    @PostMapping("/trace")
+    List<ClingoSimulation> updateTrace(@RequestBody Map<String, String> data) {
+        String filename = data.get("name");
+        ClingoTrace clingoTrace = new ClingoTrace(filename, generator);
+        return clingoTrace.getClingoSimulations();
     }
 }

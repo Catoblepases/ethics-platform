@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { Calendar } from "@element-plus/icons-vue";
-import ClingoMenu from "./Clingo.vue";
+import ClingoMenu from "./ClingoConfig.vue";
 import EventMenu from "./EventMenu.vue";
 import SimulationMenu from "./SimulationMenu.vue"
 import { ref, onMounted, computed } from "vue";

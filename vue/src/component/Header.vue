@@ -196,13 +196,13 @@ const showResult = () => {
   RRef.value.initGraphAnalyse();
 };
 
-const updateClingo=()=>{
-  axios.post("api/carriage/updateAction").then(()=>{
-    axios.post("api/clingo/update").then(()=>{
+const updateClingo = () => {
+  axios.post("api/carriage/updateAction").then(() => {
+    axios.post("api/clingo/update").then(() => {
       console.log("update:clingo");
-    })
-  })
-}
+    });
+  });
+};
 
 const handleExceed: UploadProps["onExceed"] = (files) => {
   upload.value!.clearFiles();

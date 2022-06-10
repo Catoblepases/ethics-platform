@@ -1,18 +1,31 @@
 package com.example.demo.model.clingo;
 
+import com.example.demo.model.Generator;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ClingoTrace {
 
+    public List<ClingoSimulation> getClingoSimulations() {
+        return clingoSimulations;
+    }
+
+    public void setClingoSimulations(List<ClingoSimulation> clingoSimulations) {
+        this.clingoSimulations = clingoSimulations;
+    }
+
     List<ClingoSimulation> clingoSimulations;
 
-    public ClingoTrace(String nameFile) {
+    public ClingoTrace(){}
+
+    public ClingoTrace(String nameFile, Generator generator) {
         System.out.println(nameFile);
         File file = new File(nameFile);
-        clingoSimulations=new ArrayList<>();
+        clingoSimulations = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
             int lineNumber = 0;
@@ -20,7 +33,7 @@ public class ClingoTrace {
                 ++lineNumber;
                 String line = scanner.nextLine();
                 System.out.println(lineNumber + ":" + line);
-                addAction(line);
+                addAction(line, generator);
             }
             scanner.close();
         } catch (Exception e) {
@@ -39,16 +52,16 @@ public class ClingoTrace {
         return clingoSimulation;
     }
 
-    public void addAction(String line) {
-        List<String> ls = ClingoCausal.findCompleteCommande(line,',');
+    public void addAction(String line, Generator generator) {
+        List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         if (ls.size() == 4) {
             ClingoSimulation clingoSimulation = findOrAddClingoSimulation(ls.get(1));
             int time = Integer.parseInt(ls.get(3));
-            clingoSimulation.addActionByTime(time, ls.get(2), ls.get(0));
+            clingoSimulation.addActionByTime(time, ls.get(2), ls.get(0), generator);
         }
     }
 
-    public String toString(){
+    public String toString() {
         return clingoSimulations.toString();
     }
 }

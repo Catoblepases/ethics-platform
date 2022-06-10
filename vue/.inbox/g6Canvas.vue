@@ -20,14 +20,6 @@ import {
 import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 import axios from "axios";
 import EditMenu from "./EditMenu.vue";
-import insertCss from "insert-css";
-
-insertCss(`
-  .g6-component-toolbar li {
-    list-style-type: none !important;
-  }
-`);
-// import func from "../../vue-temp/vue-editor-bridge";
 
 const childRef = ref<any>();
 

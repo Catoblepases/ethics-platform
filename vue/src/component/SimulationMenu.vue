@@ -31,7 +31,6 @@ import { computed, onMounted, ref, provide } from "vue";
 import { Check, Close, Plus } from "@element-plus/icons-vue";
 import axios from "axios";
 import EditSimulation from "./EditSimulation.vue";
-import { ta } from "element-plus/lib/locale";
 
 let tableData = ref([]);
 let items = ref([]);

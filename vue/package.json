@@ -8,17 +8,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@antv/g": "^5.1.7",
+    "@antv/g-canvas": "^1.1.7",
+    "@antv/g-svg": "^1.1.7",
+    "@antv/g-webgl": "^1.1.7",
     "@antv/g6": "^4.6.4",
     "@element-plus/icons-vue": "^2.0.0-beta.0",
     "@vueuse/core": "^8.2.5",
     "axios": "^0.27.2",
     "element-plus": "^2.2.2",
-    "insert-css": "^2.0.0",
     "less": "^4.1.2",
+    "lil-gui": "^0.16.1",
+    "scss": "^0.2.4",
+    "stats.js": "^0.17.0",
     "ts-node": "^10.8.0",
     "vue": "^3.2.25",
-    "vue-axios": "^3.4.1",
-    "vue3-contextmenu": "^0.2.12"
+    "vue-axios": "^3.4.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.0",
