@@ -51,6 +51,7 @@ import {
   dagreLayout,
   changeStyleByType,
 } from "./nodes";
+import { ElMessage } from "element-plus";
 
 var graph: Graph;
 let data: GraphData;
@@ -110,18 +111,6 @@ provide("dialogFormVisible", dialogFormVisible);
 
 var nodeId = ref("");
 provide("nodeId", nodeId);
-
-function runnigAlgorithme(position: Array<Item>, graph: Graph): void {
-  setInterval(() => {
-    position.forEach((pos) => {
-      let item = graph.findById(pos.id);
-      item.get("model").x = pos.x;
-      item.get("model").y = pos.y;
-      graph.refresh();
-    });
-    // graph.changeData(data);
-  }, 600);
-}
 
 const g6 = (data: GraphData | TreeGraphData | undefined) => {
   graph = new G6.Graph(graphStyle);
@@ -223,12 +212,24 @@ function run(sim: Simulation, t: number) {
   }
 }
 
-function runOneStep() {
+async function runOneStep() {
+  if (!curentSimulation) {
+    initSimulation();
+    const no = await sleep1000();
+  }
   run(curentSimulation, timeSim);
   timeSim++;
 }
 
-function runOneStepBack() {
+async function runOneStepBack() {
+  if (!curentSimulation) {
+    initSimulation();
+    const no = await sleep1000();
+  }
+  if (timeSim < 2) {
+    ElMessage("can't go back");
+    return;
+  }
   timeSim = timeSim - 2;
   run(curentSimulation, timeSim);
   timeSim++;
@@ -239,6 +240,8 @@ const sleep1000 = () => {
 };
 
 async function runAll() {
+  initSimulation();
+  const no = await sleep1000();
   console.log(curentSimulation.actionByTime.length);
   curentSimulation.actionByTime.forEach((element) => {});
   for (var i = 0; i < curentSimulation.actionByTime.length; i++) {
@@ -247,6 +250,7 @@ async function runAll() {
     const no = await sleep1000();
   }
 }
+
 async function initSimulation() {
   const name = { name: "./traceTroll.lp" };
   graph.remove("train");
