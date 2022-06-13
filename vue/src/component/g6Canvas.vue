@@ -43,26 +43,32 @@ import {
 import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 import axios from "axios";
 import EditMenu from "./EditMenu.vue";
-import { stateStyle, registerNodes } from "./nodes";
+import {
+  stateStyle,
+  registerNodes,
+  graphStyle,
+  trainSetup,
+  dagreLayout,
+  changeStyleByType,
+} from "./nodes";
 
 var graph: Graph;
 let data: GraphData;
 
 let editMode = ref(true);
 let color = ref("#409EFC");
+var timeSim = 0;
 
 registerNodes(G6);
 
 const switchMode = () => {
   if (editMode.value === true) {
-    color.value = "";
-    editMode.value = false;
-    // graph.setMode("animation");
-    fixNodesPosition();
+    initSimulation().then(() => {});
   } else {
     color.value = "#409EFC";
     editMode.value = true;
     graph.setMode("default");
+    graph.removeItem(trainSetup.id);
   }
 };
 
@@ -76,7 +82,7 @@ function fixNodesPosition() {
     const element = array[index];
     let item = graph.findById(element.id);
     const model = item.get("model");
-    
+
     model.fx = model.x;
     model.fy = model.y;
     item.getModel().fx = model.x;
@@ -117,130 +123,11 @@ function runnigAlgorithme(position: Array<Item>, graph: Graph): void {
   }, 600);
 }
 
-function changeStyleByType(nodes: Array<Node>) {
-  nodes.forEach((node: Node) => {
-    if (!node.style) {
-      node.style = { fill: node.fill, cfill: node.fill, gcolor: "lightgreen" };
-    }
-    node.x = undefined;
-    node.y = undefined;
-    switch (node.typeName) {
-      case "track": {
-        node.type = "rect";
-        node.size = [35, 20];
-        if (node.infoCarriage.group != null) {
-          node.type = "carriageWithGroup";
-          node.nb = node.infoCarriage.group.size;
-        }
-        if (node.infoCarriage.bridge != null) {
-          if (node.infoCarriage.bridge.group != null) {
-            node.type = "carriageWithbridgeandgroup";
-            node.infoCarriage.bridge.group.size;
-          }
-        }
-        break;
-      }
-      case "bridge": {
-        node.type = "rect";
-        node.size = [35, 20];
-        break;
-      }
-      case "train": {
-        node.type = "ellipse";
-        node.size = [35, 20];
-        break;
-      }
-    }
-  });
-}
-
-const dagreLayout = {
-  type: "dagre",
-  rankdir: "LR",
-  align: "DL",
-  layer: 0,
-  nodesep: 10,
-  ranksep: 20,
-  controlPoints: true,
-};
-
 const g6 = (data: GraphData | TreeGraphData | undefined) => {
-  graph = new G6.Graph({
-    container: "mountNode",
-    width: 1300,
-    height: 600,
-    fitViewPadding: [20, 40, 50, 200],
-    // fitView: true,
-    plugins: [toolbar],
-    layout: dagreLayout,
-    animate: true,
-    defaultNode: {
-      shape: "circle",
-      size: [100],
-      color: "#5B8FF9",
-      style: {
-        fill: "steelblue",
-        stroke: "#666",
-        lineWidth: 1,
-      },
-      // Label text configuration on nodes
-      labelCfg: {
-        style: {
-          fill: "#fff",
-          fontSize: 9,
-        },
-      },
-    },
-    defaultEdge: {
-      style: {
-        stroke: "#e2e2e2",
-        endArrow: true,
-        startArrow: false,
-      },
-    },
-    nodeStateStyles: stateStyle,
-    modes: {
-      default: [
-        "drag-canvas",
-        "zoom-canvas",
-        "drag-node",
-        {
-          type: "tooltip",
-          formatText(model) {
-            const text =
-              "label: " + model.label + "<br/> typeName: " + model.typeName;
-            return text;
-          },
-        },
-      ],
-      animation: ["click-select"],
-    },
-  });
+  graph = new G6.Graph(graphStyle);
   graph.data(data);
   graph.render();
-
-  let canvas = graph.get("canvas");
-  let circle = canvas.addShape("circle", {
-    attrs: {
-      x: 150 + 200,
-      y: 150,
-      r: 20,
-      stroke: "black",
-    },
-  });
   graph.refresh();
-
-  let item: Item = graph.findById("main(3)");
-  // graph.setItemState(item, "group", "dead");
-
-  setTimeout(() => {
-    let item: Item = graph.findById("main(3)");
-    // let posX = item.get("model").x;
-    // let posY = item.get("model").y;
-
-    graph.setItemState(item, "group", "dead");
-  }, 1000);
-
   return graph;
 };
 
@@ -273,6 +160,116 @@ async function getData() {
   return data;
 }
 
+var time = 0;
+var curentSimulation: Simulation;
+
+interface G6info {
+  info: string;
+  time: number;
+  position: string;
+  pType: string;
+  gid: string;
+}
+
+interface Simulation {
+  name: string;
+  actionByTime: Array<Array<G6info>>;
+}
+
+function changeGroupColor(position: string, state: boolean) {
+  const item = graph.findById(position);
+  if (state) {
+    graph.setItemState(item, "group", "alive");
+  } else {
+    graph.setItemState(item, "group", "dead");
+  }
+  graph.refresh();
+}
+
+function changeGroupPosition(position: string) {
+  const item = graph.findById(position);
+  item.getModel().type = "carriageWithGroup";
+}
+
+function changeTrainPosition(position: string) {
+  const item = graph.findById(position).getModel();
+  const train = graph.findById("train");
+  console.log(item);
+  console.log(train);
+
+  train.getModel().x = item.x;
+  train.getModel().y = item.y;
+  graph.refresh();
+}
+
+function run(sim: Simulation, t: number) {
+  var actions: Array<G6info> = sim.actionByTime[t]!;
+  for (let index = 0; index < actions.length; index++) {
+    const element = actions[index];
+    console.log(element);
+    switch (element.info) {
+      case "train":
+        changeTrainPosition(element.position);
+        break;
+      case "moveGroup":
+        changeGroupPosition(element.position);
+        break;
+      case "group":
+        changeGroupColor(element.position, false);
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+function runOneStep() {
+  run(curentSimulation, timeSim);
+  timeSim++;
+}
+
+function runOneStepBack() {
+  timeSim = timeSim - 2;
+  run(curentSimulation, timeSim);
+  timeSim++;
+}
+
+const sleep1000 = () => {
+  return sleep(1000).then();
+};
+
+async function runAll() {
+  console.log(curentSimulation.actionByTime.length);
+  curentSimulation.actionByTime.forEach((element) => {});
+  for (var i = 0; i < curentSimulation.actionByTime.length; i++) {
+    runOneStep();
+    graph.refresh();
+    const no = await sleep1000();
+  }
+}
+async function initSimulation() {
+  const name = { name: "./traceTroll.lp" };
+  graph.remove("train");
+  await axios.post("api/carriage/trace", name).then((res) => {
+    curentSimulation = res.data[1];
+    console.log(curentSimulation);
+
+    axios.get("api/carriage/original").then((res) => {
+      const id: string = res.data;
+      const item = graph.findById(id).getModel();
+      trainSetup.x = item.x!;
+      trainSetup.y = item.y!;
+      const train = graph.addItem("node", trainSetup);
+      timeSim = 0;
+
+      graph.setMode("animation");
+      fixNodesPosition();
+      color.value = "";
+      editMode.value = false;
+    });
+  });
+}
+
 const initGraph = () => {
   axios.post("api/Node/addAll/test").then((res) => {
     axios.get("api/Node").then((res1) => {
@@ -282,6 +279,9 @@ const initGraph = () => {
         changeStyleByType(_nodes);
         data = { nodes: _nodes, edges: _edges };
         graph = g6(data);
+        setTimeout(() => {
+          graph.updateLayout({});
+        }, 500);
         graph.on("node:dblclick", function (evt) {
           var id: string = evt.item?.getModel().id!;
           setNodeId(id);
@@ -326,6 +326,8 @@ initGraph();
 onBeforeUpdate(() => {
   updateGraph();
 });
+
+defineExpose({ runOneStep, initSimulation, runOneStepBack, runAll });
 </script>
 
 <style>

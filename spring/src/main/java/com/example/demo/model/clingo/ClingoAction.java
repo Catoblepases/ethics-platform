@@ -21,12 +21,9 @@ public class ClingoAction {
 
     public G6Info toG6Graph(Generator generator) {
         List<String> ls = ClingoCausal.findCompleteCommande(action, ',');
-        if (ls.get(0).equals("alive")) {
-            return null;
-        }
         return switch (ls.get(0)) {
-            case "on" -> G6Info.createMove(ls.get(2), ls.get(1), time);
-            case "run" -> G6Info.createMove(ls.get(2), ls.get(1), time);
+            case "on" -> G6Info.createMove(ls.get(2), ls.get(1), time, generator);
+            case "run" -> G6Info.createMoveTrain(ls.get(2), time);
             case "crash" -> G6Info.createSetGroup(ls.get(1), generator, time);
             default -> null;
         };

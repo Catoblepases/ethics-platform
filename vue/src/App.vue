@@ -2,14 +2,20 @@
   <div class="common-layout">
     <el-container>
       <el-header height="74px"
-        ><main-header @onChange="onChange"></main-header
+        ><main-header
+          @onChange="onChange"
+          @initSimulation="initSimulation"
+          @runOneStep="runOneStep"
+          @runOneStepBack="runOneStepBack"
+          @runAll="runAll"
+        ></main-header
       ></el-header>
       <el-container>
         <el-aside v-show="collapse" width="430px">
           <el-scrollbar><side-menu></side-menu></el-scrollbar>
         </el-aside>
         <el-main>
-          <el-scrollbar> <main-canvas></main-canvas> </el-scrollbar
+          <el-scrollbar> <main-canvas ref="g6Ref"></main-canvas> </el-scrollbar
         ></el-main>
       </el-container>
     </el-container>
@@ -22,8 +28,30 @@ import MainCanvas from "./component/g6Canvas.vue";
 import MainHeader from "./component/Header.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
 
 const childRef = ref();
+const g6Ref = ref<any>();
+
+const initSimulation = () => {
+  console.log("App:initSimulation");
+  g6Ref.value.initSimulation();
+};
+
+const runOneStep = () => {
+  console.log("App:sunOneStep");
+  g6Ref.value.runOneStep();
+};
+
+const runOneStepBack = () => {
+  console.log("App:run one step back");
+  g6Ref.value.runOneStepBack();
+};
+
+const runAll = () => {
+  console.log("App:runAll");
+  g6Ref.value.runAll();
+};
 
 const collapse = ref(true);
 

@@ -24,11 +24,11 @@ public class G6Info {
         this.time = time;
     }
 
-    public static G6Info createMove(String pid, String gid, int time) {
-        if (gid.equals("train")){
-            return createMoveTrain(pid,time);
-        }else{
-            return createMoveGroup(pid,gid,time);
+    public static G6Info createMove(String pid, String gid, int time, Generator generator) {
+        if (gid.equals("train")) {
+            return createMoveTrain(pid, time);
+        } else {
+            return createMoveGroup(pid, gid, time, generator);
         }
     }
 
@@ -39,11 +39,16 @@ public class G6Info {
         return g;
     }
 
-    public static G6Info createMoveGroup(String pid, String gid, int time) {
+    public static G6Info createMoveGroup(String pid, String gid, int time, Generator generator) {
         G6Info g = new G6Info("moveGroup", time);
-        g.position = pid;
-        g.gid = gid;
-        return g;
+        Position pos = generator.readPosition(pid);
+        if (pos instanceof Bridge) {
+            g.pType = "bridge";
+            g.position = ((Bridge) pos).getPosition().getName();
+            g.gid = gid;
+            return g;
+        }
+        return null;
     }
 
     public static G6Info createSetGroup(String gid, Generator generator, int time) {
@@ -60,6 +65,14 @@ public class G6Info {
             g.pType = "carriage";
         }
         return g;
+    }
+    
+    public boolean equal(Object object) {
+        if (!(object instanceof G6Info)) {
+            return false;
+        }
+        G6Info g6Info = (G6Info) object;
+        return g6Info.gid.equals(gid) && g6Info.position.equals(position) && g6Info.info.equals(info);
     }
 
 }

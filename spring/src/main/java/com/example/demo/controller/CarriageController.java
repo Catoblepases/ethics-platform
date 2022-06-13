@@ -240,4 +240,9 @@ public class CarriageController {
         ClingoTrace clingoTrace = new ClingoTrace(filename, generator);
         return clingoTrace.getClingoSimulations();
     }
+
+    @GetMapping("/original")
+    String getOriginal(){
+        return generator.train.getOriginPosition().getName();
+    }
 }

@@ -90,10 +90,20 @@
       <el-tooltip
         class="box-item"
         effect="dark"
+        content="init simulation"
+        placement="bottom"
+      >
+        <el-button :icon="Refresh" @click="initSimulation" circle></el-button>
+      </el-tooltip>
+    </el-col>
+    <el-col :span="1">
+      <el-tooltip
+        class="box-item"
+        effect="dark"
         content="run/simulation"
         placement="bottom"
       >
-        <el-button :icon="VideoPlay" circle></el-button>
+        <el-button :icon="VideoPlay" @click="runAll" circle></el-button>
       </el-tooltip>
     </el-col>
     <el-col :span="1">
@@ -103,7 +113,7 @@
         content="run one step"
         placement="bottom"
       >
-        <el-button :icon="ArrowRight" circle></el-button>
+        <el-button :icon="ArrowRight" @click="runOneStep" circle></el-button>
       </el-tooltip>
     </el-col>
     <el-col :span="1">
@@ -113,7 +123,7 @@
         content="back one step"
         placement="bottom"
       >
-        <el-button :icon="ArrowLeft" circle></el-button>
+        <el-button :icon="ArrowLeft" @click="runOneStepBack" circle></el-button>
       </el-tooltip>
     </el-col>
     <el-col :span="1">
@@ -146,6 +156,7 @@ import {
   VideoPlay,
   Upload,
   Download,
+  Refresh,
 } from "@element-plus/icons-vue";
 import { ref, provide } from "vue";
 import { genFileId } from "element-plus";
@@ -212,12 +223,37 @@ const handleExceed: UploadProps["onExceed"] = (files) => {
 };
 
 // collapse side bar
-const emit = defineEmits(["onChange"]);
+const emit = defineEmits([
+  "onChange",
+  "initSimulation",
+  "runOneStep",
+  "runOneStepBack",
+  "runAll",
+]);
 const update = () => {
   console.log("onChange:child");
   emit("onChange", collapse.value);
 };
 
+const initSimulation = () => {
+  console.log("init:g6simulation");
+  emit("initSimulation");
+};
+
+const runOneStep = () => {
+  console.log("header:runOneStep");
+  emit("runOneStep");
+};
+
+const runOneStepBack = () => {
+  console.log("header:runOneStepBack");
+  emit("runOneStepBack");
+};
+
+const runAll = () => {
+  console.log("header:runAll");
+  emit("runAll");
+};
 defineExpose({ collapse });
 </script>
 

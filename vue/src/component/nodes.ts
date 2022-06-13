@@ -1,5 +1,61 @@
 // import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 
+export const trainSetup = {
+  id: "train",
+  x: 200,
+  y: 100,
+  type: "rect",
+  size: [35, 20],
+  style: { fill: "#5AD8A6", lineWidth: 1, opacity: 0.8, fillOpacity: 0.8 },
+};
+
+export const dagreLayout = {
+  type: "dagre",
+  rankdir: "LR",
+  align: "DL",
+  layer: 0,
+  nodesep: 10,
+  ranksep: 20,
+  controlPoints: true,
+};
+
+export function changeStyleByType(nodes: Array<Node>) {
+  nodes.forEach((node: Node) => {
+    if (!node.style) {
+      node.style = { fill: node.fill, cfill: node.fill, gcolor: "lightgreen" };
+    }
+    node.x = undefined;
+    node.y = undefined;
+    switch (node.typeName) {
+      case "track": {
+        node.type = "rect";
+        node.size = [35, 20];
+        if (node.infoCarriage.group != null) {
+          node.type = "carriageWithGroup";
+          node.nb = node.infoCarriage.group.size;
+        }
+        if (node.infoCarriage.bridge != null) {
+          if (node.infoCarriage.bridge.group != null) {
+            node.type = "carriageWithbridgeandgroup";
+            node.infoCarriage.bridge.group.size;
+          }
+        }
+        break;
+      }
+      case "bridge": {
+        node.type = "rect";
+        node.size = [35, 20];
+        break;
+      }
+      case "train": {
+        node.type = "ellipse";
+        node.size = [35, 20];
+        break;
+      }
+    }
+  });
+}
+
 export const stateStyle = {
   "group:alive": {
     group1: {
@@ -57,6 +113,58 @@ export const stateStyle = {
     "keyShape-name": {
       fill: "red",
     },
+  },
+};
+
+export const graphStyle = {
+  container: "mountNode",
+  width: 1300,
+  height: 600,
+  fitViewPadding: [20, 40, 50, 200],
+  // fitView: true,
+  plugins: [toolbar],
+  layout: dagreLayout,
+  animate: true,
+  defaultNode: {
+    shape: "circle",
+    size: [100],
+    color: "#5B8FF9",
+    style: {
+      fill: "steelblue",
+      stroke: "#666",
+      lineWidth: 1,
+    },
+    // Label text configuration on nodes
+    labelCfg: {
+      style: {
+        fill: "#fff",
+        fontSize: 9,
+      },
+    },
+  },
+  defaultEdge: {
+    style: {
+      stroke: "#e2e2e2",
+      endArrow: true,
+      startArrow: false,
+    },
+  },
+  nodeStateStyles: stateStyle,
+  modes: {
+    default: [
+      "drag-canvas",
+      "zoom-canvas",
+      "drag-node",
+      {
+        type: "tooltip",
+        formatText(model) {
+          const text =
+            "label: " + model.label + "<br/> typeName: " + model.typeName;
+          return text;
+        },
+      },
+    ],
+    animation: ["click-select"],
   },
 };
 

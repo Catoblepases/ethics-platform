@@ -529,10 +529,11 @@ public class Generator {
             Matcher matcher = PATTERN.matcher(line);
             matcher.find();
             String position = matcher.group();
-            matcher.find();
-            String number = matcher.group();
-            return readPosition(position, number);
-
+            if (matcher.find()) {
+                String number = matcher.group();
+                return readPosition(position, number);
+            }
+            return readPosition(position, "");
         } catch (Exception e) {
             e.printStackTrace();
         }

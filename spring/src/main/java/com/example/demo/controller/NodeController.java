@@ -68,7 +68,7 @@ public class NodeController {
         nodeMapper.deleteAllNodes();
         edgeMapper.deleteAllEdges();
         List<Track> tracks = generator.tracks;
-        String[] fills = {"red", "blue", "yellow", "green", "white", "pink"};
+        String[] fills = {"#90CAF9", "#5C6BC0", "#FFF176", "green", "white", "pink"};
         int i = 0;
         for (Track track : tracks) {
             for (Carriage carriage : track) {
