@@ -3,11 +3,13 @@
     <el-container>
       <el-header height="74px"
         ><main-header
+          ref="headerRef"
           @onChange="onChange"
           @initSimulation="initSimulation"
           @runOneStep="runOneStep"
           @runOneStepBack="runOneStepBack"
           @runAll="runAll"
+          @getSimulation="getSimulation"
         ></main-header
       ></el-header>
       <el-container>
@@ -15,7 +17,12 @@
           <el-scrollbar><side-menu></side-menu></el-scrollbar>
         </el-aside>
         <el-main>
-          <el-scrollbar> <main-canvas ref="g6Ref"></main-canvas> </el-scrollbar
+          <el-scrollbar>
+            <main-canvas
+              ref="g6Ref"
+              @getSimulation="getSimulation"
+              :currentSimulationName="currentSimulationName"
+            ></main-canvas> </el-scrollbar
         ></el-main>
       </el-container>
     </el-container>
@@ -30,18 +37,23 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 
-const childRef = ref();
+const headerRef = ref<any>();
 const g6Ref = ref<any>();
+const currentSimulationName = ref("s1");
 
-const initSimulation = () => {
+function getSimulation(): void {
+  currentSimulationName.value = headerRef.value.getCurrentSimulationName();
+}
+
+function initSimulation(): void {
   console.log("App:initSimulation");
   g6Ref.value.initSimulation();
-};
+}
 
-const runOneStep = () => {
+function runOneStep(): void {
   console.log("App:sunOneStep");
   g6Ref.value.runOneStep();
-};
+}
 
 const runOneStepBack = () => {
   console.log("App:run one step back");

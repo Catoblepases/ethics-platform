@@ -35,9 +35,14 @@ export function changeStyleByType(nodes: Array<Node>) {
           node.nb = node.infoCarriage.group.size;
         }
         if (node.infoCarriage.bridge != null) {
+          console.log(node.infoCarriage.bridge);
+
           if (node.infoCarriage.bridge.group != null) {
-            node.type = "carriageWithbridgeandgroup";
-            node.infoCarriage.bridge.group.size;
+            console.log("carriage with group and bridge");
+            node.type = "carriageWithBridgeAndGroup";
+            node.nb = node.infoCarriage.bridge.group.size;
+          } else {
+            node.type = "carriageWithBridge";
           }
         }
         break;
@@ -240,7 +245,7 @@ export function registerNodes(G6: any) {
   );
 
   G6.registerNode(
-    "carriageWithbridge",
+    "carriageWithBridge",
     {
       draw(cfg, group) {
         let y: number = Math.round(7 / 2);
@@ -269,14 +274,29 @@ export function registerNodes(G6: any) {
             fill: "#6bccdb",
           },
         });
+
+        group.addShape("text", {
+          attrs: {
+            text: cfg?.label,
+            x: -10,
+            y: 0,
+            fontSize: 8,
+            textAlign: "left",
+            textBaseline: "middle",
+            fill: "white",
+          },
+          // must be assigned in G6 3.3 and later versions. it can be any value you want
+          name: "text-shape",
+        });
+
         return rect;
       },
     },
-    "rect"
+    "single-node"
   );
 
   G6.registerNode(
-    "carriageWithbridgeandgroup",
+    "carriageWithBridgeAndGroup",
     {
       draw(cfg, group) {
         let y: number = Math.round(7 / 2);
@@ -285,6 +305,17 @@ export function registerNodes(G6: any) {
         const gcolor = cfg?.style.gcolor;
         var nbLine = Math.round(Math.sqrt(nb)) + 1;
         var h = Math.round(size / (nbLine + 1));
+
+        const rect = group.addShape("rect", {
+          zIndex: 10,
+          attrs: {
+            x: -12,
+            y: -12,
+            width: cfg?.size[0],
+            height: cfg?.size[1],
+            fill: cfg?.style?.cfill,
+          },
+        });
 
         group.addShape("rect", {
           attrs: {
@@ -312,13 +343,27 @@ export function registerNodes(G6: any) {
                 r: 5,
                 fill: gcolor,
               },
+              name: "group" + nb,
             });
             nb--;
           }
         }
+        group.addShape("text", {
+          attrs: {
+            text: cfg?.label,
+            x: -10,
+            y: 0,
+            fontSize: 8,
+            textAlign: "left",
+            textBaseline: "middle",
+            fill: "white",
+          },
+          // must be assigned in G6 3.3 and later versions. it can be any value you want
+          name: "text-shape",
+        });
         return rect;
       },
     },
-    "carriageWithbridge"
+    "carriageWithGroup"
   );
 }

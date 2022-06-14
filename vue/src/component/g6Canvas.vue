@@ -112,6 +112,13 @@ provide("dialogFormVisible", dialogFormVisible);
 var nodeId = ref("");
 provide("nodeId", nodeId);
 
+const props = defineProps({ currentSimulationName: String });
+const emits = defineEmits(["getSimulation"]);
+
+function getSimulation() {
+  emits("getSimulation");
+}
+
 const g6 = (data: GraphData | TreeGraphData | undefined) => {
   graph = new G6.Graph(graphStyle);
   graph.data(data);
@@ -175,9 +182,13 @@ function changeGroupColor(position: string, state: boolean) {
   graph.refresh();
 }
 
-function changeGroupPosition(position: string) {
+async function changeGroupPosition(position: string) {
   const item = graph.findById(position);
+  console.log("moveGroup");
+
   item.getModel().type = "carriageWithGroup";
+  graph.refreshItem(position);
+  // await sleep1000();
 }
 
 function changeTrainPosition(position: string) {
@@ -191,7 +202,7 @@ function changeTrainPosition(position: string) {
   graph.refresh();
 }
 
-function run(sim: Simulation, t: number) {
+async function run(sim: Simulation, t: number) {
   var actions: Array<G6info> = sim.actionByTime[t]!;
   for (let index = 0; index < actions.length; index++) {
     const element = actions[index];
@@ -201,7 +212,7 @@ function run(sim: Simulation, t: number) {
         changeTrainPosition(element.position);
         break;
       case "moveGroup":
-        changeGroupPosition(element.position);
+        await changeGroupPosition(element.position);
         break;
       case "group":
         changeGroupColor(element.position, false);
@@ -245,19 +256,27 @@ async function runAll() {
   console.log(curentSimulation.actionByTime.length);
   curentSimulation.actionByTime.forEach((element) => {});
   for (var i = 0; i < curentSimulation.actionByTime.length; i++) {
-    runOneStep();
+    await runOneStep();
     graph.refresh();
     const no = await sleep1000();
   }
 }
 
 async function initSimulation() {
+  graph.changeData(data);
   const name = { name: "./traceTroll.lp" };
   graph.remove("train");
   await axios.post("api/carriage/trace", name).then((res) => {
     curentSimulation = res.data[1];
-    console.log(curentSimulation);
+    for (let index = 0; index < res.data.length; index++) {
+      const element = res.data[index];
+      if (element.name === props.currentSimulationName) {
+        curentSimulation = element;
+        break;
+      }
+    }
 
+    console.log(curentSimulation);
     axios.get("api/carriage/original").then((res) => {
       const id: string = res.data;
       const item = graph.findById(id).getModel();

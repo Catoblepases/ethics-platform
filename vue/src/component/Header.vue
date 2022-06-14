@@ -97,6 +97,22 @@
       </el-tooltip>
     </el-col>
     <el-col :span="1">
+      <el-select
+        v-model="currentSimulationName"
+        class="m2"
+        placeholder="sim"
+        @click="updateSimulations"
+      >
+        <el-option
+          v-for="item in simulationNames"
+          :key="item"
+          :label="item"
+          :value="item"
+          @click="getSimulation"
+        />
+      </el-select>
+    </el-col>
+    <el-col :span="1">
       <el-tooltip
         class="box-item"
         effect="dark"
@@ -167,6 +183,8 @@ import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 import axios from "axios";
 
 let collapse = ref(true);
+let currentSimulationName = ref("");
+const simulationNames = ref<Array<string>>([""]);
 const ARef = ref<any>();
 const RRef = ref<any>();
 
@@ -182,6 +200,19 @@ provide("downVisible", downVisible);
 const showDownloadMenu = () => {
   downVisible.value = true;
 };
+
+async function updateSimulations() {
+  await axios.get("api/carriage/simulation").then((res) => {
+    let data = res.data.data;
+    let names: Array<string> = [];
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      names.push(element.name);
+    }
+    simulationNames.value = names;
+    getSimulation();
+  });
+}
 
 const handleCommand = (command: string | number | object) => {
   switch (command) {
@@ -229,6 +260,7 @@ const emit = defineEmits([
   "runOneStep",
   "runOneStepBack",
   "runAll",
+  "getSimulation",
 ]);
 const update = () => {
   console.log("onChange:child");
@@ -254,7 +286,16 @@ const runAll = () => {
   console.log("header:runAll");
   emit("runAll");
 };
-defineExpose({ collapse });
+
+function getSimulation() {
+  emit("getSimulation");
+}
+
+function getCurrentSimulationName() {
+  return currentSimulationName.value;
+}
+
+defineExpose({ collapse, getCurrentSimulationName, currentSimulationName });
 </script>
 
 <style scoped>

@@ -36,7 +36,7 @@ public class InfoCarriage {
             Group gb = b.getGroup();
             InfoGroup igb = null;
             if (gb != null) {
-                InfoGroup.builder().name(gb.getName()).size(gb.getNb()).build();
+                igb = InfoGroup.builder().name(gb.getName()).size(gb.getNb()).build();
             }
             this.bridge = InfoBridge.builder().name(b.getName()).group(igb).build();
         } else {
@@ -68,7 +68,7 @@ public class InfoCarriage {
         } else {
             carriage.setSwitch(null);
         }
-        if (positionOriginal){
+        if (positionOriginal) {
             generator.train.setOriginPosition(carriage);
         }
     }
