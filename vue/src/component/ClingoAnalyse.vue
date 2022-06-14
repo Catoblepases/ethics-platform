@@ -13,6 +13,7 @@
         :label="item.title"
         :name="item.name"
       >
+        <el-switch v-model="transterm" @click="updateTransterm"></el-switch>
         <div :id="item.name"></div>
       </el-tab-pane>
     </el-tabs>
@@ -32,13 +33,46 @@ import axios from "axios";
 
 let analyse = inject("analyse");
 const editableTabsValue = ref("s0");
+const transterm = ref(true);
 
 class tabItem {
   name: string = "clingo";
   title: string = "clingo";
   data: any = { nodes: [], edges: [] };
+  graph: Graph | undefined = undefined;
 }
 var items = ref(new Array<tabItem>());
+
+function deleteTransterm(data: Array<any>) {
+  let res = [];
+  for (let index = 0; index < data.length; index++) {
+    const element = data[index];
+    if (element.connectType != "transTerm") {
+      res.push(element);
+    }
+  }
+  return res;
+}
+
+function updateTransterm() {
+  console.log("update");
+  
+  if (transterm.value === true) {
+    for (let index = 0; index < items.value.length; index++) {
+      const element = items.value[index];
+      element.graph?.changeData({ nodes: element.data.nodes, edges: element.data.edges });
+      element.graph?.refresh();
+    }
+  } else {
+    for (let index = 0; index < items.value.length; index++) {
+      const element = items.value[index];
+      const dataEdges = deleteTransterm(element.data.edges);
+      const data = { nodes: element.data.nodes, edges: dataEdges };
+      element.graph?.changeData(data);
+      element.graph?.refresh();
+    }
+  }
+}
 
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
@@ -60,12 +94,12 @@ function changeEdgeStyleByType(edges: Array<Edge>) {
       edge.style = { stroke: "#e2e2e2", endArrow: true, startArrow: false };
       switch (edge.connectType) {
         case "rcauses":
-          edge.style.stroke = "#9b2b09";
-          edge.labelCfg.style.fill = "red";
-          break;
-        case "rprevents":
           edge.style.stroke = "#089620";
           edge.labelCfg.style.fill = "green";
+          break;
+        case "rprevents":
+          edge.style.stroke = "#9b2b09";
+          edge.labelCfg.style.fill = "red";
           break;
         case "transTerm":
           edge.style.stroke = "#0a62aa";
@@ -173,7 +207,7 @@ const initGraphAnalyse = () => {
         for (let index = 0; index < items.value.length; index++) {
           const element = items.value[index];
           console.log(element.data);
-          graph = g6(element.data, element.name);
+          element.graph = g6(element.data, element.name);
         }
       }, 1);
     });
