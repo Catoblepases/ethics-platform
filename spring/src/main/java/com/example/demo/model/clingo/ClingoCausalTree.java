@@ -24,7 +24,27 @@ public class ClingoCausalTree {
     public NodeEvent findOrAddNodeEvent(String event) {
         if (!listEvent.contains(event)) {
             listEvent.add(event);
-            NodeEvent nodeEvent = new NodeEvent(event, 0, 0, "event", event, "steelblue");
+            List<String> ls = ClingoCausal.findCompleteCommande(event, ',');
+            String color = null;
+            switch (ls.get(0)) {
+                case "switch":
+                    color = "pink";
+                    break;
+                case "on":
+                    color = "grey";
+                    break;
+                case "crash":
+                    color = "red";
+                    break;
+                case "run":
+                    color = "grey";
+                    break;
+                case "push":
+                    color = "orange";
+                    break;
+            }
+            ;
+            NodeEvent nodeEvent = new NodeEvent(event, 0, 0, "event", event, color);
             nodeEventList.add(nodeEvent);
             return nodeEvent;
         }

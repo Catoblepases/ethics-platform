@@ -27,8 +27,6 @@ public class CorsConfig {
 
     @Bean
     Generator createGenerator(){
-        return  new Generator("./data/trolley1act.lp");
+        return  new Generator("./trolley1act.lp");
     }
-
-
 }

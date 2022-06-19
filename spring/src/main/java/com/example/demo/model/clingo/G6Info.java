@@ -41,14 +41,30 @@ public class G6Info {
 
     public static G6Info createMoveGroup(String pid, String gid, int time, Generator generator) {
         G6Info g = new G6Info("moveGroup", time);
-        Position pos = generator.readPosition(pid);
-        if (pos instanceof Bridge) {
+        Position pos = generator.findGroup(gid).getPosition();
+        Position opos = generator.readPosition(pid);
+        if (pos instanceof Bridge && !(opos instanceof Bridge)) {
             g.pType = "bridge";
-            g.position = ((Bridge) pos).getPosition().getName();
+            g.position = pid;
             g.gid = gid;
             return g;
         }
         return null;
+    }
+
+    public static G6Info createAlive(String gid, Generator generator, int time) {
+        if (time != 0) {
+            return null;
+        }
+        G6Info g = new G6Info("alive", time);
+        Position pos = generator.findGroup(gid).getPosition();
+        if (pos instanceof Bridge) {
+            g.position = ((Bridge) pos).getPosition().getName();
+        } else {
+            g.position = pos.getName();
+        }
+        g.gid = gid;
+        return g;
     }
 
     public static G6Info createSetGroup(String gid, Generator generator, int time) {
@@ -66,7 +82,7 @@ public class G6Info {
         }
         return g;
     }
-    
+
     public boolean equal(Object object) {
         if (!(object instanceof G6Info)) {
             return false;

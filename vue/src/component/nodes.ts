@@ -64,25 +64,25 @@ export function changeStyleByType(nodes: Array<Node>) {
 export const stateStyle = {
   "group:alive": {
     group1: {
-      fill: "green",
+      fill: "lightgreen",
     },
     group2: {
-      fill: "green",
+      fill: "lightgreen",
     },
     group3: {
-      fill: "green",
+      fill: "lightgreen",
     },
     group4: {
-      fill: "green",
+      fill: "lightgreen",
     },
     group5: {
-      fill: "green",
+      fill: "lightgreen",
     },
     group6: {
-      fill: "green",
+      fill: "lightgreen",
     },
     group7: {
-      fill: "green",
+      fill: "lightgreen",
     },
   },
 

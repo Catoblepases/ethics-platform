@@ -25,6 +25,7 @@ public class ClingoAction {
             case "on" -> G6Info.createMove(ls.get(2), ls.get(1), time, generator);
             case "run" -> G6Info.createMoveTrain(ls.get(2), time);
             case "crash" -> G6Info.createSetGroup(ls.get(1), generator, time);
+            case "alive" ->G6Info.createAlive(ls.get(1),generator,time);
             default -> null;
         };
     }

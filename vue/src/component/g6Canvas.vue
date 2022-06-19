@@ -182,13 +182,11 @@ function changeGroupColor(position: string, state: boolean) {
   graph.refresh();
 }
 
-async function changeGroupPosition(position: string) {
+function changeGroupPosition(position: string) {
   const item = graph.findById(position);
   console.log("moveGroup");
-
   item.getModel().type = "carriageWithGroup";
   graph.refreshItem(position);
-  // await sleep1000();
 }
 
 function changeTrainPosition(position: string) {
@@ -202,21 +200,24 @@ function changeTrainPosition(position: string) {
   graph.refresh();
 }
 
-async function run(sim: Simulation, t: number) {
+function run(sim: Simulation, t: number) {
   var actions: Array<G6info> = sim.actionByTime[t]!;
   for (let index = 0; index < actions.length; index++) {
     const element = actions[index];
+    console.log(index);
     console.log(element);
     switch (element.info) {
       case "train":
         changeTrainPosition(element.position);
         break;
       case "moveGroup":
-        await changeGroupPosition(element.position);
+        changeGroupPosition(element.position);
         break;
       case "group":
         changeGroupColor(element.position, false);
         break;
+      case "alive":
+        changeGroupColor(element.position, true);
       default:
         break;
     }
@@ -226,7 +227,7 @@ async function run(sim: Simulation, t: number) {
 async function runOneStep() {
   if (!curentSimulation) {
     initSimulation();
-    const no = await sleep1000();
+    await sleep1000();
   }
   run(curentSimulation, timeSim);
   timeSim++;
@@ -235,7 +236,7 @@ async function runOneStep() {
 async function runOneStepBack() {
   if (!curentSimulation) {
     initSimulation();
-    const no = await sleep1000();
+    await sleep1000();
   }
   if (timeSim < 2) {
     ElMessage("can't go back");
@@ -252,13 +253,13 @@ const sleep1000 = () => {
 
 async function runAll() {
   initSimulation();
-  const no = await sleep1000();
-  console.log(curentSimulation.actionByTime.length);
+  await sleep1000();
+  console.log(curentSimulation.actionByTime);
   curentSimulation.actionByTime.forEach((element) => {});
   for (var i = 0; i < curentSimulation.actionByTime.length; i++) {
     await runOneStep();
     graph.refresh();
-    const no = await sleep1000();
+    await sleep1000();
   }
 }
 
