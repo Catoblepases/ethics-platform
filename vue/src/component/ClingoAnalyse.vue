@@ -54,30 +54,65 @@ function deleteTransterm(data: Array<any>) {
   return res;
 }
 
+function hideSeparatedNode(g: Graph) {
+  let nnodes = g.getNodes();
+  for (let index = 0; index < nnodes.length; index++) {
+    const element = nnodes[index];
+    const edges = element.getEdges();
+    let visible = false;
+    for (let idx = 0; idx < edges.length; idx++) {
+      const edge = edges[idx];
+      if (edge.isVisible()) {
+        visible = true;
+        break;
+      }
+    }
+    if (visible) {
+      element.show();
+    } else {
+      element.hide();
+    }
+  }
+}
+
+function showAllNodes(g: Graph) {
+  let nnodes = g.getNodes();
+  for (let index = 0; index < nnodes.length; index++) {
+    const element = nnodes[index];
+    element.show();
+  }
+}
+
+function hideTransterm(data: Array<any>, g: Graph, show: boolean) {
+  for (let index = 0; index < data.length; index++) {
+    const element = data[index];
+    if (element.connectType === "transTerm") {
+      const item = g.findById(element.id);
+      if (show) {
+        item.show();
+      } else {
+        item.hide();
+      }
+    }
+  }
+  g.refresh();
+  g.updateLayout();
+}
+
 function updateTransterm() {
   console.log("update");
-  
-  if (transterm.value === true) {
-    for (let index = 0; index < items.value.length; index++) {
-      const element = items.value[index];
-      element.graph?.changeData({ nodes: element.data.nodes, edges: element.data.edges });
-      element.graph?.refresh();
-    }
-  } else {
-    for (let index = 0; index < items.value.length; index++) {
-      const element = items.value[index];
-      const dataEdges = deleteTransterm(element.data.edges);
-      const data = { nodes: element.data.nodes, edges: dataEdges };
-      element.graph?.changeData(data);
-      element.graph?.refresh();
-    }
+  for (let index = 0; index < items.value.length; index++) {
+    const element = items.value[index];
+    showAllNodes(element.graph);
+    hideTransterm(element.data.edges, element.graph, transterm.value);
+    hideSeparatedNode(element.graph);
   }
 }
 
 function changeStyleByType(nodes: Array<Node>) {
   nodes.forEach((node: Node) => {
     if (!node.style) {
-      node.style = {};
+      node.style = { fill: node.fill };
     }
     node.x = 120;
     node.y = 120;
