@@ -159,7 +159,7 @@ import {
   onBeforeMount,
 } from "vue";
 import axios from "axios";
-
+import { updateClingo } from "./updateFile";
 import { ElMessage } from "element-plus";
 import {
   Data,
@@ -240,6 +240,7 @@ const apply = () => {
   console.log(data);
   axios.put("api/carriage", data).then(() => {
     console.log("submit succes");
+    updateClingo();
   });
   updateGraph();
 };

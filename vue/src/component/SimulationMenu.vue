@@ -8,6 +8,7 @@
           circle
           @click="addSimulation"
         ></el-button>
+        <el-button :icon="Refresh" circle @click="getSimulation"></el-button>
       </template>
       <template #default="scope">
         <el-button
@@ -37,7 +38,14 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, provide } from "vue";
-import { Check, Close, Plus, Edit, Delete } from "@element-plus/icons-vue";
+import {
+  Check,
+  Close,
+  Plus,
+  Edit,
+  Delete,
+  Refresh
+} from "@element-plus/icons-vue";
 import axios from "axios";
 import EditSimulation from "./EditSimulation.vue";
 

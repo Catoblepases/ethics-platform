@@ -66,7 +66,7 @@ public class InfoCarriage {
         if (switchs != null) {
             switchs.update(carriage, generator);
         } else {
-            carriage.setSwitch(null);
+            carriage.deleteSwitch();
         }
         if (positionOriginal) {
             generator.train.setOriginPosition(carriage);

@@ -49,6 +49,8 @@
 
 <script setup lang="ts">
 import axios from "axios";
+import{updateClingo} from "./updateFile"
+import { ElMessage } from "element-plus";
 import Vue, { inject, onMounted, Ref, ref } from "vue";
 const editSimulationVisible = inject("editSimulationVisible");
 const activeSim = inject("activeSimulation");
@@ -143,7 +145,7 @@ const createData = () => {
     event.eventDescription = el.eventDescription;
     event.time = el.time;
     console.log(event);
-    
+
     out.actions.push(event);
   }
   return out;
@@ -156,10 +158,15 @@ const update = () => {
 
 const apply = () => {
   var out: simulations = createData();
+  if (out.name === "" || out.name === " ") {
+    ElMessage("bad format");
+    return;
+  }
   console.log(out);
   axios.post("api/carriage/simulation", out).then((res) => {
     console.log(res);
     update();
+    updateClingo();
   });
 };
 

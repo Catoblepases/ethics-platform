@@ -27,10 +27,12 @@ public class CorsConfig {
     NodeMapper createNodes() {
         return new NodeMapper();
     }
+
     @Bean
     Generator createGenerator() {
-        return new Generator("./trolley1act.lp");
+        return new Generator("./data/trolley1act.lp");
     }
+
     @Bean
     ClingoConfig createClingoConfig() {
         return new ClingoConfig();

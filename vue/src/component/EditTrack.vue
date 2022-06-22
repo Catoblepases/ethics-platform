@@ -21,6 +21,8 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { inject, reactive } from "vue";
+import { updateClingo } from "./updateFile";
+
 const trackEditVisible = inject("trackEditVisible");
 
 const form = reactive({ name: "", length: 0 });
@@ -36,6 +38,7 @@ function apply() {
     .post("api/carriage/addTrack", { name: form.name, length: form.length })
     .then(() => {
       ElMessage("submit track success!");
+      updateClingo();
       emit("updateGraph");
     });
 }

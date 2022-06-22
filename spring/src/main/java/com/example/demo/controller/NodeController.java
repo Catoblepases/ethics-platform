@@ -68,7 +68,7 @@ public class NodeController {
         nodeMapper.deleteAllNodes();
         edgeMapper.deleteAllEdges();
         List<Track> tracks = generator.tracks;
-        String[] fills = {"#90CAF9", "#5C6BC0", "#FFF176", "green", "white", "pink"};
+        String[] fills = {"#90CAF9", "#5C6BC0", "#FFF176", "green", "darkgrey", "pink"};
         int i = 0;
         for (Track track : tracks) {
             for (Carriage carriage : track) {
@@ -77,6 +77,9 @@ public class NodeController {
                 nodeMapper.addNode(node);
             }
             i++;
+            if (i >= fills.length) {
+                i = 0;
+            }
         }
         List<Switch> ls = new ArrayList<>();
         for (Track track : tracks) {

@@ -1,8 +1,6 @@
 package com.example.demo.model;
 
 
-
-
 public class Carriage extends Position {
     private String track;
     public Carriage suivant;
@@ -63,7 +61,7 @@ public class Carriage extends Position {
     }
 
     public void add(Switch sw) {
-        this.sw = sw;
+        setSwitch(sw);
     }
 
     public void deleteBridge() {
@@ -75,9 +73,10 @@ public class Carriage extends Position {
     }
 
     public void deleteSwitch() {
-        sw = null;
+        Carriage c1 = sw.getTrackBegin();
+        Carriage c2 = sw.getTrackEnd();
+        c1.setSwitch(null);
     }
-
     @Override
     public String toString() {
         return name;
@@ -87,11 +86,11 @@ public class Carriage extends Position {
         return name;
     }
 
-    public void delete(){
+    public void delete() {
         deleteBridge();
         deleteGroup();
         deleteSwitch();
-        before.suivant=suivant;
+        before.suivant = suivant;
     }
 
     public Carriage next() {

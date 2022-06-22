@@ -56,6 +56,7 @@ import {
   defaultMode,
 } from "./nodes";
 import { ElMessage } from "element-plus";
+import { updateClingo } from "./updateFile";
 
 var graph: Graph;
 let data: GraphData;
@@ -317,7 +318,7 @@ async function runAll() {
   console.log(curentSimulation.actionByTime);
   curentSimulation.actionByTime.forEach((element) => {});
   for (var i = 0; i < curentSimulation.actionByTime.length; i++) {
-    await runOneStep();
+    runOneStep();
     graph.refresh();
     await sleep1000();
   }
@@ -392,6 +393,7 @@ const updateGraph = () => {
     graph.changeData(data);
   });
   graph.refresh();
+  updateClingo();
   console.log("run:updateGraph");
 };
 

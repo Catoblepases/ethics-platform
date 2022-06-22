@@ -14,7 +14,6 @@ public class Switch implements Event {
         present = t1;
         valid = true;
         t1.add(this);
-        t2.add(this);
     }
 
     public Switch(Carriage present) {
