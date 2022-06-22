@@ -7,10 +7,10 @@ transTerm(ss,run(train,side(0)),on(train,side(0)),1).
 transTerm(ss,run(train,side(1)),on(train,side(1)),2).
 transTerm(aaaaa,run(train,side(0)),on(train,side(0)),1).
 transTerm(aaaaa,run(train,side(1)),on(train,side(1)),2).
+transTerm(s0,push(g3,b),on(g3,b),0).
 transTerm(s1,switch(main(0)),on(train,main(0)),0).
 transTerm(ss,switch(main(0)),on(train,main(0)),0).
 transTerm(aaaaa,switch(main(0)),on(train,main(0)),0).
-transTerm(s0,push(g3,b),on(g3,b),0).
 transTerm(aaaaa,push(g3,b),on(g3,b),0).
 transTerm(s0,crash(g3,main(1)),alive(g3),2).
 transTerm(s0,crash(g3,main(1)),on(train,main(1)),2).
@@ -80,7 +80,10 @@ transTerm(s1,switch(main(0)),on(train,main(4)),0).
 transTerm(ss,switch(main(0)),on(train,main(4)),0).
 transTerm(aaaaa,switch(main(0)),on(train,main(4)),0).
 r(s0,prevents,run(train,main(0)),1,switch(main(0))).
+r(s1,prevents,run(train,side(1)),2,switch(side(1))).
 r(aa,prevents,run(train,main(0)),0,switch(main(0))).
+r(ss,prevents,run(train,side(1)),2,switch(side(1))).
+r(aaaaa,prevents,run(train,side(1)),2,switch(side(1))).
 r(s1,prevents,switch(main(0)),0,run(train,main(0))).
 r(ss,prevents,switch(main(0)),0,run(train,main(0))).
 r(aaaaa,prevents,switch(main(0)),0,run(train,main(0))).
@@ -100,8 +103,11 @@ r(aaaaa,prevents,switch(main(0)),0,crash(g3,main(1))).
 r(ss,prevents,switch(main(0)),0,run(train,main(1))).
 r(s1,prevents,switch(main(0)),0,run(train,main(1))).
 r(aaaaa,prevents,run(train,side(1)),2,run(train,side(2))).
+r(aaaaa,prevents,run(train,side(0)),1,switch(side(1))).
 r(ss,prevents,run(train,side(1)),2,run(train,side(2))).
+r(ss,prevents,run(train,side(0)),1,switch(side(1))).
 r(s1,prevents,run(train,side(1)),2,run(train,side(2))).
+r(s1,prevents,run(train,side(0)),1,switch(side(1))).
 r(s0,prevents,run(train,main(0)),1,run(train,main(1))).
 r(s0,prevents,run(train,main(0)),1,run(train,main(2))).
 r(s1,prevents,run(train,side(0)),1,run(train,side(2))).
@@ -154,10 +160,10 @@ r(ss,causes,run(train,side(0)),1,on(train,side(1))).
 r(ss,causes,run(train,side(1)),2,on(train,side(2))).
 r(aaaaa,causes,run(train,side(0)),1,on(train,side(1))).
 r(aaaaa,causes,run(train,side(1)),2,on(train,side(2))).
+r(s0,causes,push(g3,b),0,on(g3,main(1))).
 r(s1,causes,switch(main(0)),0,on(train,side(0))).
 r(ss,causes,switch(main(0)),0,on(train,side(0))).
 r(aaaaa,causes,switch(main(0)),0,on(train,side(0))).
-r(s0,causes,push(g3,b),0,on(g3,main(1))).
 r(aaaaa,causes,push(g3,b),0,on(g3,main(1))).
 r(aa,causes,run(train,main(2)),2,on(train,main(3))).
 r(s0,causes,on(train,main(0)),1,run(train,main(0))).
@@ -218,5 +224,8 @@ r(s0,prevents,push(g3,b),0,run(train,main(3))).
 r(aaaaa,prevents,switch(main(0)),0,run(train,side(2))).
 r(ss,prevents,switch(main(0)),0,run(train,side(2))).
 r(s1,prevents,switch(main(0)),0,run(train,side(2))).
+r(s1,prevents,switch(main(0)),0,switch(side(1))).
+r(ss,prevents,switch(main(0)),0,switch(side(1))).
+r(aaaaa,prevents,switch(main(0)),0,switch(side(1))).
 r(s0,prevents,push(g3,b),0,run(train,main(2))).
 r(s0,prevents,push(g3,b),0,run(train,main(1))).

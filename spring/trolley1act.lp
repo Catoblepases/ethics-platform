@@ -6,6 +6,7 @@ group(g1;g2;g3).
 numberInGroup(g1,5;g2,2;g3,1).
 bridgeOn(b,main(1)).
 buttonOn(main(0)).
+buttonOn(side(1)).
 
 
 posFluent(on(train,M)):-track(M).

@@ -123,7 +123,6 @@ export const stateStyle = {
   },
 };
 
-
 export const defaultNodeStyle = {
   shape: "circle",
   size: [100],
@@ -155,6 +154,7 @@ export const defaultMode = {
     "drag-canvas",
     "zoom-canvas",
     "drag-node",
+    "click-select",
     {
       type: "tooltip",
       formatText(model) {
@@ -166,8 +166,6 @@ export const defaultMode = {
   ],
   animation: ["click-select"],
 };
-
-
 
 export function registerNodes(G6: any) {
   G6.registerNode(

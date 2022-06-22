@@ -13,7 +13,11 @@
         :label="item.title"
         :name="item.name"
       >
-        <el-switch v-model="transterm" @click="updateTransterm"></el-switch>
+        <el-switch
+          v-model="transterm"
+          @click="updateTransterm"
+          inactive-text="hide Transterm"
+        ></el-switch>
         <div :id="item.name"></div>
       </el-tab-pane>
     </el-tabs>
@@ -211,42 +215,38 @@ const g6 = (data: GraphData | TreeGraphData | undefined, container: string) => {
 };
 
 var data: GraphData = {};
-var graph: Graph | undefined = undefined;
 
 const initGraphAnalyse = () => {
-  // graph = undefined;
-  if (graph === undefined) {
-    let dataT = { name: "traceTrollC.lp" };
-    axios.post("api/causal", dataT).then((res) => {
-      console.log(res);
-      let causalTrees: Array<any> = res.data.causalTrees;
+  let dataT = { name: "traceTrollC.lp" };
+  items.value = [];
+  axios.post("api/causal", dataT).then((res) => {
+    console.log(res);
+    let causalTrees: Array<any> = res.data.causalTrees;
 
-      for (let index = 0; index < causalTrees.length; index++) {
-        const tr = causalTrees[index];
-        console.log(tr);
-
-        const item = new tabItem();
-        item.name = tr.name;
-        item.title = tr.name;
-        let nodes = tr.nodeEventList;
-        let edges = tr.edgeEvents;
-        changeEdgeStyleByType(edges);
-        changeStyleByType(nodes);
-        item.data = {
-          nodes: nodes,
-          edges: edges,
-        };
-        items.value.push(item);
+    for (let index = 0; index < causalTrees.length; index++) {
+      const tr = causalTrees[index];
+      console.log(tr);
+      const item = new tabItem();
+      item.name = tr.name;
+      item.title = tr.name;
+      let nodes = tr.nodeEventList;
+      let edges = tr.edgeEvents;
+      changeEdgeStyleByType(edges);
+      changeStyleByType(nodes);
+      item.data = {
+        nodes: nodes,
+        edges: edges,
+      };
+      items.value.push(item);
+    }
+    setTimeout(() => {
+      for (let index = 0; index < items.value.length; index++) {
+        const element = items.value[index];
+        console.log(element.data);
+        element.graph = g6(element.data, element.name);
       }
-      setTimeout(() => {
-        for (let index = 0; index < items.value.length; index++) {
-          const element = items.value[index];
-          console.log(element.data);
-          element.graph = g6(element.data, element.name);
-        }
-      }, 1);
-    });
-  }
+    }, 10);
+  });
 };
 
 onMounted(() => {});

@@ -294,6 +294,12 @@ const deleteBridge = () => {
   data.bridge = null;
 };
 
+function deleteSwitch() {
+  data.switchs = null;
+  dataRef.switchTrackValue.value = "";
+  dataRef.switchTrackNumber.value = -1;
+}
+
 function deleteCarriage() {
   axios.delete("api/carriage/" + data.id).then(() => {
     ElMessage("delete " + data.id);

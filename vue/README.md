@@ -12,18 +12,18 @@
 
 
 ## partie 2
-- [ ] excuter train animation
-  - [ ] use trace generated with clingo
-  - [ ] navigator (run/run one step/go back)
-  - [ ] edit mode and animation mode
+- [x] excuter train animation
+  - [x] use trace generated with clingo
+  - [x] navigator (run/run one step/go back)
+  - [x] edit mode and animation mode
   - [x] ==show bridge==
   - [x] ==show group==
-- [ ] senario menu
-  - [ ] table of senario and the choices of user
+- [x] senario menu
+  - [x] table of senario and the choices of user
   - [x] with default file
 - [x] analyse result
   - [x] tree causual(causual trace: senario cause death of how many people)
-- [ ] jugement
+- [x] jugement
   - [x] A table of different principles (corresponding to different actions).
 
 ## Project setup

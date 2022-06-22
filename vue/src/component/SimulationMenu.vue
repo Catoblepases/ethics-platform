@@ -1,14 +1,13 @@
 <template>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column
-      v-for="item in items"
-      :key="item"
-      :prop="item"
-      :label="item"
-    />
     <el-table-column align="left" width="80">
       <template #header>
-        <el-button :icon="Plus" type="primary" circle @click="addSimulation"></el-button>
+        <el-button
+          :icon="Plus"
+          type="primary"
+          circle
+          @click="addSimulation"
+        ></el-button>
       </template>
       <template #default="scope">
         <el-button
@@ -26,6 +25,12 @@
         ></el-button>
       </template>
     </el-table-column>
+    <el-table-column
+      v-for="item in items"
+      :key="item"
+      :prop="item"
+      :label="item"
+    />
   </el-table>
   <edit-simulation ref="editS" @onChange="onChange"></edit-simulation>
 </template>

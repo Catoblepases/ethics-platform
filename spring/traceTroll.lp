@@ -42,10 +42,10 @@ occurs(ss,run(train,side(0)),1).
 occurs(ss,run(train,side(1)),2).
 occurs(aaaaa,run(train,side(0)),1).
 occurs(aaaaa,run(train,side(1)),2).
+occurs(s0,push(g3,b),0).
 occurs(s1,switch(main(0)),0).
 occurs(ss,switch(main(0)),0).
 occurs(aaaaa,switch(main(0)),0).
-occurs(s0,push(g3,b),0).
 occurs(aaaaa,push(g3,b),0).
 holds(s0,on(train,main(0)),1).
 holds(s0,on(g1,main(3)),1).
@@ -71,8 +71,8 @@ holds(s1,on(g3,b),1).
 holds(s1,on(train,side(0)),1).
 holds(s1,on(g1,main(3)),1).
 holds(s1,on(g2,side(2)),1).
-holds(s1,on(g3,b),2).
 holds(s1,on(train,side(1)),2).
+holds(s1,on(g3,b),2).
 holds(s1,on(g1,main(3)),2).
 holds(s1,on(g2,side(2)),2).
 holds(s1,on(g3,b),3).
@@ -112,8 +112,8 @@ holds(ss,on(g3,b),1).
 holds(ss,on(train,side(0)),1).
 holds(ss,on(g1,main(3)),1).
 holds(ss,on(g2,side(2)),1).
-holds(ss,on(g3,b),2).
 holds(ss,on(train,side(1)),2).
+holds(ss,on(g3,b),2).
 holds(ss,on(g1,main(3)),2).
 holds(ss,on(g2,side(2)),2).
 holds(ss,on(g3,b),3).

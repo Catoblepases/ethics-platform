@@ -78,10 +78,10 @@ public class NodeController {
             }
             i++;
         }
+        List<Switch> ls = new ArrayList<>();
         for (Track track : tracks) {
             for (Carriage carriage : track) {
                 NodeStandard node = getNodeById(carriage.getName());
-                List<Switch> ls = new ArrayList<>();
                 if (carriage.suivant != null) {
                     NodeStandard target = getNodeById(carriage.suivant.getName());
                     if (target != null) {
@@ -92,7 +92,7 @@ public class NodeController {
                 if ((sw != null) && (!ls.contains(sw))) {
                     NodeStandard target = getNodeById(carriage.getSwitch().next(carriage).getName());
                     if (target != null) {
-                        edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
+                        edgeMapper.addEdge(new Edge(sw.getTrackBegin().getName(), sw.getTrackEnd().getName()));
                         ls.add(sw);
                     }
                 }
