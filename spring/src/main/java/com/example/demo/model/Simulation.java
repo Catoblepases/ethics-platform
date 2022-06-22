@@ -27,4 +27,13 @@ public class Simulation {
         this.name = simulation.getName();
         this.actions = simulation.getActions();
     }
+
+    public void normalize() {
+        EventItem[] le = actions.toArray(new EventItem[actions.size()]);
+        for (EventItem action : le) {
+            if (action.getValid() == false) {
+                actions.remove(action);
+            }
+        }
+    }
 }

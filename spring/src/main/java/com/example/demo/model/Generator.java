@@ -254,19 +254,18 @@ public class Generator {
             content += ")" + END;
             out.write(content);
             for (Simulation sim : simulations) {
+                if (sim.getActions().size() == 0) {
+                    continue;
+                }
                 content = "performs(" + sim.getName() + ",";
                 for (int i = 0; i < sim.getActions().size(); i++) {
-                    if (i != 0) {
-                        content += ";";
-                    }
-                    content += sim.getActions().get(i).getEventDescription();
+                    out.write(content + sim.getActions().get(i).getEventDescription() + "," + sim.getActions().get(0).getTime() + ")" + END);
                 }
-                content += "," + sim.getActions().get(0).getTime() + ")";
-                out.write(content + END);
             }
             out.write(eventSpec);
             out.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

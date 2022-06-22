@@ -6,20 +6,24 @@
       :prop="item"
       :label="item"
     />
-    <el-table-column align="right" width="130">
+    <el-table-column align="left" width="80">
       <template #header>
-        <el-button :icon="Plus" @click="addSimulation"></el-button>
+        <el-button :icon="Plus" type="primary" circle @click="addSimulation"></el-button>
       </template>
       <template #default="scope">
-        <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-          >Edit</el-button
-        >
+        <el-button
+          size="small"
+          :icon="Edit"
+          @click="handleEdit(scope.$index, scope.row)"
+          circle
+        ></el-button>
         <el-button
           size="small"
           type="danger"
+          :icon="Delete"
           @click="handleDelete(scope.$index, scope.row)"
-          >Delete</el-button
-        >
+          circle
+        ></el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -28,7 +32,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, provide } from "vue";
-import { Check, Close, Plus } from "@element-plus/icons-vue";
+import { Check, Close, Plus, Edit, Delete } from "@element-plus/icons-vue";
 import axios from "axios";
 import EditSimulation from "./EditSimulation.vue";
 

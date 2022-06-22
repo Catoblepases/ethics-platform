@@ -123,12 +123,21 @@ export const updateSwitch = (
   destNumber: Ref<number>
 ) => {
   var s = data?.switchs;
+  if (s === null) {
+    data!.switchs = new Switch();
+    s = data?.switchs;
+    s!.trackBegin = data!.id;
+    s!.trackBeginName = data!.track;
+    s!.trackBeginNumber = data!.index;
+  }
   if (notEqualNull(destValue.value) && notEqualNull(destNumber.value)) {
-    s!.trackEndName = destValue.value;
-    s!.trackEndNumber = destNumber.value;
+    data!.switchs!.trackEndName = destValue.value;
+    data!.switchs!.trackEndNumber = destNumber.value;
+    data!.switchs!.trackEnd = destValue.value + "(" + destNumber.value + ")";
   } else if (
     data!.switchs != null &&
-    (!notEqualNull(s?.trackEndName) || !notEqualNull(s?.trackEndNumber))
+    (!notEqualNull(data!.switchs?.trackEndName) ||
+      !notEqualNull(data!.switchs?.trackEndNumber))
   ) {
     data!.switchs = null;
   }

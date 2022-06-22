@@ -218,6 +218,7 @@ public class CarriageController {
     String addSimulation(@RequestBody Simulation simulation) {
         Simulation sim = generator.findSimulation(simulation.getName());
         if (sim == null) {
+            simulation.normalize();
             generator.simulations.add(simulation);
             System.out.println(simulation.getActions());
         } else {
@@ -228,7 +229,7 @@ public class CarriageController {
 
     @PostMapping("/updateAction")
     String updateAction() {
-        generator.save("trolley1act.lp");
+        generator.save("./trolley1act.lp");
         return "sucess";
     }
 

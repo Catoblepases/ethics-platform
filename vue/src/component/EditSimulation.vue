@@ -86,7 +86,7 @@ const updateEditSimulation = () => {
     if (actions.includes(el.eventDescription) && content != "X") {
       el.valid = true;
       var time = content.match(/\d+/g);
-      el.time = time;
+      el.time = time[0];
     } else {
       el.valid = false;
     }
@@ -101,7 +101,7 @@ const setTableData = (data: any) => {
 };
 
 const handleValid = (index: number, row: Event) => {
-  console.log(index, row.valid);
+  console.log(index, row);
 };
 
 const getEvent = () => {

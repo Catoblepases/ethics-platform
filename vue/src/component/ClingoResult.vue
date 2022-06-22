@@ -49,7 +49,7 @@ const changeItems = (dataItems: any) => {
 
 const initGraphAnalyse = () => {
   if (form === undefined) {
-    let dataT = { name: "./data/ria/resultTroll.lp" };
+    let dataT = { name: "./resultTroll.lp" };
     axios.post("api/clingo/result", dataT).then((res) => {
       changeData(res.data.data);
       changeItems(res.data.items);

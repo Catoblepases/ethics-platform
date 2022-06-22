@@ -235,7 +235,7 @@ const update = () => {
 };
 
 const apply = () => {
-  // updateData(data, dataRef);
+  updateData(data, dataRef);
   console.log("update data:");
   console.log(data);
   axios.put("api/carriage", data).then(() => {

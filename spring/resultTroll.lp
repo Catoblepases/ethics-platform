@@ -2,10 +2,10 @@ imp(dde2,push(g3,b)).
 imp(dde,push(g3,b)).
 imp(doNotKill,switch(main(0))).
 imp(doNotKill,push(g3,b)).
-imp(actUti,switch(main(0))).
 imp(leastBad2,switch(main(0))).
 per(pureBad,switch(main(0))).
 per(benCosts,switch(main(0))).
+per(actUti,switch(main(0))).
 per(dde,switch(main(0))).
 per(pureBad,push(g3,b)).
 per(leastBad2,push(g3,b)).
