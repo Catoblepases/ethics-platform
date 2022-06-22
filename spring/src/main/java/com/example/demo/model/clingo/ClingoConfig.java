@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class ClingoConfig {
     String actionTheory;
     String context;
@@ -13,6 +12,17 @@ public class ClingoConfig {
     String ethicalTheories;
     String trace;
     String causalTrace;
-    String[] results;
+    String results;
     String output;
+    public ClingoConfig() {
+        actionTheory = "./eventMotorOnly.lp";
+        context = "./trolley1act.lp";
+        causalTheory = "./causalMotorPrevents.lp";
+        ethicalSpec = "./trollEthSpec.lp";
+        ethicalTheories = "./restrEthicalMotor.lp";
+        trace = "./traceTroll.lp";
+        causalTrace = "./traceTrollC.lp";
+        results = "imp/2\nper/2";
+        output = "./resultTroll.lp";
+    }
 }

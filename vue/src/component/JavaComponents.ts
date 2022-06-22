@@ -150,10 +150,11 @@ export const updateOriginal = (data: Data, dest: Ref<Boolean>) => {
 };
 
 export const updateData = (data: Data, dataR: DataRef) => {
-  updateGroup(data,dataR.group);
-  updateGroup(data, dataR.groupBridge);
-  updateSwitch(data, dataR.switchTrackValue,dataR.switchTrackNumber);
+  // updateGroup(data, dataR.group);
+  // updateGroup(data, dataR.groupBridge);
+  updateSwitch(data, dataR.switchTrackValue, dataR.switchTrackNumber);
   updateOriginal(data, dataR.orignalPosition);
+  // updateBridge(data,dataR.nameBridge)
 };
 
 export const deleteBridge = (data: Data) => {

@@ -87,6 +87,13 @@ public class Carriage extends Position {
         return name;
     }
 
+    public void delete(){
+        deleteBridge();
+        deleteGroup();
+        deleteSwitch();
+        before.suivant=suivant;
+    }
+
     public Carriage next() {
         if (sw != null) {
             return sw.next();

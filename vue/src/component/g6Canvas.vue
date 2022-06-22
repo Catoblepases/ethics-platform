@@ -24,8 +24,9 @@
     ref="childRef"
     :dialogFormVisible="dialogFormVisible"
     :nodeId="nodeId"
-    @onUpdate="onUpdate"
+    @onUpdate="updateGraph"
   ></edit-menu>
+  <edit-track @updateGraph="updateGraph"></edit-track>
 </template>
 
 <script setup lang="ts">
@@ -43,13 +44,16 @@ import {
 import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 import axios from "axios";
 import EditMenu from "./EditMenu.vue";
+import EditTrack from "./EditTrack.vue";
 import {
   stateStyle,
   registerNodes,
-  graphStyle,
   trainSetup,
   dagreLayout,
   changeStyleByType,
+  defaultNodeStyle,
+  defaultEdgeStyle,
+  defaultMode,
 } from "./nodes";
 import { ElMessage } from "element-plus";
 
@@ -57,6 +61,9 @@ var graph: Graph;
 let data: GraphData;
 
 let editMode = ref(true);
+let trackEditVisible = ref(false);
+provide("trackEditVisible", trackEditVisible);
+
 let color = ref("#409EFC");
 var timeSim = 0;
 
@@ -91,12 +98,6 @@ function fixNodesPosition() {
     item.refresh();
   }
 }
-
-const onUpdate = () => {
-  updateGraph();
-  console.log("update:Graph");
-};
-
 const childRef = ref<any>();
 
 const updateEditMenu = () => {
@@ -156,6 +157,65 @@ async function getData() {
   return data;
 }
 
+const contextMenu = new G6.Menu({
+  getContent(evt) {
+    let header;
+    if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
+      header = "Canvas ContextMenu";
+    } else if (evt.item) {
+      const itemType = evt.item.getType();
+      header = `${itemType.toUpperCase()} ContextMenu`;
+    }
+    return `
+  <div id="contextmenu" class="menu">
+      <div class="contextmenu_item">add carriage</div>
+      <div class="contextmenu_item">add new track</div>
+      <div class="contextmenu_item">delete track</div>
+      <div class="contextmenu_item">delete carriage</div>
+  </div>
+  `;
+  },
+  handleMenuClick: (target, item) => {
+    console.log(target.innerText, item.getModel().id);
+    switch (target.innerText) {
+      case "add carriage":
+        axios.post("api/carriage/addCarriage", { name: item.getModel().id });
+        break;
+      case "add new track":
+        trackEditVisible.value = true;
+        break;
+      case "delete track":
+        axios.post("api/carriage/deleteTrack", { name: item.getModel().id });
+        break;
+      case "delete carriage":
+        axios.delete("api/carriage/" + item.getModel().id).then(() => {
+          ElMessage("delete " + item.getModel().id);
+        });
+        break;
+    }
+    setTimeout(() => {
+      updateGraph();
+    }, 300);
+  },
+  // offsetX and offsetY include the padding of the parent container
+  offsetY: 0,
+  itemTypes: ["node"],
+});
+
+const graphStyle = {
+  container: "mountNode",
+  width: 1300,
+  height: 600,
+  fitViewPadding: [20, 40, 50, 200],
+  plugins: [toolbar, contextMenu],
+  layout: dagreLayout,
+  animate: true,
+  defaultNode: defaultNodeStyle,
+  defaultEdge: defaultEdgeStyle,
+  nodeStateStyles: stateStyle,
+  modes: defaultMode,
+};
+
 var time = 0;
 var curentSimulation: Simulation;
 
@@ -192,8 +252,8 @@ function changeGroupPosition(position: string) {
 function changeTrainPosition(position: string) {
   const item = graph.findById(position).getModel();
   const train = graph.findById("train");
-  console.log(item);
-  console.log(train);
+
+  console.log("change train to " + position);
 
   train.getModel().x = item.x;
   train.getModel().y = item.y;
@@ -276,7 +336,6 @@ async function initSimulation() {
         break;
       }
     }
-
     console.log(curentSimulation);
     axios.get("api/carriage/original").then((res) => {
       const id: string = res.data;
@@ -294,6 +353,8 @@ async function initSimulation() {
   });
 }
 
+const openContextMenu = () => {};
+
 const initGraph = () => {
   axios.post("api/Node/addAll/test").then((res) => {
     axios.get("api/Node").then((res1) => {
@@ -306,6 +367,9 @@ const initGraph = () => {
         setTimeout(() => {
           graph.updateLayout({});
         }, 500);
+        graph.on("canvas:contextmenu", function (evt) {
+          trackEditVisible.value = true;
+        });
         graph.on("node:dblclick", function (evt) {
           var id: string = evt.item?.getModel().id!;
           setNodeId(id);
@@ -322,26 +386,12 @@ const initGraph = () => {
 };
 
 const updateGraph = () => {
-  axios.post("api/Node/addAll/test").then((res) => {
-    axios.get("api/Node").then((res1) => {
-      axios.get("api/Edge").then((res2) => {
-        var _nodes = res1.data;
-        var _edges = res2.data;
-        changeStyleByType(_nodes);
-        data = { nodes: _nodes, edges: _edges };
-        graph.changeData(data);
-        graph.on("node:dblclick", function (evt) {
-          var id: string = evt.item?.getModel().id!;
-          setNodeId(id);
-          axios.get("api/carriage/" + id).then((res) => {
-            setCarriageData(res.data);
-            updateEditMenu();
-            openMenu();
-          });
-        });
-      });
-    });
+  getData().then((data) => {
+    console.log(data);
+
+    graph.changeData(data);
   });
+  graph.refresh();
   console.log("run:updateGraph");
 };
 
@@ -351,7 +401,13 @@ onBeforeUpdate(() => {
   updateGraph();
 });
 
-defineExpose({ runOneStep, initSimulation, runOneStepBack, runAll });
+defineExpose({
+  runOneStep,
+  initSimulation,
+  runOneStepBack,
+  runAll,
+  updateGraph,
+});
 </script>
 
 <style>
@@ -387,6 +443,17 @@ defineExpose({ runOneStep, initSimulation, runOneStepBack, runAll });
   display: block;
   line-height: 34px;
   text-align: center;
+}
+
+.contextmenu_item:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.contextmenu_item:hover {
+  cursor: pointer;
+  background: #66b1ff;
+  border-color: #66b1ff;
+  color: #fff;
 }
 
 .el-row {

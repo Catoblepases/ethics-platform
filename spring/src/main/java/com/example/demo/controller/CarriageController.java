@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.mapper.SimulationMapper;
 import com.example.demo.model.*;
+import com.example.demo.model.clingo.ClingoCausal;
 import com.example.demo.model.clingo.ClingoSimulation;
 import com.example.demo.model.clingo.ClingoTrace;
 import com.example.demo.model.clingo.G6Info;
@@ -114,9 +115,6 @@ public class CarriageController {
             return "fail";
         }
         Track track = generator.findTrack(carriage.getTrack());
-        carriage.deleteBridge();
-        carriage.deleteGroup();
-        carriage.deleteSwitch();
         track.remove(carriage);
         return "sucess";
     }
@@ -185,9 +183,9 @@ public class CarriageController {
     }
 
     @PostMapping("/lp")
-    String saveFile(@RequestBody String path) {
+    String saveFile(@RequestBody Map<String, String> map) {
         try {
-            File file = new File(path);
+            File file = new File(map.get("name"));
             generator.saveFile(file);
         } catch (Exception e) {
             return e.getMessage();
@@ -242,7 +240,33 @@ public class CarriageController {
     }
 
     @GetMapping("/original")
-    String getOriginal(){
+    String getOriginal() {
         return generator.train.getOriginPosition().getName();
+    }
+
+    @PostMapping("/addCarriage")
+    String addCarriage(@RequestBody Map<String, String> map) {
+        String trackName = ClingoCausal.findCompleteCommande(map.get("name"), '(').get(0);
+        Track track = generator.findTrack(trackName);
+        track.addNewCarriage();
+        return "sucess";
+    }
+
+    @PostMapping("/addTrack")
+    String addTrack(@RequestBody Map<String, Object> map) {
+        Track track = new Track((String) map.get("name"), (int) map.get("length"));
+        generator.tracks.add(track);
+        return "sucess";
+    }
+
+    @PostMapping("/deleteTrack")
+    String deleteTrack(@RequestBody Map<String, String> map){
+        String trackName = ClingoCausal.findCompleteCommande(map.get("name"), '(').get(0);
+        Track track = generator.findTrack(trackName);
+        if (track!=null){
+            track.delete();
+            generator.tracks.remove(track);
+        }
+        return "success";
     }
 }

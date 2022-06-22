@@ -3,7 +3,7 @@
   <!-- <el-divider /> -->
   <p></p>
   <el-row>
-    <el-col :span="1"> </el-col>
+    <!-- <el-col :span="1"> </el-col>
     <el-col :span="2">
       <el-dropdown
         max-height="50"
@@ -37,7 +37,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-    </el-col>
+    </el-col> -->
     <el-col :span="2">
       <el-switch
         v-model="collapse"

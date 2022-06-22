@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 
-
 import java.util.ArrayList;
 
 /*Le class Track, qui est une liste de troncon*/
@@ -66,5 +65,15 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
             }
         }
         return nb;
+    }
+
+    public void delete() {
+        for (int i = 0; i < size(); i++) {
+            Carriage c = get(i);
+            Switch sw=c.getSwitch();
+            if (sw!=null){
+                sw.getTrackBegin().setSwitch(null);
+            }
+        }
     }
 }

@@ -84,13 +84,17 @@ public class NodeController {
                 List<Switch> ls = new ArrayList<>();
                 if (carriage.suivant != null) {
                     NodeStandard target = getNodeById(carriage.suivant.getName());
-                    edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
+                    if (target != null) {
+                        edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
+                    }
                 }
                 Switch sw = carriage.getSwitch();
                 if ((sw != null) && (!ls.contains(sw))) {
                     NodeStandard target = getNodeById(carriage.getSwitch().next(carriage).getName());
-                    edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
-                    ls.add(sw);
+                    if (target != null) {
+                        edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
+                        ls.add(sw);
+                    }
                 }
             }
         }

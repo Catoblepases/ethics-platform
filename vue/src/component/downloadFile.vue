@@ -44,13 +44,17 @@ const options = [
 
 const download = async () => {
   const path = "./download/" + fileName.value + value.value;
-  switch (value.value) {
+
+  switch (value.value.toString()) {
     case ".json":
+      console.log(path);
       const { data } = await axios.get("api/Node");
+      console.log(data);
       window.sessionStorage.setItem(path, data);
       break;
     case ".lp":
-      axios.post("api/carriage/lp",path);
+      axios.post("api/carriage/lp", { name: path });
+      console.log(path);
       break;
     default:
       break;

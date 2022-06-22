@@ -1,5 +1,7 @@
 // import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
 
+import G6 from "@antv/g6";
+
 export const trainSetup = {
   id: "train",
   x: 200,
@@ -121,57 +123,51 @@ export const stateStyle = {
   },
 };
 
-export const graphStyle = {
-  container: "mountNode",
-  width: 1300,
-  height: 600,
-  fitViewPadding: [20, 40, 50, 200],
-  // fitView: true,
-  plugins: [toolbar],
-  layout: dagreLayout,
-  animate: true,
-  defaultNode: {
-    shape: "circle",
-    size: [100],
-    color: "#5B8FF9",
-    style: {
-      fill: "steelblue",
-      stroke: "#666",
-      lineWidth: 1,
-    },
-    // Label text configuration on nodes
-    labelCfg: {
-      style: {
-        fill: "#fff",
-        fontSize: 9,
-      },
-    },
+
+export const defaultNodeStyle = {
+  shape: "circle",
+  size: [100],
+  color: "#5B8FF9",
+  style: {
+    fill: "steelblue",
+    stroke: "#666",
+    lineWidth: 1,
   },
-  defaultEdge: {
+  // Label text configuration on nodes
+  labelCfg: {
     style: {
-      stroke: "#e2e2e2",
-      endArrow: true,
-      startArrow: false,
+      fill: "#fff",
+      fontSize: 9,
     },
-  },
-  nodeStateStyles: stateStyle,
-  modes: {
-    default: [
-      "drag-canvas",
-      "zoom-canvas",
-      "drag-node",
-      {
-        type: "tooltip",
-        formatText(model) {
-          const text =
-            "label: " + model.label + "<br/> typeName: " + model.typeName;
-          return text;
-        },
-      },
-    ],
-    animation: ["click-select"],
   },
 };
+
+export const defaultEdgeStyle = {
+  style: {
+    stroke: "#e2e2e2",
+    endArrow: true,
+    startArrow: false,
+  },
+};
+
+export const defaultMode = {
+  default: [
+    "drag-canvas",
+    "zoom-canvas",
+    "drag-node",
+    {
+      type: "tooltip",
+      formatText(model) {
+        const text =
+          "label: " + model.label + "<br/> typeName: " + model.typeName;
+        return text;
+      },
+    },
+  ],
+  animation: ["click-select"],
+};
+
+
 
 export function registerNodes(G6: any) {
   G6.registerNode(
@@ -197,6 +193,7 @@ export function registerNodes(G6: any) {
             height: cfg?.size[1],
             fill: cfg?.style?.cfill,
           },
+          name: "carriage",
         });
 
         let GROUP: Array<any> = [];
@@ -241,7 +238,7 @@ export function registerNodes(G6: any) {
       },
     },
 
-    "single-node"
+    "rect"
   );
 
   G6.registerNode(
@@ -263,6 +260,7 @@ export function registerNodes(G6: any) {
             height: cfg?.size[1],
             fill: cfg?.fill,
           },
+          name: "carriage",
         });
 
         group.addShape("rect", {
@@ -273,6 +271,7 @@ export function registerNodes(G6: any) {
             height: 30,
             fill: "#6bccdb",
           },
+          name: "bridge",
         });
 
         group.addShape("text", {
@@ -292,7 +291,7 @@ export function registerNodes(G6: any) {
         return rect;
       },
     },
-    "single-node"
+    "rect"
   );
 
   G6.registerNode(
@@ -315,6 +314,7 @@ export function registerNodes(G6: any) {
             height: cfg?.size[1],
             fill: cfg?.style?.cfill,
           },
+          name: "carriage",
         });
 
         group.addShape("rect", {
@@ -325,6 +325,7 @@ export function registerNodes(G6: any) {
             height: 30,
             fill: "#6bccdb",
           },
+          name: "bridge",
         });
 
         for (let i = 0; i < nbLine; i++) {

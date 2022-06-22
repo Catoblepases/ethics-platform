@@ -91,7 +91,7 @@
           <el-divider direction="vertical"></el-divider>
           <el-descriptions
             class="margin-top"
-            title="Group on the carriage"
+            title="Group on the bridge"
             :column="3"
             :size="size"
             :style="blockMargin"
@@ -104,11 +104,14 @@
             }}</el-descriptions-item>
           </el-descriptions></el-row
         >
-
         <el-collapse v-model="activeName" accordion>
           <el-collapse-item title="Delete Group" name="1">
-            <el-button type="danger" plain>delete Group on bridge</el-button>
-            <el-button type="danger" plain>delete Group on carriage</el-button>
+            <el-button type="danger" @click="deleteGroupBridge" plain
+              >delete Group on bridge</el-button
+            >
+            <el-button type="danger" @click="deleteGroup" plain
+              >delete Group on carriage</el-button
+            >
           </el-collapse-item>
           <el-collapse-item title="Create Group" name="2">
             <el-form :inline="true" class="demo-form-inline">
@@ -232,7 +235,8 @@ const update = () => {
 };
 
 const apply = () => {
-  updateData(data, dataRef);
+  // updateData(data, dataRef);
+  console.log("update data:");
   console.log(data);
   axios.put("api/carriage", data).then(() => {
     console.log("submit succes");
@@ -241,7 +245,9 @@ const apply = () => {
 };
 
 const onSubmitGroup = () => {
-  if (group.value.name != null && group.value.size != null) {
+  console.log(createGroup);
+
+  if (createGroup.value.name != null && createGroup.value.size != null) {
     if (pos.value == "c") {
       if (data.group === null || data.group.size === -1) {
         data.group = {
@@ -255,13 +261,15 @@ const onSubmitGroup = () => {
       setGroup(data.group, group);
     } else {
       if (data.bridge === null) {
-        ElMessage("this isnt a bridge");
+        ElMessage("there is not a bridge");
       } else if (data.bridge.group === null) {
+        ElMessage("create a new group on the bridge");
         data.bridge.group = {
           name: createGroup.value.name,
           size: createGroup.value.size,
         };
       } else {
+        ElMessage("change the group on the bridge");
         data.bridge.group.name = createGroup.value.name;
         data.bridge.group.size = createGroup.value.size;
       }
@@ -277,8 +285,30 @@ const onSubmitBridge = () => {
     } else {
       data.bridge!.name = dataRef.nameBridge.value.valueOf();
     }
+    console.log(data);
   }
 };
+
+const deleteBridge = () => {
+  dataRef.nameBridge.value = "";
+  data.bridge = null;
+};
+
+function deleteCarriage() {
+  axios.delete("api/carriage/" + data.id).then(() => {
+    ElMessage("delete " + data.id);
+  });
+}
+
+function deleteGroupBridge() {
+  if (data.bridge) {
+    data.bridge.group = null;
+  }
+}
+
+function deleteGroup() {
+  data.group = null;
+}
 
 onBeforeMount(() => {
   axios.get("api/carriage/allTrack").then((res) => {

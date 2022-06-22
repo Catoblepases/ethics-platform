@@ -1,9 +1,11 @@
 package com.example.demo.model;
 
 import com.example.demo.model.clingo.ClingoCausal;
+import com.example.demo.model.clingo.ClingoConfig;
 import com.example.demo.model.menu.EventItem;
 import org.python.bouncycastle.crypto.tls.MACAlgorithm;
 
+import javax.annotation.Resource;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -45,6 +47,8 @@ public class Generator {
     private int time;
     private boolean initial;
 
+    @Resource
+    public ClingoConfig clingoConfig;
     public final String actionSpec = "posFluent(on(train,M)):-track(M).\n" +
             "posFluent(on(G,M)):-object(G),track(M).\n" +
             "posFluent(on(G,b)):-object(G).\n" +

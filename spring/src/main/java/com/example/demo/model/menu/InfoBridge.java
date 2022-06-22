@@ -24,7 +24,8 @@ public class InfoBridge {
     }
 
     void updateBridge(Carriage carriage) {
-        if (name == "") {
+        if (name == "" || name == null) {
+            carriage.setBridge(null);
             return;
         }
         Bridge bridge = carriage.getBridge();
@@ -35,6 +36,8 @@ public class InfoBridge {
         if (!bridge.getName().equals(name)) {
             bridge.setName(name);
         }
-        group.updateGroup(carriage);
+        if (group != null) {
+            group.updateGroup(carriage.getBridge());
+        }
     }
 }
