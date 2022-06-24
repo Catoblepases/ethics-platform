@@ -21,12 +21,12 @@ initially(on(g1,main(3);g2,side(2);g3,b)).
 initially(alive(g1;g2;g3)).
 initially(on(train,main(0))).
 % -------------SCENARIOS------------- %
-sim(s0;s1;aaa;s2;s3).
+sim(s0;s1;aaa;s3;akmkm).
 performs(s0,push(g3,b),0).
 performs(s1,switch(main(0)),0).
-performs(s2,switch(main(0)),0).
-performs(s2,switch(side(0)),0).
-performs(s2,push(g3,b),0).
+performs(aaa,switch(main(0)),3).
+performs(aaa,switch(side(2)),3).
+performs(aaa,push(g3,b),3).
 performs(s3,switch(main(0)),0).
 performs(s3,switch(side(2)),0).
 performs(s3,push(g3,b),0).

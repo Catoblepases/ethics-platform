@@ -1,25 +1,40 @@
 <template>
-  <el-row>
-    <el-col span="1">
-      <el-tooltip content="editMode" placement="right">
-        <el-icon :size="20" :color="color">
-          <Edit @click="switchMode" />
-        </el-icon>
-      </el-tooltip>
-    </el-col>
-    <el-col span="1">
-      <el-tooltip content="refresh layout" placement="right">
-        <el-icon :size="20" :color="color">
-          <Refresh @click="refreshLayout" />
-        </el-icon>
-      </el-tooltip>
-    </el-col>
-    <el-col span="12">
-      <el-scrollbar>
-        <div id="mountNode"></div>
-      </el-scrollbar>
-    </el-col>
-  </el-row>
+  <q-toolbar class="text-dark">
+    <q-btn flat round dense icon="refresh" @click="initSimulation">
+      <q-tooltip>refresh simulation</q-tooltip>
+    </q-btn>
+    <q-btn flat round dense icon="play_arrow" @click="runAll">
+      <q-tooltip>run/simulation</q-tooltip>
+    </q-btn>
+    <q-btn flat round dense icon="chevron_right" @click="runOneStep">
+      <q-tooltip>run one step</q-tooltip>
+    </q-btn>
+    <q-btn flat round dense icon="chevron_left" @click="runOneStepBack">
+      <q-tooltip>run one step back</q-tooltip>
+    </q-btn>
+    <q-toolbar-title>
+      <q-select
+        borderless
+        v-model="currentSimulationName"
+        :options="simulationNames"
+        loading="true"
+        @virtual-scroll="updateSimulations"
+        style="max-width: 150px"
+      >
+        <template v-slot:after>
+          <q-badge color="dark"> simulation </q-badge>
+        </template>
+      </q-select>
+    </q-toolbar-title>
+    <q-btn flat round dense icon="edit" @click="switchMode" :style="editStyle">
+      <q-tooltip>switch mode</q-tooltip>
+    </q-btn>
+    <q-btn flat round dense icon="refresh" @click="refreshLayout">
+      <q-tooltip>refreshLayout</q-tooltip>
+    </q-btn>
+    <q-btn flat round dense icon="more_vert" />
+  </q-toolbar>
+  <div id="mountNode"></div>
   <edit-menu
     ref="childRef"
     :dialogFormVisible="dialogFormVisible"
@@ -55,18 +70,22 @@ import {
   defaultEdgeStyle,
   defaultMode,
 } from "./nodes";
-import { ElMessage } from "element-plus";
+import { Notify } from "quasar";
 import { updateClingo } from "./updateFile";
+("");
 
 var graph: Graph;
 let data: GraphData;
 
 let editMode = ref(true);
 let trackEditVisible = ref(false);
+const currentSimulationName = ref("");
+const simulationNames = ref<Array<string>>([""]);
+
 provide("trackEditVisible", trackEditVisible);
 
-let color = ref("#409EFC");
 var timeSim = 0;
+const editStyle = ref({ color: "dark" });
 
 registerNodes(G6);
 
@@ -74,7 +93,7 @@ const switchMode = () => {
   if (editMode.value === true) {
     initSimulation().then(() => {});
   } else {
-    color.value = "#409EFC";
+    editStyle.value.color = "black";
     editMode.value = true;
     graph.setMode("default");
     graph.removeItem(trainSetup.id);
@@ -99,6 +118,7 @@ function fixNodesPosition() {
     item.refresh();
   }
 }
+
 const childRef = ref<any>();
 
 const updateEditMenu = () => {
@@ -113,13 +133,6 @@ provide("dialogFormVisible", dialogFormVisible);
 
 var nodeId = ref("");
 provide("nodeId", nodeId);
-
-const props = defineProps({ currentSimulationName: String });
-const emits = defineEmits(["getSimulation"]);
-
-function getSimulation() {
-  emits("getSimulation");
-}
 
 const g6 = (data: GraphData | TreeGraphData | undefined) => {
   graph = new G6.Graph(graphStyle);
@@ -190,7 +203,7 @@ const contextMenu = new G6.Menu({
         break;
       case "delete carriage":
         axios.delete("api/carriage/" + item.getModel().id).then(() => {
-          ElMessage("delete " + item.getModel().id);
+          Notify.create("delete " + item.getModel().id);
         });
         break;
     }
@@ -206,7 +219,7 @@ const contextMenu = new G6.Menu({
 const graphStyle = {
   container: "mountNode",
   width: 1300,
-  height: 600,
+  height: 1000,
   fitViewPadding: [20, 40, 50, 200],
   plugins: [toolbar, contextMenu],
   layout: dagreLayout,
@@ -300,7 +313,11 @@ async function runOneStepBack() {
     await sleep1000();
   }
   if (timeSim < 2) {
-    ElMessage("can't go back");
+    Notify.create({
+      message: "can't go back",
+      position: "top",
+      color: "negative",
+    });
     return;
   }
   timeSim = timeSim - 2;
@@ -332,7 +349,7 @@ async function initSimulation() {
     curentSimulation = res.data[1];
     for (let index = 0; index < res.data.length; index++) {
       const element = res.data[index];
-      if (element.name === props.currentSimulationName) {
+      if (element.name === currentSimulationName.value) {
         curentSimulation = element;
         break;
       }
@@ -348,7 +365,7 @@ async function initSimulation() {
 
       graph.setMode("animation");
       fixNodesPosition();
-      color.value = "";
+      editStyle.value.color = "lightgrey";
       editMode.value = false;
     });
   });
@@ -356,8 +373,8 @@ async function initSimulation() {
 
 const openContextMenu = () => {};
 
-const initGraph = () => {
-  axios.post("api/Node/addAll/test").then((res) => {
+const initGraph = async () => {
+  await axios.post("api/Node/addAll/test").then((res) => {
     axios.get("api/Node").then((res1) => {
       axios.get("api/Edge").then((res2) => {
         var _nodes = res1.data;
@@ -385,6 +402,19 @@ const initGraph = () => {
   });
   console.log("run:initGraph");
 };
+
+async function updateSimulations() {
+  await axios.get("api/carriage/simulation").then((res) => {
+    let data = res.data.data;
+    let names: Array<string> = [];
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      names.push(element.name);
+    }
+    simulationNames.value = names;
+    console.log(simulationNames.value);
+  });
+}
 
 const updateGraph = () => {
   getData().then((data) => {

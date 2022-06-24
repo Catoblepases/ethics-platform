@@ -1,100 +1,187 @@
 <template>
-  <el-container>
-    <el-header height="74px"
-      ><main-header
-        ref="headerRef"
-        @onChange="onChange"
-        @initSimulation="initSimulation"
-        @runOneStep="runOneStep"
-        @runOneStepBack="runOneStepBack"
-        @runAll="runAll"
-        @getSimulation="getSimulation"
-      ></main-header
-    ></el-header>
-    <el-container>
-      <el-aside v-show="collapse" width="430px">
-        <el-scrollbar><side-menu></side-menu></el-scrollbar>
-      </el-aside>
-      <el-main>
-        <el-scrollbar>
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="bg-dark text-white">
+      <q-toolbar>
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          </q-avatar>
+          Ethics Platform
+        </q-toolbar-title>
+        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
+      bordered
+      :width="100"
+    >
+      <q-tabs v-model="tab" vertical class="text-dark">
+        <q-tab name="simulations" icon="tv" label="Sims" />
+        <q-tab name="clingoConfigs" icon="settings" label="Clingo" />
+        <q-tab name="commands" icon="terminal" label="Terminal" />
+      </q-tabs>
+    </q-drawer>
+
+    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+      <q-list>
+        <q-item-label header>Essential Functions</q-item-label>
+        <q-item clickable target="_blank" @click="showAnalyse">
+          <q-item-section avatar>
+            <q-icon name="account_tree" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>causal tree</q-item-label>
+            <q-item-label caption
+              >Show the causal tree of all simulations</q-item-label
+            >
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable target="_blank" @click="showResult">
+          <q-item-section avatar>
+            <q-icon name="summarize" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>clingo result</q-item-label>
+            <q-item-label caption
+              >Demonstrate the results of the ethical judgment of the current
+              action</q-item-label
+            >
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable target="_blank" @click="updateClingo">
+          <q-item-section avatar>
+            <q-icon name="refresh" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>update files of clingo</q-item-label>
+            <q-item-label caption>Manual refresh clingo</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item-label header>Essential Links</q-item-label>
+        <q-item
+          clickable
+          target="_blank"
+          rel="noopener"
+          href="https://github.com/Catoblepases/ethics-platform/blob/main/README.md"
+        >
+          <q-item-section avatar>
+            <q-icon name="school" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Docs</q-item-label>
+            <q-item-label caption
+              >https://github.com/Catoblepases/ethics-platform/README.md</q-item-label
+            >
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          target="_blank"
+          rel="noopener"
+          href="https://github.com/Catoblepases/ethics-platform"
+        >
+          <q-item-section avatar>
+            <q-icon name="code" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>GitHub</q-item-label>
+            <q-item-label caption
+              >https://github.com/Catoblepases/ethics-platform</q-item-label
+            >
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <q-splitter v-model="splitterModel">
+        <template v-slot:before>
+          <q-tab-panels
+            v-model="tab"
+            animated
+            swipeable
+            vertical
+            transition-prev="jump-up"
+            transition-next="jump-up"
+          >
+            <q-tab-panel name="simulations">
+              <div class="text-h5 q-mb-md">Simulation menu</div>
+              <q-separator />
+              <simulation-menu></simulation-menu>
+            </q-tab-panel>
+            <q-tab-panel name="clingoConfigs">
+              <div class="text-h5 q-mb-md">Clingo Config</div>
+              <q-separator />
+              <clingo-menu></clingo-menu>
+            </q-tab-panel>
+            <q-tab-panel name="commands">
+              <div class="text-h5 q-mb-md">Commands</div>
+              <q-separator />
+            </q-tab-panel>
+          </q-tab-panels>
+        </template>
+
+        <template v-slot:after>
           <main-canvas
             ref="g6Ref"
             @getSimulation="getSimulation"
             :currentSimulationName="currentSimulationName"
-          ></main-canvas> </el-scrollbar
-      ></el-main>
-    </el-container>
-  </el-container>
+          ></main-canvas>
+        </template>
+      </q-splitter>
+    </q-page-container>
+  </q-layout>
+
+  <clingo-analyse ref="ARef"></clingo-analyse>
+  <clingo-result ref="RRef"></clingo-result>
 </template>
 
 <script setup lang="ts">
-import SideMenu from "./component/SideMenu.vue";
+import { onBeforeUnmount, onMounted, provide, ref } from "vue";
 import MainCanvas from "./component/g6Canvas.vue";
-import MainHeader from "./component/Header.vue";
-import axios from "axios";
-import { ref, onMounted } from "vue";
-import { ElMessage } from "element-plus";
+import ClingoMenu from "./component/ClingoConfig.vue";
+import SimulationMenu from "./component/SimulationMenu.vue";
+import clingoAnalyse from "./component/ClingoAnalyse.vue";
+import clingoResult from "./component/ClingoResult.vue";
+import { Loading } from "quasar";
 
-const headerRef = ref<any>();
-const g6Ref = ref<any>();
-const currentSimulationName = ref("s1");
+let timer: any;
 
-function getSimulation(): void {
-  currentSimulationName.value = headerRef.value.getCurrentSimulationName();
+const leftDrawerOpen = ref(false);
+const rightDrawerOpen = ref(false);
+const tab = ref("simulations");
+const splitterModel = ref(33);
+const ARef = ref<any>();
+const RRef = ref<any>();
+
+let analyse = ref(false);
+let result = ref(false);
+provide("analyse", analyse);
+provide("result", result);
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
-function initSimulation(): void {
-  console.log("App:initSimulation");
-  g6Ref.value.initSimulation();
+function toggleRightDrawer() {
+  rightDrawerOpen.value = !rightDrawerOpen.value;
 }
 
-function runOneStep(): void {
-  console.log("App:sunOneStep");
-  g6Ref.value.runOneStep();
-}
-
-const runOneStepBack = () => {
-  console.log("App:run one step back");
-  g6Ref.value.runOneStepBack();
+const showAnalyse = () => {
+  analyse.value = true;
+  ARef.value.initGraphAnalyse();
 };
 
-const runAll = () => {
-  console.log("App:runAll");
-  g6Ref.value.runAll();
-};
-
-const collapse = ref(true);
-
-const onChange = (params: boolean) => {
-  console.log("onchange", params);
-  collapse.value = params;
+const showResult = () => {
+  result.value = true;
+  RRef.value.initGraphAnalyse();
 };
 </script>
-
-<style lang="scss">
-:root {
-  --el-color-primary: #595f80;
-  // --el-color-success: #52775d;
-}
-
-.el-button--primary {
-  --el-button-font-color: #ffffff;
-  --el-button-background-color: #595f80;
-  --el-button-border-color: #595f80;
-  --el-button-hover-color: #595f80;
-  --el-button-active-font-color: #e6e6e6;
-  --el-button-active-background-color: #595f80;
-  --el-button-active-border-color: #595f80;
-}
-
-.el-button--success {
-  --el-button-font-color: #ffffff;
-  --el-button-background-color: #52775d;
-  --el-button-border-color: #52775d;
-  --el-button-hover-color: #52775d;
-  --el-button-active-font-color: #e6e6e6;
-  --el-button-active-background-color: #52775d;
-  --el-button-active-border-color: #52775d;
-}
-
-</style>

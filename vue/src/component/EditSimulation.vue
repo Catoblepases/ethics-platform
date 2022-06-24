@@ -1,56 +1,72 @@
 <template>
-  <el-dialog v-model="editSimulationVisible">
-    <el-row>
-      <el-space>
-        <el-col span="2">title:</el-col>
-        <el-col span="2">
-          <el-input v-model="sname" :disabled="editMode"></el-input>
-        </el-col>
-      </el-space>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column label="valid" align="right" width="80">
-        <template #default="scope">
-          <el-switch
-            v-model="tableData[scope.$index].valid"
-            class="mt-2"
-            style="margin-left: 24px"
-            inline-prompt
-            :active-icon="Check"
-            :inactive-icon="Close"
-            @click="handleValid(scope.$index, scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="eventDescription"
-        label="eventDescription"
-        width="120"
-      />
-      <el-table-column prop="time" label="time" width="150">
-        <template #default="scope">
-          <el-input-number
-            size="small"
-            v-model="tableData[scope.$index].time"
-            controls-position="right"
-          ></el-input-number>
-        </template>
-      </el-table-column>
-    </el-table>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="editSimulationVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="apply">Apply</el-button>
-        <el-button type="primary" @click="update">Update</el-button>
-      </span>
-    </template>
-  </el-dialog>
+  <q-dialog v-model="editSimulationVisible">
+    <q-card>
+      <q-card-section>
+        <q-toolbar>
+          <q-toolbar-title>
+            <q-input
+              label="simulation name"
+              v-model="sname"
+              :disabled="editMode"
+            ></q-input>
+          </q-toolbar-title>
+          <q-btn dense flat round icon="close" color="red" v-close-popup />
+        </q-toolbar>
+      </q-card-section>
+      <q-card-section>
+        <q-table flat :rows="tableData" row-key="eventDescription">
+          <template v-slot:body="props">
+            <q-tr>
+              <q-td key="valid" :props="props">
+                {{ props.row.valid }}
+                <q-popup-edit v-model="props.row.valid" buttons v-slot="scope">
+                  <q-toggle
+                    v-model="scope.value"
+                    checked-icon="check"
+                    color="red"
+                    unchecked-icon="clear"
+                    autofocus
+                  />
+                </q-popup-edit>
+              </q-td>
+              <q-td key="eventType" :props="props">
+                {{ props.row.eventType }}
+              </q-td>
+              <q-td key="eventDescription" :props="props">
+                {{ props.row.eventDescription }}
+              </q-td>
+              <q-td key="time" :props="props">
+                {{ props.row.time }}
+                <q-popup-edit
+                  v-model="props.row.time"
+                  title="Update time"
+                  buttons
+                  v-slot="scope"
+                >
+                  <q-input
+                    type="number"
+                    v-model="scope.value"
+                    dense
+                    autofocus
+                  />
+                </q-popup-edit>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="apply" color="primary" @click="apply" />
+        <q-btn flat label="update" @click="update" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
-import{updateClingo} from "./updateFile"
-import { ElMessage } from "element-plus";
+import { updateClingo } from "./updateFile";
+import { Notify } from "quasar";
 import Vue, { inject, onMounted, Ref, ref } from "vue";
 const editSimulationVisible = inject("editSimulationVisible");
 const activeSim = inject("activeSimulation");
@@ -100,10 +116,6 @@ const updateEditSimulation = () => {
 const setTableData = (data: any) => {
   tableData.value = data;
   console.log(tableData.value);
-};
-
-const handleValid = (index: number, row: Event) => {
-  console.log(index, row);
 };
 
 const getEvent = () => {
@@ -159,7 +171,11 @@ const update = () => {
 const apply = () => {
   var out: simulations = createData();
   if (out.name === "" || out.name === " ") {
-    ElMessage("bad format");
+    Notify.create({
+      message: "bad format ! (simulations without name)",
+      position: "top",
+      color:"negative"
+    });
     return;
   }
   console.log(out);

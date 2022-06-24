@@ -14,11 +14,13 @@
     "@antv/g-webgl": "^1.1.7",
     "@antv/g6": "^4.6.4",
     "@element-plus/icons-vue": "^2.0.0-beta.0",
+    "@quasar/extras": "^1.14.1",
     "@vueuse/core": "^8.2.5",
     "axios": "^0.27.2",
     "element-plus": "^2.2.2",
     "less": "^4.1.3",
     "lil-gui": "^0.16.1",
+    "quasar": "^2.7.3",
     "scss": "^0.2.4",
     "stats.js": "^0.17.0",
     "ts-node": "^10.8.0",
@@ -26,8 +28,9 @@
     "vue-axios": "^3.4.1"
   },
   "devDependencies": {
+    "@quasar/vite-plugin": "^1.0.10",
     "@vitejs/plugin-vue": "^2.3.0",
-    "sass": "^1.52.1",
+    "sass": "^1.32.12",
     "typescript": "^4.5.4",
     "vite": "^2.9.0",
     "vue-tsc": "^0.29.8"

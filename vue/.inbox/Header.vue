@@ -51,66 +51,6 @@
         <el-divider direction="vertical" />
       </el-col>
       <el-col :span="1">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="init simulation"
-          placement="bottom"
-        >
-          <el-button :icon="Refresh" @click="initSimulation" circle></el-button>
-        </el-tooltip>
-      </el-col>
-      <el-col :span="1">
-        <el-select
-          v-model="currentSimulationName"
-          class="m2"
-          placeholder="sim"
-          @click="updateSimulations"
-        >
-          <el-option
-            v-for="item in simulationNames"
-            :key="item"
-            :label="item"
-            :value="item"
-            @click="getSimulation"
-          />
-        </el-select>
-      </el-col>
-      <el-col :span="1">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="run/simulation"
-          placement="bottom"
-        >
-          <el-button :icon="VideoPlay" @click="runAll" circle></el-button>
-        </el-tooltip>
-      </el-col>
-      <el-col :span="1">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="run one step"
-          placement="bottom"
-        >
-          <el-button :icon="ArrowRight" @click="runOneStep" circle></el-button>
-        </el-tooltip>
-      </el-col>
-      <el-col :span="1">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="back one step"
-          placement="bottom"
-        >
-          <el-button
-            :icon="ArrowLeft"
-            @click="runOneStepBack"
-            circle
-          ></el-button>
-        </el-tooltip>
-      </el-col>
-      <el-col :span="1">
         <el-divider direction="vertical" />
       </el-col>
       <el-col :span="2">

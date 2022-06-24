@@ -1,5 +1,3 @@
-// import G6, { GraphData, TreeGraphData, Graph, Item } from "@antv/g6";
-
 import G6 from "@antv/g6";
 
 export const trainSetup = {
