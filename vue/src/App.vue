@@ -1,32 +1,30 @@
 <template>
-  <div class="common-layout">
+  <el-container>
+    <el-header height="74px"
+      ><main-header
+        ref="headerRef"
+        @onChange="onChange"
+        @initSimulation="initSimulation"
+        @runOneStep="runOneStep"
+        @runOneStepBack="runOneStepBack"
+        @runAll="runAll"
+        @getSimulation="getSimulation"
+      ></main-header
+    ></el-header>
     <el-container>
-      <el-header height="74px"
-        ><main-header
-          ref="headerRef"
-          @onChange="onChange"
-          @initSimulation="initSimulation"
-          @runOneStep="runOneStep"
-          @runOneStepBack="runOneStepBack"
-          @runAll="runAll"
-          @getSimulation="getSimulation"
-        ></main-header
-      ></el-header>
-      <el-container>
-        <el-aside v-show="collapse" width="430px">
-          <el-scrollbar><side-menu></side-menu></el-scrollbar>
-        </el-aside>
-        <el-main>
-          <el-scrollbar>
-            <main-canvas
-              ref="g6Ref"
-              @getSimulation="getSimulation"
-              :currentSimulationName="currentSimulationName"
-            ></main-canvas> </el-scrollbar
-        ></el-main>
-      </el-container>
+      <el-aside v-show="collapse" width="430px">
+        <el-scrollbar><side-menu></side-menu></el-scrollbar>
+      </el-aside>
+      <el-main>
+        <el-scrollbar>
+          <main-canvas
+            ref="g6Ref"
+            @getSimulation="getSimulation"
+            :currentSimulationName="currentSimulationName"
+          ></main-canvas> </el-scrollbar
+      ></el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -78,6 +76,7 @@ const onChange = (params: boolean) => {
   --el-color-primary: #595f80;
   // --el-color-success: #52775d;
 }
+
 .el-button--primary {
   --el-button-font-color: #ffffff;
   --el-button-background-color: #595f80;
@@ -97,4 +96,5 @@ const onChange = (params: boolean) => {
   --el-button-active-background-color: #52775d;
   --el-button-active-border-color: #52775d;
 }
+
 </style>

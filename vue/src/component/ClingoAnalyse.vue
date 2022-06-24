@@ -118,6 +118,7 @@ function changeStyleByType(nodes: Array<Node>) {
     if (!node.style) {
       node.style = { fill: node.fill };
     }
+    node.label = node.id;
     node.x = 120;
     node.y = 120;
     node.type = "rect";

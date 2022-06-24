@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-// import App from "./component/SimulationMenu.vue";
+// import App from "./component/toolbar/ToolBar.vue";
 import App from "./App.vue";
 import { KEY_INTEROP, KEY_LOG } from "./keys";
 import interopFallback from "./interop-fallback";

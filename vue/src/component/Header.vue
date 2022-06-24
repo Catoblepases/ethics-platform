@@ -1,131 +1,134 @@
 <template>
-  <!-- <el-affix :offset="0"> -->
-  <!-- <el-divider /> -->
-  <p></p>
-  <el-row>
-    <el-col :span="2">
-      <el-switch
-        v-model="collapse"
-        class="mb-2"
-        active-text="side bar"
-        inactive-text=""
-        @click="update"
-      />
-    </el-col>
-    <el-col :span="1">
-      <el-upload
-        ref="upload"
-        class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :limit="1"
-        :on-exceed="handleExceed"
-        :auto-upload="false"
-      >
-        <template #trigger>
-          <el-tooltip
-            class="box-item"
-            effect="dark"
-            content="select file"
-            placement="bottom"
-          >
-            <el-button type="primary" :icon="Upload" circle></el-button>
-          </el-tooltip>
-        </template>
-      </el-upload>
-    </el-col>
-    <el-col :span="1">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="download"
-        placement="bottom"
-      >
-        <el-button
-          type="primary"
-          :icon="Download"
-          circle
-          @click="showDownloadMenu"
-        ></el-button>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="1">
-      <el-divider direction="vertical" />
-    </el-col>
-    <el-col :span="1">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="init simulation"
-        placement="bottom"
-      >
-        <el-button :icon="Refresh" @click="initSimulation" circle></el-button>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="1">
-      <el-select
-        v-model="currentSimulationName"
-        class="m2"
-        placeholder="sim"
-        @click="updateSimulations"
-      >
-        <el-option
-          v-for="item in simulationNames"
-          :key="item"
-          :label="item"
-          :value="item"
-          @click="getSimulation"
+  <div class="tool-bar" id="tool-bar">
+    <p></p>
+    <el-row>
+      <el-col :span="2">
+        <el-switch
+          v-model="collapse"
+          class="mb-2"
+          active-text="side bar"
+          inactive-text=""
+          @click="update"
         />
-      </el-select>
-    </el-col>
-    <el-col :span="1">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="run/simulation"
-        placement="bottom"
-      >
-        <el-button :icon="VideoPlay" @click="runAll" circle></el-button>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="1">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="run one step"
-        placement="bottom"
-      >
-        <el-button :icon="ArrowRight" @click="runOneStep" circle></el-button>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="1">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="back one step"
-        placement="bottom"
-      >
-        <el-button :icon="ArrowLeft" @click="runOneStepBack" circle></el-button>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="1">
-      <el-divider direction="vertical" />
-    </el-col>
-    <el-col :span="2">
-      <el-button type="success" @click="updateClingo">update</el-button>
-    </el-col>
-    <el-col :span="2">
-      <el-button type="success" @click="showAnalyse">causal tree</el-button>
-    </el-col>
-    <el-col :span="2">
-      <el-button type="success" @click="showResult">clingo result</el-button>
-    </el-col>
-  </el-row>
-  <el-divider />
+      </el-col>
+      <el-col :span="1">
+        <el-upload
+          ref="upload"
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :limit="1"
+          :on-exceed="handleExceed"
+          :auto-upload="false"
+        >
+          <template #trigger>
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="select file"
+              placement="bottom"
+            >
+              <el-button type="primary" :icon="Upload" circle></el-button>
+            </el-tooltip>
+          </template>
+        </el-upload>
+      </el-col>
+      <el-col :span="1">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="download"
+          placement="bottom"
+        >
+          <el-button
+            type="primary"
+            :icon="Download"
+            circle
+            @click="showDownloadMenu"
+          ></el-button>
+        </el-tooltip>
+      </el-col>
+      <el-col :span="1">
+        <el-divider direction="vertical" />
+      </el-col>
+      <el-col :span="1">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="init simulation"
+          placement="bottom"
+        >
+          <el-button :icon="Refresh" @click="initSimulation" circle></el-button>
+        </el-tooltip>
+      </el-col>
+      <el-col :span="1">
+        <el-select
+          v-model="currentSimulationName"
+          class="m2"
+          placeholder="sim"
+          @click="updateSimulations"
+        >
+          <el-option
+            v-for="item in simulationNames"
+            :key="item"
+            :label="item"
+            :value="item"
+            @click="getSimulation"
+          />
+        </el-select>
+      </el-col>
+      <el-col :span="1">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="run/simulation"
+          placement="bottom"
+        >
+          <el-button :icon="VideoPlay" @click="runAll" circle></el-button>
+        </el-tooltip>
+      </el-col>
+      <el-col :span="1">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="run one step"
+          placement="bottom"
+        >
+          <el-button :icon="ArrowRight" @click="runOneStep" circle></el-button>
+        </el-tooltip>
+      </el-col>
+      <el-col :span="1">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="back one step"
+          placement="bottom"
+        >
+          <el-button
+            :icon="ArrowLeft"
+            @click="runOneStepBack"
+            circle
+          ></el-button>
+        </el-tooltip>
+      </el-col>
+      <el-col :span="1">
+        <el-divider direction="vertical" />
+      </el-col>
+      <el-col :span="2">
+        <el-button type="success" @click="updateClingo">update</el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button type="success" @click="showAnalyse">causal tree</el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button type="success" @click="showResult">clingo result</el-button>
+      </el-col>
+    </el-row>
+    <el-divider />
 
-  <download-file></download-file>
-  <clingo-analyse ref="ARef"></clingo-analyse>
-  <clingo-result ref="RRef"></clingo-result>
-  <!-- </el-affix> -->
+    <download-file></download-file>
+    <clingo-analyse ref="ARef"></clingo-analyse>
+    <clingo-result ref="RRef"></clingo-result>
+  </div>
 </template>
 
 <script lang="ts" setup>
