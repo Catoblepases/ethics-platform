@@ -196,6 +196,7 @@ public class CarriageController {
     @GetMapping("/simulation")
     Map getSimulation() {
         SimulationMapper simulationMapper = new SimulationMapper(generator);
+
         Map map = new HashMap();
         map.put("columns", simulationMapper.getNameAndEvents());
         map.put("data", simulationMapper.getSimulations());

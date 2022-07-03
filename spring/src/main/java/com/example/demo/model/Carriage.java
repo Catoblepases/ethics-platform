@@ -73,10 +73,13 @@ public class Carriage extends Position {
     }
 
     public void deleteSwitch() {
-        Carriage c1 = sw.getTrackBegin();
-        Carriage c2 = sw.getTrackEnd();
-        c1.setSwitch(null);
+        if (sw != null) {
+            Carriage c1 = sw.getTrackBegin();
+            Carriage c2 = sw.getTrackEnd();
+            c1.setSwitch(null);
+        }
     }
+
     @Override
     public String toString() {
         return name;

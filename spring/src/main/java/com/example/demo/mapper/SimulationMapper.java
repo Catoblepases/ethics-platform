@@ -13,12 +13,15 @@ import java.util.Map;
 public class SimulationMapper {
     List<String> nameAndEvents;
     List<Map<String, String>> simulations;
+
     public SimulationMapper(Generator generator) {
         nameAndEvents = new ArrayList<>();
         simulations = new ArrayList<>();
         nameAndEvents.add("name");
         for (int i = 0; i < generator.bridges.size(); i++) {
-            nameAndEvents.add(generator.bridges.get(i).getEventInfo());
+            if (generator.bridges.get(i).getGroup()!=null){
+                nameAndEvents.add(generator.bridges.get(i).getEventInfo());
+            }
         }
         for (int i = 0; i < generator.switchs.size(); i++) {
             nameAndEvents.add(generator.switchs.get(i).getEventInfo());
@@ -30,7 +33,7 @@ public class SimulationMapper {
             map.put(nameAndEvents.get(0), sim.getName());
             for (int j = 0; j < sim.getActions().size(); j++) {
                 EventItem e = sim.getActions().get(j);
-                if (e.getValid()){
+                if (nameAndEvents.contains(e.getEventDescription()) && e.getValid()) {
                     map.put(e.getEventDescription(), "O(" + e.getTime() + ")");
                 }
             }
@@ -41,6 +44,7 @@ public class SimulationMapper {
             }
             simulations.add(map);
         }
+        System.out.println(simulations);
     }
 
     public List<String> getNameAndEvents() {

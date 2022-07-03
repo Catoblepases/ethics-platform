@@ -107,8 +107,8 @@ const handleDelete = (index: number, row: Event) => {
 onMounted(() => {
   getSimulations();
   console.log(tableData);
-  setInterval(() => {
-    getSimulations();
-  }, 100);
+  // setInterval(() => {
+  //   getSimulations();
+  // }, 100);
 });
 </script>

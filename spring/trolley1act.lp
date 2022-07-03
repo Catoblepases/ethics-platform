@@ -4,7 +4,7 @@ track(side(0..4);main(0..4);side2(0..5)).
 object(g1;g2;g3).
 group(g1;g2;g3).
 numberInGroup(g1,5;g2,2;g3,1).
-bridgeOn(b,main(1);a,side(0)).
+bridgeOn(b,main(1)).
 buttonOn(main(0)).
 buttonOn(side(2)).
 buttonOn(side(1)).
