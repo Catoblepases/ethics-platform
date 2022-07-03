@@ -8,7 +8,7 @@
           circle
           @click="addSimulation"
         ></el-button>
-        <el-button :icon="Refresh" circle @click="getSimulation"></el-button>
+        <el-button :icon="Refresh" circle @click="getSimulations"></el-button>
       </template>
       <template #default="scope">
         <el-button
@@ -73,6 +73,7 @@ const getSimulations = () => {
   axios.get("api/carriage/simulation").then((res) => {
     setItems(res.data.columns);
     setTableData(res.data.data);
+    console.log("getSimulations");
   });
 };
 

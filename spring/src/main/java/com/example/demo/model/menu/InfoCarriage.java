@@ -54,7 +54,7 @@ public class InfoCarriage {
 
     public void updateCarriage(Carriage carriage, Generator generator) {
         if (group != null) {
-            group.updateGroup(carriage);
+            group.updateGroup(carriage,generator);
         } else {
             if (carriage.getGroup() != null) {
                 generator.groups.remove(carriage.getGroup());

@@ -1,6 +1,7 @@
 package com.example.demo.model.menu;
 
 
+import com.example.demo.model.Generator;
 import com.example.demo.model.Group;
 import com.example.demo.model.Position;
 import lombok.Builder;
@@ -28,10 +29,12 @@ public class InfoGroup {
         return false;
     }
 
-    void updateGroup(Position position) {
+    void updateGroup(Position position, Generator generator) {
         Group g = position.getGroup();
         if (g == null) {
-            position.setGroup(createGroup(position));
+            Group group = createGroup(position);
+            position.setGroup(group);
+            generator.groups.add(group);
         } else if (!equal(g)) {
             g.setNb(size);
             g.setName(name);

@@ -145,6 +145,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, provide, ref } from "vue";
+import { updateClingo } from "./component/updateFile";
 import MainCanvas from "./component/g6Canvas.vue";
 import ClingoMenu from "./component/ClingoConfig.vue";
 import SimulationMenu from "./component/SimulationMenu.vue";

@@ -35,7 +35,9 @@ public class InfoBridge {
             bridge.setName(name);
         }
         if (group != null) {
-            group.updateGroup(carriage.getBridge());
+            group.updateGroup(carriage.getBridge(),generator);
+        }else if(bridge.getGroup()!=null){
+            generator.groups.remove(bridge.getGroup());
         }
     }
 }
