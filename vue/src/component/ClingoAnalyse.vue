@@ -1,11 +1,6 @@
 <template>
-  <el-dialog
-    v-model="analyse"
-    title="Clingo Result Analyse"
-    width="90%"
-    height="90%"
-    :before-close="handleClose"
-  >
+
+  <el-dialog v-model="analyse" title="Clingo Result Analyse" width="90%" height="90%">
     <el-tabs v-model="editableTabsValue" type="card" class="demo-tabs">
       <el-tab-pane
         v-for="item in items"
@@ -45,6 +40,7 @@ class tabItem {
   data: any = { nodes: [], edges: [] };
   graph: Graph | undefined = undefined;
 }
+
 var items = ref(new Array<tabItem>());
 
 function deleteTransterm(data: Array<any>) {
@@ -217,10 +213,10 @@ const g6 = (data: GraphData | TreeGraphData | undefined, container: string) => {
 
 var data: GraphData = {};
 
-const initGraphAnalyse = () => {
+const initGraphAnalyse = async () => {
   let dataT = { name: "traceTrollC.lp" };
   items.value = [];
-  axios.post("api/causal", dataT).then((res) => {
+  await axios.post("api/causal", dataT).then((res) => {
     console.log(res);
     let causalTrees: Array<any> = res.data.causalTrees;
 

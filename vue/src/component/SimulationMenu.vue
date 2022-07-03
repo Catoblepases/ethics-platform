@@ -44,7 +44,7 @@ import {
   Plus,
   Edit,
   Delete,
-  Refresh
+  Refresh,
 } from "@element-plus/icons-vue";
 import axios from "axios";
 import EditSimulation from "./EditSimulation.vue";
@@ -107,5 +107,8 @@ const handleDelete = (index: number, row: Event) => {
 onMounted(() => {
   getSimulations();
   console.log(tableData);
+  setInterval(() => {
+    getSimulations();
+  }, 100);
 });
 </script>

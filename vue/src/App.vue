@@ -133,7 +133,6 @@
           <main-canvas
             ref="g6Ref"
             @getSimulation="getSimulation"
-            :currentSimulationName="currentSimulationName"
           ></main-canvas>
         </template>
       </q-splitter>
@@ -168,6 +167,11 @@ provide("analyse", analyse);
 provide("result", result);
 
 function toggleLeftDrawer() {
+  if (leftDrawerOpen.value) {
+    splitterModel.value = 0;
+  } else {
+    splitterModel.value = 33;
+  }
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 

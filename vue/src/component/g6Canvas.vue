@@ -72,7 +72,7 @@ import {
 } from "./nodes";
 import { Notify } from "quasar";
 import { updateClingo } from "./updateFile";
-("");
+// ("");
 
 var graph: Graph;
 let data: GraphData;
@@ -122,6 +122,7 @@ function fixNodesPosition() {
 const childRef = ref<any>();
 
 const updateEditMenu = () => {
+  console.log("update:editMenu");
   childRef.value.update();
 };
 

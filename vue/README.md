@@ -30,6 +30,7 @@
 
 ```
 npm install
+// "build": "vue-tsc --noEmit --skipLibCheck && vite build",
 ```
 
 ## Compiles and hot-reloads for development

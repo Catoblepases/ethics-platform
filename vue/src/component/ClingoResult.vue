@@ -1,26 +1,13 @@
 <template>
-  <el-dialog
-    v-model="resultVisible"
-    title="Clingo Result"
-    width="90%"
-    height="90%"
-    :before-close="handleClose"
-  >
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column
-        v-for="item in items"
-        :key="item"
-        :prop="item"
-        :label="item"
-      />
-    </el-table>
-
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="resultVisible = false">Cancel</el-button>
-      </span>
-    </template>
-  </el-dialog>
+  <q-dialog v-model="resultVisible" full-width>
+    <q-card style="width: 700px">
+      <q-toolbar>
+        <q-toolbar-title>clingo result</q-toolbar-title>
+        <q-btn flat round dense icon="close" v-close-popup />
+      </q-toolbar>
+      <q-table flat :rows="tableData" row-key="event" />
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">

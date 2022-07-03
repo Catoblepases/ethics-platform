@@ -113,13 +113,17 @@ const updateEditSimulation = () => {
   console.log();
 };
 
+async function asyncEvent() {
+  await getEvent();
+}
+
 const setTableData = (data: any) => {
   tableData.value = data;
   console.log(tableData.value);
 };
 
-const getEvent = () => {
-  axios.get("api/carriage/events").then((res) => {
+const getEvent = async () => {
+  await axios.get("api/carriage/events").then((res) => {
     setTableData(res.data);
     for (let index = 0; index < tableData.value.length; index++) {
       tableData.value[index].valid = false;
@@ -174,7 +178,7 @@ const apply = () => {
     Notify.create({
       message: "bad format ! (simulations without name)",
       position: "top",
-      color:"negative"
+      color: "negative",
     });
     return;
   }
@@ -186,5 +190,5 @@ const apply = () => {
   });
 };
 
-defineExpose({ updateEditSimulation });
+defineExpose({ updateEditSimulation,asyncEvent });
 </script>

@@ -1,8 +1,9 @@
 imp(dde2,push(g3,b)).
 imp(dde,push(g3,b)).
-imp(doNotKill,switch(main(0))).
 imp(doNotKill,push(g3,b)).
+imp(doNotKill,switch(main(0))).
 imp(actUti,switch(side(2))).
+imp(actUti,switch(side(1))).
 imp(leastBad2,switch(main(0))).
 imp(leastBad2,push(g3,b)).
 per(pureBad,switch(main(0))).
@@ -14,6 +15,11 @@ per(leastBad2,switch(side(2))).
 per(benCosts,switch(side(2))).
 per(doNotKill,switch(side(2))).
 per(dde,switch(side(2))).
+per(pureBad,switch(side(1))).
+per(leastBad2,switch(side(1))).
+per(benCosts,switch(side(1))).
+per(doNotKill,switch(side(1))).
+per(dde,switch(side(1))).
 per(pureBad,push(g3,b)).
 per(benCosts,push(g3,b)).
 per(actUti,push(g3,b)).

@@ -56,16 +56,25 @@ public class InfoCarriage {
         if (group != null) {
             group.updateGroup(carriage);
         } else {
+            if (carriage.getGroup() != null) {
+                generator.groups.remove(carriage.getGroup());
+            }
             carriage.setGroup(null);
         }
         if (bridge != null) {
-            bridge.updateBridge(carriage);
+            bridge.updateBridge(carriage, generator);
         } else {
+            if (carriage.getBridge() != null) {
+                generator.bridges.remove(carriage.getBridge());
+            }
             carriage.setBridge(null);
         }
         if (switchs != null) {
             switchs.update(carriage, generator);
         } else {
+            if (carriage.getSwitch() != null) {
+                generator.switchs.remove(carriage.getSwitch());
+            }
             carriage.deleteSwitch();
         }
         if (positionOriginal) {

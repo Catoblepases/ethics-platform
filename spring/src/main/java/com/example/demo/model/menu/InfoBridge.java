@@ -1,9 +1,6 @@
 package com.example.demo.model.menu;
 
-import com.example.demo.model.Bridge;
-import com.example.demo.model.Carriage;
-import com.example.demo.model.Group;
-import com.example.demo.model.Position;
+import com.example.demo.model.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,7 +20,7 @@ public class InfoBridge {
         return bridge;
     }
 
-    void updateBridge(Carriage carriage) {
+    void updateBridge(Carriage carriage, Generator generator) {
         if (name == "" || name == null) {
             carriage.setBridge(null);
             return;
@@ -31,6 +28,7 @@ public class InfoBridge {
         Bridge bridge = carriage.getBridge();
         if (bridge == null) {
             bridge = createBridge(carriage);
+            generator.bridges.add(bridge);
             return;
         }
         if (!bridge.getName().equals(name)) {
