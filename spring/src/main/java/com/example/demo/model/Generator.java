@@ -213,7 +213,9 @@ public class Generator {
             for (int i = 0; i < switchs.size(); i++) {
                 content += "buttonOn(" + switchs.get(i).getTrackBegin().getName() + ")" + END;
             }
-            out.write(content);
+            if (switchs.size() != 0) {
+                out.write(content);
+            }
             out.write("\n\n" + actionSpec);
             out.write("% " + SEPARATOR + "INITIAL SITUATION" + SEPARATOR + " %\n");
             // position of groups
@@ -259,7 +261,7 @@ public class Generator {
                 }
                 content = "performs(" + sim.getName() + ",";
                 for (int i = 0; i < sim.getActions().size(); i++) {
-                    out.write(content + sim.getActions().get(i).getEventDescription() + "," + sim.getActions().get(0).getTime() + ")" + END);
+                    out.write(content + sim.getActions().get(i).getEventDescription() + "," + sim.getActions().get(i).getTime() + ")" + END);
                 }
             }
             out.write(eventSpec);

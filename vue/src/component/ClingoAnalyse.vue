@@ -242,6 +242,7 @@ const initGraphAnalyse = async () => {
         console.log(element.data);
         element.graph = g6(element.data, element.name);
       }
+      updateTransterm();
     }, 10);
   });
 };
