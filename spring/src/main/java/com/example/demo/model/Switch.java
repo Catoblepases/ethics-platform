@@ -11,7 +11,7 @@ public class Switch implements Event {
     public Switch(Carriage t1, Carriage t2) {
         trackBegin = t1;
         trackEnd = t2;
-        present = t1;
+        present = t2;
         valid = true;
         t1.add(this);
     }
@@ -44,14 +44,14 @@ public class Switch implements Event {
     }
 
     public Carriage next() {
-        return present.suivant;
+        return trackEnd;
     }
 
     public Carriage next(Carriage carriage) {
         if (carriage.equals(present)) {
             return present.suivant;
         }
-        return present;
+        return trackEnd;
     }
 
     public Carriage getOtherCarriage(Carriage c) {
@@ -104,6 +104,11 @@ public class Switch implements Event {
     }
 
     public String getEventInfo() {
-        return "switch(" + trackBegin.toString() + ")";
+        if (trackEnd.getIndex() == trackBegin.getIndex()) {
+            return "switch(" + trackBegin.toString() + ")";
+        } else {
+            return "switch(" + trackBegin.toString() + "," + trackEnd.toString() + ")";
+        }
+
     }
 }

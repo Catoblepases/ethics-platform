@@ -60,13 +60,17 @@ public class Generator {
     public final String eventSpec = "% ------------ EVENT SPECIFICATION ------------------------------ %\n" +
             "\n" +
             "% SWITCH\n" +
+            "act(switch(M,N)):-buttonOn(M,N).\n" +
+            "prec(on(train,M),switch(M,N)):-act(switch(M,N)).\n" +
+            "effect(switch(M,N),neg(on(train,M))):-act(switch(M,N)).\n" +
+            "effect(switch(M,N),on(train,N)):-act(switch(M,N)).\n" +
+            "\n" +
             "act(switch(M)):-buttonOn(M).\n" +
             "prec(on(train,M),switch(M)):-act(switch(M)).\n" +
             "effect(switch(M),neg(on(train,M))):-act(switch(M)).\n" +
             "effect(switch(main(N)),on(train,side(N))):-act(switch(main(N))).\n" +
             "effect(switch(side(N)),on(train,main(N))):-act(switch(side(N))).\n" +
-            "\n" +
-            "% PUSH\n" +
+            "\n% PUSH\n" +
             "act(push(O,B)):-object(O),bridgeOn(B,_),initially(on(O,B)).\n" +
             "prec(on(O,B),push(O,B)):-act(push(O,B)).\n" +
             "effect(push(O,B),neg(on(O,B))):-act(push(O,B)).\n" +
@@ -131,7 +135,10 @@ public class Generator {
     }
 
     public void readInformation(String line, int lineNumber) {
-        if (((Pattern.compile("%.+%").matcher(line)).find()) || (line == "")) {
+        List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
+        if (((Pattern.compile("%.+%").matcher(line)).find()) || (line == "") || (ls.size() <= 1)) {
+            System.out.println("Skip line " + lineNumber);
+        } else if (judgeContainsStr(ls.get(1))) {
             System.out.println("Skip line " + lineNumber);
         } else {
             System.out.println("begin to read line " + lineNumber + " : " + line);
@@ -164,6 +171,14 @@ public class Generator {
             content += listComponentTrolleys[i].getInformation();
         }
         return content;
+    }
+
+    public static boolean judgeContainsStr(String str) {
+        String regex = ".*[A-Z]+.*";
+        Matcher m = Pattern.compile(regex).matcher(str);
+
+        // str 能够匹配regex,返回true
+        return m.matches();
     }
 
     public void save(String fileName) {
@@ -208,10 +223,16 @@ public class Generator {
                     combineContent(
                             BRIDGEON, writeComponentTrolley(bridges.toArray(new Bridge[bridges.size()]))) +
                             END);
-            //            switch
+            // Switch
             content = "";
             for (int i = 0; i < switchs.size(); i++) {
-                content += "buttonOn(" + switchs.get(i).getTrackBegin().getName() + ")" + END;
+                String begin = switchs.get(i).getTrackBegin().getInformation();
+                String end = switchs.get(i).getTrackEnd().getInformation();
+                if (switchs.get(i).getTrackBegin().getIndex() == switchs.get(i).getTrackEnd().getIndex()) {
+                    content += "buttonOn(" + switchs.get(i).getTrackBegin().getName() + ")" + END;
+                } else {
+                    content += "buttonOn(" + begin + "," + end + ")" + END;
+                }
             }
             out.write(content);
             out.write("\n\n" + actionSpec);
@@ -299,7 +320,7 @@ public class Generator {
             case "performs" -> readSimulationConfig(line);
             case "sim" -> readSim(line);
 //            case PREC -> readPrec(matcher);
-//            case EFFECT -> readEffect(matcher);
+            case EFFECT -> readEffect(matcher);
             case "buttonOn" -> readButtonOn(line);
         }
     }
@@ -355,13 +376,18 @@ public class Generator {
     public void readButtonOn(String line) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         Carriage carriage = (Carriage) readPosition(ls.get(1));
-        for (Track track : tracks) {
-            if (!track.getName().equalsIgnoreCase(carriage.getTrack())) {
-                Switch switches = new Switch(carriage, track.get(carriage.getIndex()));
-                switches.changeTrack(track.getName());
-                switchs.add(switches);
-                break;
+        if (ls.size() == 2) {
+            for (Track track : tracks) {
+                if (!track.getName().equals(carriage.getTrack())) {
+                    Switch switches = new Switch(carriage, track.get(carriage.getIndex()));
+                    switchs.add(switches);
+                    break;
+                }
             }
+        } else if (ls.size() == 3) {
+            Carriage c = (Carriage) readPosition(ls.get(2));
+            Switch switches = new Switch(carriage, c);
+            switchs.add(switches);
         }
     }
 

@@ -1,12 +1,11 @@
 % -------------DOMAINS------------- %
 time(0..6).
-track(side(0..5);main(0..5);side2(0..6)).
-object(g1;g3;g6).
-group(g1;g3;g6).
-numberInGroup(g1,5;g3,1;g6,5).
+track(side(0..4);main(0..4);side2(0..5)).
+object(g1;g2;g3;g6).
+group(g1;g2;g3;g6).
+numberInGroup(g1,5;g2,2;g3,1;g6,5).
 bridgeOn(b,main(1);a,side(0)).
 buttonOn(main(0),side(1)).
-buttonOn(side(3)).
 
 
 posFluent(on(train,M)):-track(M).
@@ -17,29 +16,38 @@ negative(neg(F)):-posFluent(F).
 fluent(F):-posFluent(F).
 fluent(F):-negative(F).
 % -------------INITIAL SITUATION------------- %
-initially(on(g1,main(3);g3,b;g6,a)).
-initially(alive(g1;g3;g6)).
+initially(on(g1,main(3);g2,side(2);g3,b;g6,a)).
+initially(alive(g1;g2;g3;g6)).
 initially(on(train,main(0))).
 % -------------SCENARIOS------------- %
-sim(s0;s1).
+sim(s0;s1;s3;s4;s5).
 performs(s0,push(g3,b),0).
-performs(s1,switch(main(0),side(1)),0).
-performs(s1,switch(side(3)),0).
-performs(s1,push(g3,b),0).
-performs(s1,push(g6,a),0).
+performs(s1,switch(main(0)),0).
+performs(s3,switch(main(0)),0).
+performs(s3,switch(side(2)),0).
+performs(s3,push(g3,b),0).
+performs(s4,switch(main(0)),0).
+performs(s4,switch(side(2)),0).
+performs(s4,switch(side(1)),0).
+performs(s4,push(g3,b),0).
+performs(s5,switch(main(0)),0).
+performs(s5,switch(side(2)),0).
+performs(s5,switch(side(1)),0).
+performs(s5,push(g3,b),0).
+performs(s5,push(g6,a),0).
 % ------------ EVENT SPECIFICATION ------------------------------ %
 
 % SWITCH
-act(switch(M,N)):-buttonOn(M,N).
-prec(on(train,M),switch(M,N)):-act(switch(M,N)).
-effect(switch(M,N),neg(on(train,M))):-act(switch(M,N)).
-effect(switch(M,N),on(train,N)):-act(switch(M,N)).
-
 act(switch(M)):-buttonOn(M).
 prec(on(train,M),switch(M)):-act(switch(M)).
 effect(switch(M),neg(on(train,M))):-act(switch(M)).
 effect(switch(main(N)),on(train,side(N))):-act(switch(main(N))).
 effect(switch(side(N)),on(train,main(N))):-act(switch(side(N))).
+
+act(switch(M,N)):-buttonOn(M,N).
+prec(on(train,M),switch(M,N)):-act(switch(M,N)).
+effect(switch(M,N),neg(on(train,M))):-act(switch(M,N)).
+effect(switch(M,N),on(train,N)):-act(switch(M,N)).
 
 % PUSH
 act(push(O,B)):-object(O),bridgeOn(B,_),initially(on(O,B)).

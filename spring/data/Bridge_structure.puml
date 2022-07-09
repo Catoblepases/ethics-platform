@@ -1,0 +1,415 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.example.demo.model.Bridge",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_134842393 { 
+   	label=demo
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Botton838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Botton</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   position: Position [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Bridge838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Bridge</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   position: Position [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   push: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   time: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delPosition()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Carriage838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Carriage</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   before: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bridge: Bridge [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   index: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   suivant: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sw: Switch [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   track: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ add(suivant: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ add(group: Group)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ add(bridge: Bridge)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ add(sw: Switch)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addBefore(before: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteBridge()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteGroup()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteSwitch()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ next(): Carriage</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CarriageController2030510442[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CarriageController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   generator: Generator [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># addBridge(carriageId_BridgeId: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" ># addCarriage(trackId: String)</TD></TR>
+<TR><TD ALIGN="LEFT" ># addCarriage(map: Map&lt;String, String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># addGroup(update: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" ># addSimulation(simulation: Simulation): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># addSwitch(carriageIds: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" ># addTrack(map: Map&lt;String, Object&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteBridgeById(carriageId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteCarriageById(carriageId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteGroupById(carriageId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteSimulation(id: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteSimulation(data: Map&lt;String, String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteSwitchById(carriageId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteTrack(map: Map&lt;String, String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># getBridgeName(id: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># getCarriageById(id: String): InfoCarriage</TD></TR>
+<TR><TD ALIGN="LEFT" ># getGroupInfo(id: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># getSwitch(id: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># getTrackNumber(trackId: String): int</TD></TR>
+<TR><TD ALIGN="LEFT" ># postCommand(line: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># resetGenerator()</TD></TR>
+<TR><TD ALIGN="LEFT" ># saveFile(map: Map&lt;String, String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># setOriginalPosition(id: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># updateAction(): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># updateCarriageById(infoCarriage: InfoCarriage): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># updateTrace(data: Map&lt;String, String&gt;): List&lt;ClingoSimulation&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Generator838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Generator</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   actionSpec: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   bridges: List&lt;Bridge&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   clingoConfig: ClingoConfig [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   eventSpec: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   groups: List&lt;Group&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initial: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   simulations: List&lt;Simulation&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   switchs: List&lt;Switch&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   time: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   tracks: List&lt;Track&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   train: Train [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addNumberInGroup(nom: String, n: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ combineContent(s1: String, s2: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ find(l: ComponentTrolley[], name: String): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findGroup(name: String): Group</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findSimulation(id: String): Simulation</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findTrack(name: String): Track</TD></TR>
+<TR><TD ALIGN="LEFT" >+ generateNumber(max: int): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ judgeContainsStr(str: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ printWithSeparator(info: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ read(fileName: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readAct(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readAlive(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readBridges(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readButtonOn(line: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readConsequance(event: Event, consequance: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readEffect(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readEvent(event: String): Event</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readFile(file: File)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readFile(fileName: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readGroups(m: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readInformation(line: String, lineNumber: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readInitial(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readNumber(num: String): int[]</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readNumberInGroup(m: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readOn(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readPosition(line: String): Position</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readPosition(matcher: Matcher): Position</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readPosition(position: String, number: String): Position</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readPrec(matcher: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >- readSim(line: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >- readSimulationConfig(line: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readSwitch(matcher: Matcher): Switch</TD></TR>
+<TR><TD ALIGN="LEFT" >+ readTrack(m: Matcher)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ read_information(matcher: Matcher, line: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeCarriage(carriage: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeSimulation(id: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reset()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(fileName: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveFile(file: File)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ simulation()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeComponentTrolley(listComponentTrolleys: ComponentTrolley[]): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Group838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Group</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   alive: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nb: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   position: Position [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delPosition()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ roule()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+NodeController2030510442[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)NodeController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   edgeMapper: EdgeMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   generator: Generator [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   nodeMapper: NodeMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># addNode(node: Node)</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteAllNodes(): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteNodeById(nodeId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ generateAllNodes(filePath: String)</TD></TR>
+<TR><TD ALIGN="LEFT" ># getNodeById(id: String): NodeStandard</TD></TR>
+<TR><TD ALIGN="LEFT" ># updateNodeById(node: Node): NodeStandard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Position838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Position</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   group: Group [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   name: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Switch838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Switch</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   present: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   time: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   trackBegin: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   trackEnd: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   valid: boolean [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addCarriage(carriage: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ changeTrack(track: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delCarriage(c: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getOtherCarriage(c: Carriage): Carriage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ next(): Carriage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ next(carriage: Carriage): Carriage</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Track838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Track</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addNewCarriage()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addNewCarriage(idx: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ nbSwitch(): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Train838661137[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Train</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   originPosition: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   present: Carriage [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ run(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ simulation()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Botton838661137 -> Position838661137[label="position
+[0..1]"];
+Bridge838661137 -> Carriage838661137[label="delPosition() -> deleteBridge()"];
+Bridge838661137 -> Position838661137[label="position
+[0..1]"];
+Carriage838661137 -> Bridge838661137[label="bridge
+[0..1]"];
+Carriage838661137 -> Switch838661137[label="sw
+[0..1]"];
+CarriageController2030510442 -> Generator838661137[label="generator
+[0..1]"];
+Generator838661137 -> Bridge838661137[label="bridges
+[0..*]"];
+Generator838661137 -> Group838661137[label="groups
+[0..*]"];
+Generator838661137 -> Switch838661137[label="switchs
+[0..*]"];
+Generator838661137 -> Track838661137[label="tracks
+[0..*]"];
+Generator838661137 -> Train838661137[label="train
+[0..1]"];
+Group838661137 -> Position838661137[label="position
+[0..1]"];
+NodeController2030510442 -> Generator838661137[label="generator
+[0..1]"];
+Position838661137 -> Bridge838661137[arrowhead=none, arrowtail=empty, dir=both];
+Position838661137 -> Carriage838661137[arrowhead=none, arrowtail=empty, dir=both];
+Position838661137 -> Group838661137[arrowhead=none];
+Position838661137 -> Group838661137[label="group
+[0..1]"];
+Position838661137 -> Track838661137[arrowhead=none];
+Position838661137 -> Train838661137[arrowhead=none];
+Switch838661137 -> Carriage838661137[label="present
+[0..1]"];
+Switch838661137 -> Carriage838661137[label="trackBegin
+[0..1]"];
+Switch838661137 -> Carriage838661137[label="trackEnd
+[0..1]"];
+Train838661137 -> Carriage838661137[label="originPosition
+[0..1]"];
+Train838661137 -> Carriage838661137[label="present
+[0..1]"];
+Train838661137 -> Group838661137[arrowhead=none];
+Train838661137 -> Position838661137[arrowhead=none];
+Train838661137 -> Track838661137[arrowhead=none];
+    
+}
+@enduml

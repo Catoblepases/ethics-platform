@@ -11,7 +11,7 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
 
     public Track(String name, int length) {
         this.name = name;
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length + 1; i++) {
             addNewCarriage();
         }
     }
@@ -70,8 +70,8 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
     public void delete() {
         for (int i = 0; i < size(); i++) {
             Carriage c = get(i);
-            Switch sw=c.getSwitch();
-            if (sw!=null){
+            Switch sw = c.getSwitch();
+            if (sw != null) {
                 sw.getTrackBegin().setSwitch(null);
             }
         }
