@@ -355,7 +355,7 @@ async function initSimulation() {
         break;
       }
     }
-    console.log(curentSimulation);
+    console.log(curentSimulation);updateSimulations()
     axios.get("api/carriage/original").then((res) => {
       const id: string = res.data;
       const item = graph.findById(id).getModel();
@@ -368,8 +368,9 @@ async function initSimulation() {
       fixNodesPosition();
       editStyle.value.color = "lightgrey";
       editMode.value = false;
-    });
+    });;
   });
+  
 }
 
 const openContextMenu = () => {};

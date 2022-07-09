@@ -1,4 +1,3 @@
-holds(s0,on(train,main(0)),0).
 holds(s0,on(g1,main(3)),0).
 holds(s0,on(g3,b),0).
 holds(s0,on(g6,a),0).

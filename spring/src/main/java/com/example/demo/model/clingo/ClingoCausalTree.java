@@ -26,12 +26,12 @@ public class ClingoCausalTree {
             listEvent.add(event);
             List<String> ls = ClingoCausal.findCompleteCommande(event, ',');
             String color = switch (ls.get(0)) {
-                case "switch" -> "pink";
+                case "switch" -> "steelblue";
                 case "on" -> "lightgrey";
                 case "crash" -> "red";
-                case "run" -> "grey";
-                case "push" -> "orange";
-                case "alive" -> "lightgreen";
+                case "run" -> "pink";
+                case "push" -> "steelblue";
+                case "alive" -> "lightgrey";
                 default -> null;
             };
             NodeEvent nodeEvent = new NodeEvent(event, 0, 0, "event", event, color);
