@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Carriage;
+import com.example.demo.model.Section;
 import com.example.demo.model.clingo.ClingoCausal;
-import com.example.demo.model.menu.InfoCarriage;
+import com.example.demo.model.menu.InfoSection;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

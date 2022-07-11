@@ -7,7 +7,7 @@ import G6, { GraphData, Graph, Item } from "@antv/g6";
 import { onMounted } from "vue";
 
 G6.registerNode(
-  "carriageWithGroup",
+  "sectionWithGroup",
   {
     draw(cfg, group) {
       let y: number = Math.round(7 / 2);

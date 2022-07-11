@@ -5,11 +5,9 @@ import com.example.demo.model.*;
 import com.example.demo.model.clingo.ClingoCausal;
 import com.example.demo.model.clingo.ClingoSimulation;
 import com.example.demo.model.clingo.ClingoTrace;
-import com.example.demo.model.clingo.G6Info;
 import com.example.demo.model.menu.EventForm;
 import com.example.demo.model.menu.EventItem;
 import com.example.demo.model.menu.InfoSection;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

@@ -70,7 +70,7 @@ const setItems = (dataItems: any) => {
 };
 
 const getSimulations = () => {
-  axios.get("api/carriage/simulation").then((res) => {
+  axios.get("api/section/simulation").then((res) => {
     setItems(res.data.columns);
     setTableData(res.data.data);
     console.log("getSimulations");
@@ -99,7 +99,7 @@ const handleEdit = (index: number, row: Event) => {
 const handleDelete = (index: number, row: Event) => {
   console.log(index, row);
   var id: string = tableData.value[index].name;
-  axios.put("api/carriage/simulation/delete/" + id).then((res) => {
+  axios.put("api/section/simulation/delete/" + id).then((res) => {
     console.log(res);
     getSimulations();
   });

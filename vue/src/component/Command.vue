@@ -1,25 +1,34 @@
 <template>
-  <div v-if="showCommand">
-    <el-input
-      v-model="textarea"
-      :rows="10"
-      type="textarea"
-      placeholder="Please input"
-    />
-    <el-input
-      v-model="input"
-      placeholder="Please input"
-      @keydown.enter="addToTextArea"
-    />
-  </div>
+  <q-input
+    v-model="textarea"
+    type="textarea"
+    readonly
+    clearable
+    placeholder="Please input"
+  />
+  <q-input
+    v-model="input"
+    placeholder="Please input"
+    clear-icon="close"
+    @keydown.enter="addToTextArea"
+  />
 </template>
 
 <script lang="ts" setup>
+import axios from "axios";
 import { ref } from "vue";
-let input = "";
-let textarea = "";
+import { updateClingo } from "./updateFile";
+let input = ref("");
+let textarea = ref("");
+
+const emit = defineEmits(["updateGraph"]);
+
 function addToTextArea() {
-  textarea = textarea.concat("\n" + input);
-  input = "";
+  textarea.value = textarea.value.concat("\n" + input.value);
+  axios.post("api/section/command", { content: input.value }).then(() => {
+    input.value = "";
+    updateClingo();
+    emit("updateGraph");
+  });
 }
 </script>

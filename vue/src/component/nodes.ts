@@ -30,19 +30,19 @@ export function changeStyleByType(nodes: Array<Node>) {
       case "track": {
         node.type = "rect";
         node.size = [35, 20];
-        if (node.infoCarriage.group != null) {
-          node.type = "carriageWithGroup";
-          node.nb = node.infoCarriage.group.size;
+        if (node.infoSection.group != null) {
+          node.type = "sectionWithGroup";
+          node.nb = node.infoSection.group.size;
         }
-        if (node.infoCarriage.bridge != null) {
-          console.log(node.infoCarriage.bridge);
+        if (node.infoSection.bridge != null) {
+          console.log(node.infoSection.bridge);
 
-          if (node.infoCarriage.bridge.group != null) {
-            console.log("carriage with group and bridge");
-            node.type = "carriageWithBridgeAndGroup";
-            node.nb = node.infoCarriage.bridge.group.size;
+          if (node.infoSection.bridge.group != null) {
+            console.log("section with group and bridge");
+            node.type = "sectionWithBridgeAndGroup";
+            node.nb = node.infoSection.bridge.group.size;
           } else {
-            node.type = "carriageWithBridge";
+            node.type = "sectionWithBridge";
           }
         }
         break;
@@ -167,7 +167,7 @@ export const defaultMode = {
 
 export function registerNodes(G6: any) {
   G6.registerNode(
-    "carriageWithGroup",
+    "sectionWithGroup",
     {
       options: {
         stateStyles: stateStyle,
@@ -189,7 +189,7 @@ export function registerNodes(G6: any) {
             height: cfg?.size[1],
             fill: cfg?.style?.cfill,
           },
-          name: "carriage",
+          name: "section",
         });
 
         let GROUP: Array<any> = [];
@@ -238,7 +238,7 @@ export function registerNodes(G6: any) {
   );
 
   G6.registerNode(
-    "carriageWithBridge",
+    "sectionWithBridge",
     {
       draw(cfg, group) {
         let y: number = Math.round(7 / 2);
@@ -256,7 +256,7 @@ export function registerNodes(G6: any) {
             height: cfg?.size[1],
             fill: cfg?.fill,
           },
-          name: "carriage",
+          name: "section",
         });
 
         group.addShape("rect", {
@@ -291,7 +291,7 @@ export function registerNodes(G6: any) {
   );
 
   G6.registerNode(
-    "carriageWithBridgeAndGroup",
+    "sectionWithBridgeAndGroup",
     {
       draw(cfg, group) {
         let y: number = Math.round(7 / 2);
@@ -310,7 +310,7 @@ export function registerNodes(G6: any) {
             height: cfg?.size[1],
             fill: cfg?.style?.cfill,
           },
-          name: "carriage",
+          name: "section",
         });
 
         group.addShape("rect", {
@@ -361,6 +361,6 @@ export function registerNodes(G6: any) {
         return rect;
       },
     },
-    "carriageWithGroup"
+    "sectionWithGroup"
   );
 }

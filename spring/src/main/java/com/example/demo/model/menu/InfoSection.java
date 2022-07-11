@@ -1,7 +1,6 @@
 package com.example.demo.model.menu;
 
 import com.example.demo.model.*;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

@@ -4,7 +4,7 @@ package com.example.demo.model;
 import java.util.ArrayList;
 
 /*Le class Track, qui est une liste de troncon*/
-public class Track extends ArrayList<Carriage> implements ComponentTrolley {
+public class Track extends ArrayList<Section> implements ComponentTrolley {
     private static final long serialVersionUID = 1L;
     private String name;
 
@@ -12,7 +12,7 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
     public Track(String name, int length) {
         this.name = name;
         for (int i = 0; i < length + 1; i++) {
-            addNewCarriage();
+            addNewSection();
         }
     }
 
@@ -33,8 +33,8 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
         this.name = name;
     }
 
-    public void addNewCarriage() {
-        add(new Carriage(name + "(" + size() + ")", name, size()));
+    public void addNewSection() {
+        add(new Section(name + "(" + size() + ")", name, size()));
         if (size() >= 2) {
             get(size() - 2).suivant = get(size() - 1);
         }
@@ -43,8 +43,8 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
         }
     }
 
-    public void addNewCarriage(int idx) {
-        add(idx, new Carriage(name + "(" + size() + ")", name, size()));
+    public void addNewSection(int idx) {
+        add(idx, new Section(name + "(" + size() + ")", name, size()));
         if (idx >= 1) {
             get(idx - 1).suivant = get(idx);
         }
@@ -69,7 +69,7 @@ public class Track extends ArrayList<Carriage> implements ComponentTrolley {
 
     public void delete() {
         for (int i = 0; i < size(); i++) {
-            Carriage c = get(i);
+            Section c = get(i);
             Switch sw = c.getSwitch();
             if (sw != null) {
                 sw.getTrackBegin().setSwitch(null);

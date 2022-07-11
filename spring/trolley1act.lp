@@ -1,12 +1,12 @@
 % -------------DOMAINS------------- %
 time(0..6).
-track(side(0..5);main(0..5);side2(0..6)).
-object(g1;g3;g6).
-group(g1;g3;g6).
-numberInGroup(g1,5;g3,1;g6,5).
-bridgeOn(b,main(1);a,side(0)).
+track(main(0..5);side(0..5)).
+object(g1;g3;g1;g2).
+group(g1;g3;g1;g2).
+numberInGroup(g1,5;g3,1;g1,5;g2,5).
+bridgeOn(b,main(3);a,main(0);b,side(3)).
 buttonOn(main(0),side(1)).
-buttonOn(side(3)).
+buttonOn(main(0)).
 
 
 posFluent(on(train,M)):-track(M).
@@ -17,16 +17,12 @@ negative(neg(F)):-posFluent(F).
 fluent(F):-posFluent(F).
 fluent(F):-negative(F).
 % -------------INITIAL SITUATION------------- %
-initially(on(g1,main(3);g3,b;g6,a)).
-initially(alive(g1;g3;g6)).
+initially(on(g1,side(2);g3,b;g1,main(2);g2,b)).
+initially(alive(g1;g3;g1;g2)).
 initially(on(train,main(0))).
 % -------------SCENARIOS------------- %
 sim(s0;s1).
 performs(s0,push(g3,b),0).
-performs(s1,switch(main(0),side(1)),0).
-performs(s1,switch(side(3)),0).
-performs(s1,push(g3,b),0).
-performs(s1,push(g6,a),0).
 % ------------ EVENT SPECIFICATION ------------------------------ %
 
 % SWITCH

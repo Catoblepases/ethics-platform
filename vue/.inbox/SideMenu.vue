@@ -49,7 +49,7 @@ let input = ref("");
 let textarea = ref("");
 
 function addToTextArea() {
-  axios.post("api/carriage/command", input.value).then(() => {
+  axios.post("api/section/command", input.value).then(() => {
     textarea.value = textarea.value.concat("\n" + input.value);
     input.value = "";
   });

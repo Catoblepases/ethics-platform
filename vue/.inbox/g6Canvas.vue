@@ -28,8 +28,8 @@ const updateEditMenu = () => {
   console.log("update editmenu");
 };
 
-var carriageData = ref({});
-provide("carriageData", carriageData);
+var sectionData = ref({});
+provide("sectionData", sectionData);
 
 var dialogFormVisible = ref(false);
 provide("dialogFormVisible", dialogFormVisible);
@@ -50,7 +50,7 @@ function runnigAlgorithme(position: Array<Item>, graph: Graph): void {
 }
 
 G6.registerNode(
-  "carriageWithGroup",
+  "sectionWithGroup",
   {
     draw(cfg, group) {
       let y: number = Math.round(7 / 2);
@@ -124,9 +124,9 @@ function changeStyleByType(nodes: Array<Node>) {
       case "track": {
         node.type = "rect";
         node.size = [35, 20];
-        if (node.infoCarriage.group != null) {
-          node.type = "carriageWithGroup";
-          node.nb = node.infoCarriage.group.size;
+        if (node.infoSection.group != null) {
+          node.type = "sectionWithGroup";
+          node.nb = node.infoSection.group.size;
         }
         break;
       }
@@ -270,7 +270,7 @@ const contextMenu = new G6.Menu({
     }
     return `
   <div id="contextmenu" class="menu">
-      <div class="contextmenu_item" @click="cha(currentData)">edit carriage</div>
+      <div class="contextmenu_item" @click="cha(currentData)">edit section</div>
       <div class="contextmenu_item" @click="cha(currentData)">edit bridge</div>
       <div class="contextmenu_item" @click="cha(currentData)">edit switch</div>
       <div class="contextmenu_item" @click="cha(currentData)">edit group</div>
@@ -281,7 +281,7 @@ const contextMenu = new G6.Menu({
   handleMenuClick: (target, item) => {
     console.log(target.innerText, item.getModel().id);
     switch (target.innerText) {
-      case "edit carriage":
+      case "edit section":
         break;
       case "edit bridge":
         console.log(2);
@@ -312,8 +312,8 @@ const setNodeId = (id: string) => {
   nodeId.value = id;
 };
 
-const setCarriageData = (data: any) => {
-  carriageData.value = data;
+const setSectionData = (data: any) => {
+  sectionData.value = data;
 };
 
 var graph: Graph;
@@ -342,8 +342,8 @@ axios.post("api/Node/addAll/test").then((res) => {
       graph.on("node:dblclick", function (evt) {
         var id: string = evt.item?.getModel().id!;
         setNodeId(id);
-        axios.get("api/carriage/" + id).then((res) => {
-          setCarriageData(res.data);
+        axios.get("api/section/" + id).then((res) => {
+          setSectionData(res.data);
           updateEditMenu();
           openMenu();
         });

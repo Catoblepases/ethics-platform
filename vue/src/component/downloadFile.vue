@@ -53,7 +53,7 @@ const download = async () => {
       window.sessionStorage.setItem(path, data);
       break;
     case ".lp":
-      axios.post("api/carriage/lp", { name: path });
+      axios.post("api/section/lp", { name: path });
       console.log(path);
       break;
     default:

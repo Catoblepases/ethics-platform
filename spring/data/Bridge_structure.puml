@@ -123,27 +123,27 @@ Bridge838661137[
 	fillcolor="#FFFFFF"
 ];
 
-Carriage838661137[
+Section838661137[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)Carriage</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)Section</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+   before: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   before: Section [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   bridge: Bridge [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   index: int [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >+   suivant: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   suivant: Section [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   sw: Switch [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   track: String [0..1]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ add(suivant: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ add(suivant: Section)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ add(group: Group)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ add(bridge: Bridge)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ add(sw: Switch)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ addBefore(before: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addBefore(before: Section)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ delete()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ deleteBridge()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ deleteGroup()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ deleteSwitch()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ next(): Carriage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ next(): Section</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -151,28 +151,28 @@ Carriage838661137[
 	fillcolor="#FFFFFF"
 ];
 
-CarriageController2030510442[
+SectionController2030510442[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)CarriageController</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)SectionController</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >#   generator: Generator [0..1]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" ># addBridge(carriageId_BridgeId: String[])</TD></TR>
-<TR><TD ALIGN="LEFT" ># addCarriage(trackId: String)</TD></TR>
-<TR><TD ALIGN="LEFT" ># addCarriage(map: Map&lt;String, String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># addBridge(sectionId_BridgeId: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" ># addSection(trackId: String)</TD></TR>
+<TR><TD ALIGN="LEFT" ># addSection(map: Map&lt;String, String&gt;): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># addGroup(update: String[])</TD></TR>
 <TR><TD ALIGN="LEFT" ># addSimulation(simulation: Simulation): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># addSwitch(carriageIds: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" ># addSwitch(sectionIds: String[])</TD></TR>
 <TR><TD ALIGN="LEFT" ># addTrack(map: Map&lt;String, Object&gt;): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># deleteBridgeById(carriageId: String): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># deleteCarriageById(carriageId: String): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># deleteGroupById(carriageId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteBridgeById(sectionId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteSectionById(sectionId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteGroupById(sectionId: String): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># deleteSimulation(id: String): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># deleteSimulation(data: Map&lt;String, String&gt;): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># deleteSwitchById(carriageId: String): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># deleteSwitchById(sectionId: String): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># deleteTrack(map: Map&lt;String, String&gt;): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># getBridgeName(id: String): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># getCarriageById(id: String): InfoCarriage</TD></TR>
+<TR><TD ALIGN="LEFT" ># getSectionById(id: String): InfoSection</TD></TR>
 <TR><TD ALIGN="LEFT" ># getGroupInfo(id: String): List&lt;String&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" ># getSwitch(id: String): List&lt;String&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" ># getTrackNumber(trackId: String): int</TD></TR>
@@ -181,7 +181,7 @@ CarriageController2030510442[
 <TR><TD ALIGN="LEFT" ># saveFile(map: Map&lt;String, String&gt;): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># setOriginalPosition(id: String): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># updateAction(): String</TD></TR>
-<TR><TD ALIGN="LEFT" ># updateCarriageById(infoCarriage: InfoCarriage): String</TD></TR>
+<TR><TD ALIGN="LEFT" ># updateSectionById(infoSection: InfoSection): String</TD></TR>
 <TR><TD ALIGN="LEFT" ># updateTrace(data: Map&lt;String, String&gt;): List&lt;ClingoSimulation&gt;</TD></TR>
 </TABLE>>
 	style=filled
@@ -240,7 +240,7 @@ Generator838661137[
 <TR><TD ALIGN="LEFT" >+ readSwitch(matcher: Matcher): Switch</TD></TR>
 <TR><TD ALIGN="LEFT" >+ readTrack(m: Matcher)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ read_information(matcher: Matcher, line: String)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ removeCarriage(carriage: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removeSection(section: Section)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ removeSimulation(id: String)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ reset()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ save(fileName: String)</TD></TR>
@@ -310,18 +310,18 @@ Switch838661137[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)Switch</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >-   present: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   present: Section [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   time: int [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   trackBegin: Carriage [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   trackEnd: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   trackBegin: Section [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   trackEnd: Section [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   valid: boolean [1]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ addCarriage(carriage: Carriage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addSection(section: Section)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ changeTrack(track: String)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ delCarriage(c: Carriage)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ getOtherCarriage(c: Carriage): Carriage</TD></TR>
-<TR><TD ALIGN="LEFT" >+ next(): Carriage</TD></TR>
-<TR><TD ALIGN="LEFT" >+ next(carriage: Carriage): Carriage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delSection(c: Section)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getOtherSection(c: Section): Section</TD></TR>
+<TR><TD ALIGN="LEFT" >+ next(): Section</TD></TR>
+<TR><TD ALIGN="LEFT" >+ next(section: Section): Section</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -335,8 +335,8 @@ Track838661137[
 <HR/>
 <TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ addNewCarriage()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ addNewCarriage(idx: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addNewSection()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addNewSection(idx: int)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ delete()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ nbSwitch(): int</TD></TR>
 </TABLE>>
@@ -350,8 +350,8 @@ Train838661137[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)Train</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+   originPosition: Carriage [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   present: Carriage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   originPosition: Section [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   present: Section [0..1]</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ run(): int</TD></TR>
 <TR><TD ALIGN="LEFT" >+ simulation()</TD></TR>
@@ -367,14 +367,14 @@ Train838661137[
 'edges    
 Botton838661137 -> Position838661137[label="position
 [0..1]"];
-Bridge838661137 -> Carriage838661137[label="delPosition() -> deleteBridge()"];
+Bridge838661137 -> Section838661137[label="delPosition() -> deleteBridge()"];
 Bridge838661137 -> Position838661137[label="position
 [0..1]"];
-Carriage838661137 -> Bridge838661137[label="bridge
+Section838661137 -> Bridge838661137[label="bridge
 [0..1]"];
-Carriage838661137 -> Switch838661137[label="sw
+Section838661137 -> Switch838661137[label="sw
 [0..1]"];
-CarriageController2030510442 -> Generator838661137[label="generator
+SectionController2030510442 -> Generator838661137[label="generator
 [0..1]"];
 Generator838661137 -> Bridge838661137[label="bridges
 [0..*]"];
@@ -391,21 +391,21 @@ Group838661137 -> Position838661137[label="position
 NodeController2030510442 -> Generator838661137[label="generator
 [0..1]"];
 Position838661137 -> Bridge838661137[arrowhead=none, arrowtail=empty, dir=both];
-Position838661137 -> Carriage838661137[arrowhead=none, arrowtail=empty, dir=both];
+Position838661137 -> Section838661137[arrowhead=none, arrowtail=empty, dir=both];
 Position838661137 -> Group838661137[arrowhead=none];
 Position838661137 -> Group838661137[label="group
 [0..1]"];
 Position838661137 -> Track838661137[arrowhead=none];
 Position838661137 -> Train838661137[arrowhead=none];
-Switch838661137 -> Carriage838661137[label="present
+Switch838661137 -> Section838661137[label="present
 [0..1]"];
-Switch838661137 -> Carriage838661137[label="trackBegin
+Switch838661137 -> Section838661137[label="trackBegin
 [0..1]"];
-Switch838661137 -> Carriage838661137[label="trackEnd
+Switch838661137 -> Section838661137[label="trackEnd
 [0..1]"];
-Train838661137 -> Carriage838661137[label="originPosition
+Train838661137 -> Section838661137[label="originPosition
 [0..1]"];
-Train838661137 -> Carriage838661137[label="present
+Train838661137 -> Section838661137[label="present
 [0..1]"];
 Train838661137 -> Group838661137[arrowhead=none];
 Train838661137 -> Position838661137[arrowhead=none];

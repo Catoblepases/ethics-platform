@@ -321,7 +321,6 @@ public class Generator {
             case ACT -> readAct(matcher);
             case "performs" -> readSimulationConfig(line);
             case "sim" -> readSim(line);
-//            case PREC -> readPrec(matcher);
             case EFFECT -> readEffect(matcher);
             case "buttonOn" -> readButtonOn(line);
         }
@@ -377,18 +376,18 @@ public class Generator {
 
     public void readButtonOn(String line) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
-        Carriage carriage = (Carriage) readPosition(ls.get(1));
+        Section section = (Section) readPosition(ls.get(1));
         if (ls.size() == 2) {
             for (Track track : tracks) {
-                if (!track.getName().equals(carriage.getTrack())) {
-                    Switch switches = new Switch(carriage, track.get(carriage.getIndex()));
+                if (!track.getName().equals(section.getTrack())) {
+                    Switch switches = new Switch(section, track.get(section.getIndex()));
                     switchs.add(switches);
                     break;
                 }
             }
         } else if (ls.size() == 3) {
-            Carriage c = (Carriage) readPosition(ls.get(2));
-            Switch switches = new Switch(carriage, c);
+            Section c = (Section) readPosition(ls.get(2));
+            Switch switches = new Switch(section, c);
             switchs.add(switches);
         }
     }
@@ -412,8 +411,8 @@ public class Generator {
             matcher.find();
             if (matcher.group().equals("on")) {
                 matcher.find();
-                Carriage car = (Carriage) readPosition(matcher);
-                sw.addCarriage(car);
+                Section car = (Section) readPosition(matcher);
+                sw.addSection(car);
                 sw.changeTrack(car.getTrack());
                 System.out.println("Train will be Switched to " + car.toString());
             }
@@ -428,9 +427,9 @@ public class Generator {
                 case SWITCH:
                     System.out.println("try to read switch");
                     Position pos = readPosition(matcher);
-                    if (((Carriage) pos).getSwitch() != null) {
+                    if (((Section) pos).getSwitch() != null) {
                         System.out.println("Event is read as Switch on " + pos.toString());
-                        return ((Carriage) pos).getSwitch();
+                        return ((Section) pos).getSwitch();
                     }
                     break;
                 default:
@@ -468,10 +467,10 @@ public class Generator {
     public Switch readSwitch(Matcher matcher) {
         matcher.usePattern(Pattern.compile("([a-z]+)\\(([0-9]+)"));
         if (matcher.find()) {
-            Carriage position = (Carriage) readPosition(matcher.group(1), matcher.group(2));
+            Section position = (Section) readPosition(matcher.group(1), matcher.group(2));
             System.out.println("add Switch on " + position.toString());
             if (position.getSwitch() == null) {
-                Switch sw = new Switch((Carriage) position);
+                Switch sw = new Switch((Section) position);
                 switchs.add(sw);
             }
             return position.getSwitch();
@@ -611,9 +610,9 @@ public class Generator {
             int index;
             if (name.equals(TRAIN)) {
                 if (initial || train.getOriginPosition() == null) {
-                    train.setOriginPosition((Carriage) position);
+                    train.setOriginPosition((Section) position);
                 } else {
-                    train.setPresent((Carriage) position);
+                    train.setPresent((Section) position);
                 }
             } else if ((index = find(groups.toArray(new Group[groups.size()]), name)) != -1) {
                 groups.get(index).setPosition(position);
@@ -690,14 +689,14 @@ public class Generator {
         return time;
     }
 
-    public void removeCarriage(Carriage carriage) {
+    public void removeSection(Section section) {
         for (Track track : tracks) {
-            if (track.getName().equals(carriage.getTrack())) {
-                int idx = track.indexOf(carriage);
+            if (track.getName().equals(section.getTrack())) {
+                int idx = track.indexOf(section);
                 if (idx != 0 && idx != track.size() - 1) {
                     track.get(idx - 1).suivant = track.get(idx + 1);
                 }
-                track.remove(carriage);
+                track.remove(section);
             }
         }
     }

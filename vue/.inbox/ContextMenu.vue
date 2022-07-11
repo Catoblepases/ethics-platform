@@ -1,10 +1,10 @@
 <template>
   <div id="contextmenu" class="menu">
-    <div id="carriageMenu" class="menu">
+    <div id="sectionMenu" class="menu">
       <div class="contextmenu_item" @click="cha(currentData)">查哨</div>
       <div class="contextmenu_item" @click="cha(currentData)">查哨</div>
     </div>
-    <div id="carriageMenu" class="menu">
+    <div id="sectionMenu" class="menu">
       <div class="contextmenu_item" @click="cha(currentData)">查哨</div>
       <div class="contextmenu_item" @click="cha(currentData)">查哨</div>
     </div>

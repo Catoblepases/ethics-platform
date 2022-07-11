@@ -110,7 +110,7 @@ const showDownloadMenu = () => {
 };
 
 async function updateSimulations() {
-  await axios.get("api/carriage/simulation").then((res) => {
+  await axios.get("api/section/simulation").then((res) => {
     let data = res.data.data;
     let names: Array<string> = [];
     for (let index = 0; index < data.length; index++) {
@@ -147,7 +147,7 @@ const showResult = () => {
 };
 
 const updateClingo = () => {
-  axios.post("api/carriage/updateAction").then(() => {
+  axios.post("api/section/updateAction").then(() => {
     axios.post("api/clingo/update").then(() => {
       console.log("update:clingo");
     });

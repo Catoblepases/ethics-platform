@@ -5,9 +5,9 @@ package com.example.demo.model;
 
 public class Train implements ComponentTrolley {
     public static final boolean STOPAFTERCOLLISION = true;
-    public Carriage             originPosition;
-    private Carriage            present;
-    public Train(Carriage originPosition) {
+    public Section             originPosition;
+    private Section            present;
+    public Train(Section originPosition) {
         this.originPosition = originPosition;
         present             = originPosition;
     }
@@ -51,10 +51,10 @@ public class Train implements ComponentTrolley {
         return 0;
     }
 
-    public Carriage getPresent() { return this.present; }
-    public Carriage getOriginPosition() { return this.originPosition; }
-    public void     setPresent(Carriage present) { this.present = present; }
-    public void     setOriginPosition(Carriage originPosition) {
+    public Section getPresent() { return this.present; }
+    public Section getOriginPosition() { return this.originPosition; }
+    public void     setPresent(Section present) { this.present = present; }
+    public void     setOriginPosition(Section originPosition) {
         this.originPosition = originPosition;
         this.present        = originPosition;
     }

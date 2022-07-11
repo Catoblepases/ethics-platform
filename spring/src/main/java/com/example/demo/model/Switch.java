@@ -2,13 +2,13 @@ package com.example.demo.model;
 
 public class Switch implements Event {
 
-    private Carriage trackBegin;
-    private Carriage trackEnd;
-    private Carriage present;
+    private Section trackBegin;
+    private Section trackEnd;
+    private Section present;
     private boolean valid;
     private int time;
 
-    public Switch(Carriage t1, Carriage t2) {
+    public Switch(Section t1, Section t2) {
         trackBegin = t1;
         trackEnd = t2;
         present = t2;
@@ -16,22 +16,22 @@ public class Switch implements Event {
         t1.add(this);
     }
 
-    public Switch(Carriage present) {
+    public Switch(Section present) {
         trackBegin = present;
         this.present = present;
         present.add(this);
     }
 
-    public void addCarriage(Carriage carriage) {
-        trackEnd = carriage;
-        carriage.add(this);
+    public void addSection(Section section) {
+        trackEnd = section;
+        section.add(this);
     }
 
-    public Carriage getTrackBegin() {
+    public Section getTrackBegin() {
         return trackBegin;
     }
 
-    public Carriage getTrackEnd() {
+    public Section getTrackEnd() {
         return trackEnd;
     }
 
@@ -43,18 +43,18 @@ public class Switch implements Event {
         }
     }
 
-    public Carriage next() {
+    public Section next() {
         return trackEnd;
     }
 
-    public Carriage next(Carriage carriage) {
-        if (carriage.equals(present)) {
+    public Section next(Section section) {
+        if (section.equals(present)) {
             return present.suivant;
         }
         return trackEnd;
     }
 
-    public Carriage getOtherCarriage(Carriage c) {
+    public Section getOtherSection(Section c) {
         if (c == trackBegin) {
             return trackEnd;
         } else {
@@ -63,12 +63,12 @@ public class Switch implements Event {
     }
 
 
-    public void setTrackBegin(Carriage trackBegin) {
+    public void setTrackBegin(Section trackBegin) {
         this.trackBegin = trackBegin;
         trackBegin.setSwitch(this);
     }
 
-    public void setTrackEnd(Carriage trackEnd) {
+    public void setTrackEnd(Section trackEnd) {
         this.trackEnd = trackEnd;
         trackEnd.setSwitch(this);
     }
@@ -78,7 +78,7 @@ public class Switch implements Event {
         return "switch: " + trackBegin.toString() + "-" + present.toString();
     }
 
-    public void delCarriage(Carriage c) {
+    public void delSection(Section c) {
         c.setSwitch(null);
         if (trackBegin == c) {
             trackBegin = null;

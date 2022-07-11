@@ -5,7 +5,7 @@
       <el-tab-pane label="Switch">
         <el-form :model="node">
           <el-form-item
-            label="Carriage Connected"
+            label="Section Connected"
             :label-width="formLabelWidth"
           >
             : {{ switchTrackValue }}({{ switchTrackNumber }})
@@ -13,7 +13,7 @@
           <el-form-item label="Name of Track" :label-width="formLabelWidth">
             <el-select
               v-model="switchTrackValue"
-              placeholder="Please select a carriage to connect"
+              placeholder="Please select a section to connect"
             >
               <el-option
                 v-bind:key="item.key"
@@ -26,7 +26,7 @@
           <el-form-item label="Number of Track" :label-width="formLabelWidth">
             <el-select
               v-model="switchTrackNumber"
-              placeholder="Please select a carriage to connect"
+              placeholder="Please select a section to connect"
             >
               <el-option
                 v-bind:key="item.key"
@@ -41,8 +41,8 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="Carriage">
-        <el-row class="carriage">
+      <el-tab-pane label="Section">
+        <el-row class="section">
           <el-switch
             v-model="orignalPosition"
             class="mb-2"
@@ -50,8 +50,8 @@
             inactive-text=""
           />
           <el-divider direction="vertical" />
-          <el-button type="danger" @click="deleteCarriage" plain
-            >Delete This Carriage</el-button
+          <el-button type="danger" @click="deleteSection" plain
+            >Delete This Section</el-button
           >
         </el-row>
       </el-tab-pane>
@@ -78,7 +78,7 @@
         <el-row
           ><el-descriptions
             class="margin-top"
-            title="Group on the carriage"
+            title="Group on the section"
             :column="3"
           >
             <el-descriptions-item label="name">{{
@@ -110,14 +110,14 @@
               >delete Group on bridge</el-button
             >
             <el-button type="danger" @click="deleteGroup" plain
-              >delete Group on carriage</el-button
+              >delete Group on section</el-button
             >
           </el-collapse-item>
           <el-collapse-item title="Create Group" name="2">
             <el-form :inline="true" class="demo-form-inline">
               <el-form-item label="Position">
                 <el-select v-model="pos" placeholder="position to place group">
-                  <el-option label="carriage" value="c" />
+                  <el-option label="section" value="c" />
                   <el-option label="bridge" value="b" />
                 </el-select>
               </el-form-item>
@@ -181,8 +181,8 @@ const formLabelWidth = "140px";
 // components from mother
 let dialogFormVisible = inject("dialogFormVisible");
 const nodeId = inject("nodeId");
-let _carriageData = inject("carriageData");
-let carriageData: Data = _carriageData._rawValue;
+let _sectionData = inject("sectionData");
+let sectionData: Data = _sectionData._rawValue;
 
 // ref
 const data = new Data();
@@ -210,22 +210,22 @@ var TrackItems = [];
 var TrackLength = [];
 var TrackNumberItems = [];
 
-const setCarriageData = (data: any) => {
-  carriageData = data;
+const setSectionData = (data: any) => {
+  sectionData = data;
 };
 // useful funtion
 
 // update
 const update = () => {
-  carriageData = _carriageData._rawValue;
-  console.log(carriageData);
+  sectionData = _sectionData._rawValue;
+  console.log(sectionData);
   data.id = nodeId._rawValue;
-  data.track = carriageData.track;
-  data.index = carriageData.index;
-  data.switchs = carriageData.switchs;
-  data.group = carriageData.group;
-  data.bridge = carriageData.bridge;
-  data.positionOriginal = carriageData.positionOriginal;
+  data.track = sectionData.track;
+  data.index = sectionData.index;
+  data.switchs = sectionData.switchs;
+  data.group = sectionData.group;
+  data.bridge = sectionData.bridge;
+  data.positionOriginal = sectionData.positionOriginal;
   console.log(data);
   setDataRef(data, dataRef);
   console.log(dataRef);
@@ -238,7 +238,7 @@ const apply = () => {
   updateData(data, dataRef);
   console.log("update data:");
   console.log(data);
-  axios.put("api/carriage", data).then(() => {
+  axios.put("api/section", data).then(() => {
     console.log("submit succes");
     updateClingo();
   });
@@ -301,8 +301,8 @@ function deleteSwitch() {
   dataRef.switchTrackNumber.value = -1;
 }
 
-function deleteCarriage() {
-  axios.delete("api/carriage/" + data.id).then(() => {
+function deleteSection() {
+  axios.delete("api/section/" + data.id).then(() => {
     ElMessage("delete " + data.id);
   });
 }
@@ -318,14 +318,14 @@ function deleteGroup() {
 }
 
 onBeforeMount(() => {
-  axios.get("api/carriage/allTrack").then((res) => {
+  axios.get("api/section/allTrack").then((res) => {
     for (let index = 0; index < res.data.length; index++) {
       TrackItems.push({ value: res.data[index], label: res.data[index] });
     }
     console.log(TrackItems);
   });
 
-  axios.get("api/carriage/allTrackNumber").then((res) => {
+  axios.get("api/section/allTrackNumber").then((res) => {
     TrackLength = res.data;
     console.log(TrackLength);
     for (let index = 0; index < TrackLength[0]; index++) {

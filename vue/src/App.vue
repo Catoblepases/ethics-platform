@@ -9,6 +9,35 @@
           </q-avatar>
           Ethics Platform
         </q-toolbar-title>
+        <q-btn-dropdown stretch flat label="File">
+          <q-list>
+            <q-item-label header>Files</q-item-label>
+            <q-item clickable v-close-popup tabindex="0">
+              <q-item-section avatar>
+                <q-avatar icon="folder" color="dark" text-color="white" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>open File</q-item-label>
+              </q-item-section>
+              <q-item-section>
+                <q-file
+                  v-model="file"
+                  label="Pick one file"
+                  filled
+                  style="max-width: 300px"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup tabindex="1">
+              <q-item-section avatar>
+                <q-avatar icon="folder" color="dark" text-color="white" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Save File</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
     </q-header>
@@ -125,15 +154,13 @@
             <q-tab-panel name="commands">
               <div class="text-h5 q-mb-md">Commands</div>
               <q-separator />
+              <command-menu @updateGraph="updateGraph"></command-menu>
             </q-tab-panel>
           </q-tab-panels>
         </template>
 
         <template v-slot:after>
-          <main-canvas
-            ref="g6Ref"
-            @getSimulation="getSimulation"
-          ></main-canvas>
+          <main-canvas ref="g6Ref" @getSimulation="getSimulation"></main-canvas>
         </template>
       </q-splitter>
     </q-page-container>
@@ -151,16 +178,19 @@ import ClingoMenu from "./component/ClingoConfig.vue";
 import SimulationMenu from "./component/SimulationMenu.vue";
 import clingoAnalyse from "./component/ClingoAnalyse.vue";
 import clingoResult from "./component/ClingoResult.vue";
+import commandMenu from "./component/Command.vue";
 import { Loading } from "quasar";
 
 let timer: any;
 
+const file = ref<any>();
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(false);
 const tab = ref("simulations");
 const splitterModel = ref(33);
 const ARef = ref<any>();
 const RRef = ref<any>();
+const g6Ref = ref<any>();
 
 let analyse = ref(false);
 let result = ref(false);
@@ -184,6 +214,11 @@ const showAnalyse = () => {
   analyse.value = true;
   ARef.value.initGraphAnalyse();
 };
+
+function updateGraph() {
+  console.log("update command:graph");
+  g6Ref.value.updateGraph();
+}
 
 const showResult = () => {
   result.value = true;

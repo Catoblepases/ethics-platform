@@ -126,8 +126,8 @@ const updateEditMenu = () => {
   childRef.value.update();
 };
 
-var carriageData = ref({});
-provide("carriageData", carriageData);
+var sectionData = ref({});
+provide("sectionData", sectionData);
 
 var dialogFormVisible = ref(false);
 provide("dialogFormVisible", dialogFormVisible);
@@ -159,8 +159,8 @@ const setNodeId = (id: string) => {
   nodeId.value = id;
 };
 
-const setCarriageData = (data: any) => {
-  carriageData.value = data;
+const setSectionData = (data: any) => {
+  sectionData.value = data;
 };
 
 async function getData() {
@@ -183,27 +183,27 @@ const contextMenu = new G6.Menu({
     }
     return `
   <div id="contextmenu" class="menu">
-      <div class="contextmenu_item">add carriage</div>
+      <div class="contextmenu_item">add section</div>
       <div class="contextmenu_item">add new track</div>
       <div class="contextmenu_item">delete track</div>
-      <div class="contextmenu_item">delete carriage</div>
+      <div class="contextmenu_item">delete section</div>
   </div>
   `;
   },
   handleMenuClick: (target, item) => {
     console.log(target.innerText, item.getModel().id);
     switch (target.innerText) {
-      case "add carriage":
-        axios.post("api/carriage/addCarriage", { name: item.getModel().id });
+      case "add section":
+        axios.post("api/section/addSection", { name: item.getModel().id });
         break;
       case "add new track":
         trackEditVisible.value = true;
         break;
       case "delete track":
-        axios.post("api/carriage/deleteTrack", { name: item.getModel().id });
+        axios.post("api/section/deleteTrack", { name: item.getModel().id });
         break;
-      case "delete carriage":
-        axios.delete("api/carriage/" + item.getModel().id).then(() => {
+      case "delete section":
+        axios.delete("api/section/" + item.getModel().id).then(() => {
           Notify.create("delete " + item.getModel().id);
         });
         break;
@@ -260,7 +260,7 @@ function changeGroupColor(position: string, state: boolean) {
 function changeGroupPosition(position: string) {
   const item = graph.findById(position);
   console.log("moveGroup");
-  item.getModel().type = "carriageWithGroup";
+  item.getModel().type = "sectionWithGroup";
   graph.refreshItem(position);
 }
 
@@ -346,7 +346,7 @@ async function initSimulation() {
   graph.changeData(data);
   const name = { name: "./traceTroll.lp" };
   graph.remove("train");
-  await axios.post("api/carriage/trace", name).then((res) => {
+  await axios.post("api/section/trace", name).then((res) => {
     curentSimulation = res.data[1];
     for (let index = 0; index < res.data.length; index++) {
       const element = res.data[index];
@@ -356,7 +356,7 @@ async function initSimulation() {
       }
     }
     console.log(curentSimulation);updateSimulations()
-    axios.get("api/carriage/original").then((res) => {
+    axios.get("api/section/original").then((res) => {
       const id: string = res.data;
       const item = graph.findById(id).getModel();
       trainSetup.x = item.x!;
@@ -393,8 +393,8 @@ const initGraph = async () => {
         graph.on("node:dblclick", function (evt) {
           var id: string = evt.item?.getModel().id!;
           setNodeId(id);
-          axios.get("api/carriage/" + id).then((res) => {
-            setCarriageData(res.data);
+          axios.get("api/section/" + id).then((res) => {
+            setSectionData(res.data);
             updateEditMenu();
             openMenu();
           });
@@ -406,7 +406,7 @@ const initGraph = async () => {
 };
 
 async function updateSimulations() {
-  await axios.get("api/carriage/simulation").then((res) => {
+  await axios.get("api/section/simulation").then((res) => {
     let data = res.data.data;
     let names: Array<string> = [];
     for (let index = 0; index < data.length; index++) {

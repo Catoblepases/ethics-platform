@@ -78,7 +78,7 @@ public class G6Info {
             g.position = ((Bridge) pos).getPosition().getName();
         } else {
             g.position = pos.getName();
-            g.pType = "carriage";
+            g.pType = "section";
         }
         return g;
     }

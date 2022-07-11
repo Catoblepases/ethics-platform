@@ -35,7 +35,7 @@ function apply() {
     return;
   }
   axios
-    .post("api/carriage/addTrack", { name: form.name, length: form.length })
+    .post("api/section/addTrack", { name: form.name, length: form.length })
     .then(() => {
       ElMessage("submit track success!");
       updateClingo();

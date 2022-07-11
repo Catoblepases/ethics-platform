@@ -1,7 +1,7 @@
 package com.example.demo.model.menu;
 
 
-import com.example.demo.model.Carriage;
+import com.example.demo.model.Section;
 import com.example.demo.model.Generator;
 import com.example.demo.model.Switch;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class InfoSwitch {
     String trackEndName;
     int trackEndNumber;
 
-    public InfoSwitch(Carriage trackBegin, Carriage trackEnd) {
+    public InfoSwitch(Section trackBegin, Section trackEnd) {
         this.trackBegin = trackBegin.getName();
         this.trackEnd = trackEnd.getName();
         this.trackBeginNumber = trackBegin.getIndex();
@@ -33,16 +33,16 @@ public class InfoSwitch {
     }
 
     Switch createSwitch(Generator generator) {
-        Carriage begin = (Carriage) generator.readPosition(trackBegin);
-        Carriage end = (Carriage) generator.readPosition(trackEnd);
+        Section begin = (Section) generator.readPosition(trackBegin);
+        Section end = (Section) generator.readPosition(trackEnd);
         Switch sw = new Switch(begin, end);
         return sw;
     }
 
-    void update(Carriage carriage, Generator generator) {
-        Switch s = carriage.getSwitch();
-        Carriage begin = (Carriage) generator.readPosition(trackBegin);
-        Carriage end = (Carriage) generator.readPosition(trackEnd);
+    void update(Section section, Generator generator) {
+        Switch s = section.getSwitch();
+        Section begin = (Section) generator.readPosition(trackBegin);
+        Section end = (Section) generator.readPosition(trackEnd);
         if (s == null) {
             Switch sw = new Switch(begin, end);
             generator.switchs.add(sw);

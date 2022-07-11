@@ -20,14 +20,14 @@ public class InfoBridge {
         return bridge;
     }
 
-    void updateBridge(Carriage carriage, Generator generator) {
+    void updateBridge(Section section, Generator generator) {
         if (name == "" || name == null) {
-            carriage.setBridge(null);
+            section.setBridge(null);
             return;
         }
-        Bridge bridge = carriage.getBridge();
+        Bridge bridge = section.getBridge();
         if (bridge == null) {
-            bridge = createBridge(carriage);
+            bridge = createBridge(section);
             generator.bridges.add(bridge);
             return;
         }
@@ -35,7 +35,7 @@ public class InfoBridge {
             bridge.setName(name);
         }
         if (group != null) {
-            group.updateGroup(carriage.getBridge(),generator);
+            group.updateGroup(section.getBridge(),generator);
         }else if(bridge.getGroup()!=null){
             generator.groups.remove(bridge.getGroup());
         }
