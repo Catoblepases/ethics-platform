@@ -4,7 +4,7 @@ import { KEY_INTEROP, KEY_LOG } from "./keys";
 import interopFallback from "./interop-fallback";
 import axios from "axios";
 
-import { Quasar, Notify } from "quasar";
+import { Quasar, Notify, Loading } from "quasar";
 // Import icon libraries
 import "@quasar/extras/material-icons/material-icons.css";
 // Import Quasar css
@@ -27,6 +27,7 @@ app.use(ElementPlus, { size: "small", zIndex: 3000 });
 app.use(Quasar, {
   plugins: {
     Notify,
+    Loading,
   },
   config: {
     notify: {

@@ -5,13 +5,7 @@
         <el-input v-model="cmodel" :disabled="disabled" />
       </el-col>
       <el-col span="4">
-        <el-upload
-          ref="upload"
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :limit="1"
-          :auto-upload="false"
-        >
+        <el-upload ref="upload" class="upload-demo" :limit="1" disabled="true">
           <template #trigger>
             <el-tooltip
               class="box-item"
@@ -19,7 +13,7 @@
               content="select file"
               placement="bottom"
             >
-              <el-button :icon="Upload" circle></el-button>
+              <el-button :icon="Upload" circle disabled></el-button>
             </el-tooltip>
           </template>
         </el-upload>

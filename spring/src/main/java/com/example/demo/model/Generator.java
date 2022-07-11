@@ -681,6 +681,14 @@ public class Generator {
         simulations = new ArrayList<>();
     }
 
+    public void resetGenerator() {
+        tracks.clear();
+        switchs.clear();
+        bridges.clear();
+        groups.clear();
+        simulations.clear();
+    }
+
     public void setTime(int n) {
         time = n;
     }

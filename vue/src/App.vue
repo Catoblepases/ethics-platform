@@ -12,28 +12,46 @@
         <q-btn-dropdown stretch flat label="File">
           <q-list>
             <q-item-label header>Files</q-item-label>
-            <q-item clickable v-close-popup tabindex="0">
+            <q-item v-close-popup tabindex="0">
               <q-item-section avatar>
                 <q-avatar icon="folder" color="dark" text-color="white" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>open File</q-item-label>
               </q-item-section>
-              <q-item-section>
-                <q-file
-                  v-model="file"
-                  label="Pick one file"
-                  filled
-                  style="max-width: 300px"
-                />
-              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-uploader
+                field-name="file"
+                url="api/section/upload"
+                with-credentials
+                color="dark"
+                auto-upload
+                @uploaded="onUploaded"
+              />
             </q-item>
             <q-item clickable v-close-popup tabindex="1">
               <q-item-section avatar>
                 <q-avatar icon="folder" color="dark" text-color="white" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Save File</q-item-label>
+                <a
+                  href="api/Node"
+                  target="_blank"
+                  rel="external nofollow"
+                  style="text-decoration: none; color: #606266"
+                  download="allNode.json"
+                  >download</a
+                >
+                <q-item-label>Save File as json</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable tabindex="4" @click="saveFile">
+              <q-item-section avatar>
+                <q-avatar icon="folder" color="dark" text-color="white" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Save File as lp</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -180,10 +198,12 @@ import clingoAnalyse from "./component/ClingoAnalyse.vue";
 import clingoResult from "./component/ClingoResult.vue";
 import commandMenu from "./component/Command.vue";
 import { Loading } from "quasar";
+import axios from "axios";
+import { Notify } from "quasar";
 
 let timer: any;
 
-const file = ref<any>();
+const file = ref<File>();
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(false);
 const tab = ref("simulations");
@@ -196,6 +216,22 @@ let analyse = ref(false);
 let result = ref(false);
 provide("analyse", analyse);
 provide("result", result);
+
+function onUploaded() {
+  Loading.show();
+  setTimeout(() => {
+    updateGraph();
+    Loading.hide();
+  }, 1000);
+}
+
+function saveFile() {
+  axios.post("api/section/lp", { name: "trolley1act.lp" }).then(() => {
+    Notify.create(
+      "finish saving, check the relative path: ./spring/trolley1act.lp "
+    );
+  });
+}
 
 function toggleLeftDrawer() {
   if (leftDrawerOpen.value) {

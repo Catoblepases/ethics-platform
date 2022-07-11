@@ -9,9 +9,13 @@ import com.example.demo.model.menu.EventForm;
 import com.example.demo.model.menu.EventItem;
 import com.example.demo.model.menu.InfoSection;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +57,21 @@ public class SectionController {
     @PostMapping("/reset")
     void resetGenerator() {
         generator.read("./data/testsw");
+    }
+
+
+    @PostMapping("/upload")
+    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
+        saveUploadedFiles(uploadfile);
+    }
+
+    private String saveUploadedFiles(final MultipartFile file) throws IOException {
+        final byte[] bytes = file.getBytes();
+        final Path path = Paths.get("./" + file.getOriginalFilename());
+        Files.write(path, bytes);
+        generator.resetGenerator();
+        generator.read("./" + file.getOriginalFilename());
+        return "success";
     }
 
     @PostMapping("/switch")
@@ -260,10 +279,10 @@ public class SectionController {
     }
 
     @PostMapping("/deleteTrack")
-    String deleteTrack(@RequestBody Map<String, String> map){
+    String deleteTrack(@RequestBody Map<String, String> map) {
         String trackName = ClingoCausal.findCompleteCommande(map.get("name"), '(').get(0);
         Track track = generator.findTrack(trackName);
-        if (track!=null){
+        if (track != null) {
             track.delete();
             generator.tracks.remove(track);
         }
