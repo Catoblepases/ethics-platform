@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.annotation.Resource;
 
+/*Le classe InfoSwitch,tous les infomation de interrupteur */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,6 +40,7 @@ public class InfoSwitch {
         return sw;
     }
 
+    /*Ajouter et Sauver un switch*/
     void update(Carriage carriage, Generator generator) {
         Switch s = carriage.getSwitch();
         Carriage begin = (Carriage) generator.readPosition(trackBegin);

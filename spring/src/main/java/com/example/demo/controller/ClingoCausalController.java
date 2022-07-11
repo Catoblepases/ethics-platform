@@ -6,7 +6,7 @@ import com.example.demo.model.menu.InfoCarriage;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-
+/*Le classe ClingoCausalController transmet les données du causal de clingo avec le front-end. */
 @RestController
 @RequestMapping("/causal")
 public class ClingoCausalController {

@@ -1,11 +1,19 @@
 package com.example.demo.model;
 
+/*
+*Le classe commutateur
+*  */
 public class Switch implements Event {
 
+    //le troncon depart
     private Carriage trackBegin;
+    //la destination
     private Carriage trackEnd;
+    //la position actuelle
     private Carriage present;
+    //Activé ou non
     private boolean valid;
+    //Moment de l'activation
     private int time;
 
     public Switch(Carriage t1, Carriage t2) {
@@ -22,6 +30,7 @@ public class Switch implements Event {
         present.add(this);
     }
 
+    /*Ajouter une destination*/
     public void addCarriage(Carriage carriage) {
         trackEnd = carriage;
         carriage.add(this);
@@ -35,6 +44,7 @@ public class Switch implements Event {
         return trackEnd;
     }
 
+    /*Changer la voie*/
     public void changeTrack(String track) {
         if (present == trackBegin) {
             present = trackEnd;
@@ -43,10 +53,12 @@ public class Switch implements Event {
         }
     }
 
+    /*retourne la prochain troncons de la position actuelle*/
     public Carriage next() {
         return present.suivant;
     }
 
+    /*Retourne la prochain troncon si le troncon donnée est la position actuelle,sinon retourne la position actuelle*/
     public Carriage next(Carriage carriage) {
         if (carriage.equals(present)) {
             return present.suivant;
@@ -54,6 +66,7 @@ public class Switch implements Event {
         return present;
     }
 
+    /*retourne le troncons de l'autre côté de troncon donnée*/
     public Carriage getOtherCarriage(Carriage c) {
         if (c == trackBegin) {
             return trackEnd;
@@ -78,6 +91,7 @@ public class Switch implements Event {
         return "switch: " + trackBegin.toString() + "-" + present.toString();
     }
 
+    /*Supprimer un des tronçon dans le switch*/
     public void delCarriage(Carriage c) {
         c.setSwitch(null);
         if (trackBegin == c) {
@@ -86,6 +100,7 @@ public class Switch implements Event {
             trackEnd = null;
         }
     }
+
 
     public boolean isValid() {
         return valid;
@@ -103,6 +118,7 @@ public class Switch implements Event {
         this.time = time;
     }
 
+    /*Affiche le switch*/
     public String getEventInfo() {
         return "switch(" + trackBegin.toString() + ")";
     }

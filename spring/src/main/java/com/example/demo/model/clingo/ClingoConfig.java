@@ -2,7 +2,7 @@ package com.example.demo.model.clingo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/*Le classe ClingoConfig, contient tous les fichiers neccesaire pour clingo */
 @Data
 public class ClingoConfig {
     String actionTheory;

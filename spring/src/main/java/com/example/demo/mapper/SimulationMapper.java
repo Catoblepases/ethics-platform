@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*Le classe SimulationMapper represente les simulation */
 public class SimulationMapper {
     List<String> nameAndEvents;
     List<Map<String, String>> simulations;

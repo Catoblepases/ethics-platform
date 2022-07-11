@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/*Le classe EvenForm,une liste de evenement*/
 @Data
 public class EventForm {
     List<EventItem> eventItemList;

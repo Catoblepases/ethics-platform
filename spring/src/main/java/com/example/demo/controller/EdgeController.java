@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+/*Le classe EdgeController transmet les données du connexion avec le front-end. */
 @RestController
 @RequestMapping("/Edge")
 public class EdgeController {

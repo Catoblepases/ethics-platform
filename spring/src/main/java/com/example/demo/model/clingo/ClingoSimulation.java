@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*le classe ClingoSimulation contient une liste de action*/
 @Data
 public class ClingoSimulation {
 
@@ -22,6 +23,7 @@ public class ClingoSimulation {
     public ClingoSimulation() {
     }
 
+    /*Ajouter une action d'un moment*/
     public void addActionByTime(int t, String action, String actionType, Generator generator) {
         G6Info clingoG6Info = new ClingoAction(actionType, action, t).toG6Graph(generator);
         if (clingoG6Info == null) {

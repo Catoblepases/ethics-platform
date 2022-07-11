@@ -4,6 +4,7 @@ package com.example.demo.model.menu;
 import com.example.demo.model.Carriage;
 import lombok.Data;
 
+/*Le classe Nodestandard représente les nœuds du graphe*/
 @Data
 public class NodeStandard {
     private static int cpt = 0;

@@ -1,13 +1,6 @@
-imp(benCosts,switch(side(1))).
-imp(dde3,switch(side(1))).
-imp(dde,switch(side(1))).
-imp(doNotKill,switch(side(1))).
-imp(actUti,switch(side(1))).
-imp(leastBad2,switch(side(1))).
-imp(pureBad,switch(side(1))).
+imp(doNotKill,switch(main(0))).
 per(pureBad,switch(main(0))).
 per(leastBad2,switch(main(0))).
 per(benCosts,switch(main(0))).
 per(actUti,switch(main(0))).
-per(doNotKill,switch(main(0))).
 per(dde,switch(main(0))).

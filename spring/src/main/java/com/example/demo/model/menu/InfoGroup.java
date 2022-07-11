@@ -7,6 +7,7 @@ import com.example.demo.model.Position;
 import lombok.Builder;
 import lombok.Data;
 
+/*le classe InfoGroup, information de groupe*/
 @Data
 @Builder
 public class InfoGroup {
@@ -18,6 +19,7 @@ public class InfoGroup {
         return g;
     }
 
+    /*Tester si l'object donnée est ce groupe*/
     boolean equal(Object object) {
         if (object instanceof InfoGroup) {
             InfoGroup ig = (InfoGroup) object;
@@ -29,6 +31,7 @@ public class InfoGroup {
         return false;
     }
 
+    /*Ajouter et sauver un groupe*/
     void updateGroup(Position position, Generator generator) {
         Group g = position.getGroup();
         if (g == null) {

@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/*Le classe NodeController transmet les données du nœud avec le front-end. */
 @RestController
 @RequestMapping("/Node")
 public class NodeController {
@@ -27,6 +28,7 @@ public class NodeController {
         return nodeMapper.findAllNode();
     }
 
+    /*Obtenir un nœud par son identifiant*/
     @GetMapping("/{id}")
     NodeStandard getNodeById(@PathVariable("id") String id) {
         return nodeMapper.findNodeById(id);
@@ -63,6 +65,7 @@ public class NodeController {
     @Resource
     Generator generator;
 
+    /*ajouter les nodes*/
     @PostMapping("/addAll/{filePath}")
     public void generateAllNodes(@PathVariable String filePath) {
         nodeMapper.deleteAllNodes();

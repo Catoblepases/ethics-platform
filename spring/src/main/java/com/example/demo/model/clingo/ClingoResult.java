@@ -3,6 +3,7 @@ package com.example.demo.model.clingo;
 import java.io.File;
 import java.util.*;
 
+/*le classe ClingoResult construit un tableau de resultat */
 public class ClingoResult {
 
     List<Permissible> permissibleList;
@@ -33,12 +34,14 @@ public class ClingoResult {
         }
     }
 
+    /*Ajouter une chaine de caracter dans la liste s'il n'existe pas*/
     public void findOrAddPPL(String s, List<String> ls) {
         if (!ls.contains(s)) {
             ls.add(s);
         }
     }
 
+    /*Lire la resultat par ligne*/
     public void readResult(String line) {
         List<String> commands = ClingoCausal.findCompleteCommande(line,',');
         findOrAddPPL(commands.get(1), assessments);
@@ -50,6 +53,7 @@ public class ClingoResult {
         }
     }
 
+    /*Trouver une  action dans la liste de action admissibles */
     public boolean findPAndIM(String action, String name, List<Permissible> lp) {
         for (int i = 0; i < lp.size(); i++) {
             if (lp.get(i).getAction().equals(action) && lp.get(i).getName().equals(name)) {

@@ -2,11 +2,13 @@ package com.example.demo.model;
 
 
 /*
-    Le class Bridge.
+    Le class Bridge represente le pont
 */
 public class Bridge extends Position {
     private Position position;
+    //vrai si pousser la personne sur pont
     private boolean push;
+    // moment de pousser
     private int time;
 
     public Bridge(String name, Position position) {
@@ -64,6 +66,7 @@ public class Bridge extends Position {
         return "Bridge: " + name + "-" + position;
     }
 
+    //retourne l'evenement, le nom de groupe qui est sur pont et le nom de pont
     public String getEventInfo() {
         if (group == null) {
             return null;

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+/*Le classe position, endroits où mettre groupe*/
 public abstract class Position implements ComponentTrolley {
     protected String name;
     protected Group  group;

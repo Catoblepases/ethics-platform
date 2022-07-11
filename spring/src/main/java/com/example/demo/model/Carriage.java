@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-
+/*Le classe Carriage represente le troncon*/
 public class Carriage extends Position {
     private String track;
     public Carriage suivant;
