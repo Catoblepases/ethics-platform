@@ -5,15 +5,17 @@ import com.example.demo.model.*;
 import com.example.demo.model.clingo.ClingoCausal;
 import com.example.demo.model.clingo.ClingoSimulation;
 import com.example.demo.model.clingo.ClingoTrace;
-import com.example.demo.model.clingo.G6Info;
 import com.example.demo.model.menu.EventForm;
 import com.example.demo.model.menu.EventItem;
-import com.example.demo.model.menu.InfoCarriage;
-import org.apache.ibatis.annotations.Delete;
+import com.example.demo.model.menu.InfoSection;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,35 +23,35 @@ import java.util.Map;
 
 /*Le classe CarriageController echange d'informations les données du trolley avec le front-end. */
 @RestController
-@RequestMapping("/carriage")
-public class CarriageController {
+@RequestMapping("/section")
+public class SectionController {
 
     @Resource
     Generator generator;
 
     @GetMapping("/{id}")
-    InfoCarriage getCarriageById(@PathVariable("id") String id) {
-        Carriage carriage = (Carriage) generator.readPosition(id);
-        Boolean isOriginal = generator.train.getOriginPosition().equals(carriage);
-        InfoCarriage infoCarriage = new InfoCarriage(carriage, isOriginal);
-        return infoCarriage;
+    InfoSection getSectionById(@PathVariable("id") String id) {
+        Section section = (Section) generator.readPosition(id);
+        Boolean isOriginal = generator.train.getOriginPosition().equals(section);
+        InfoSection infoSection = new InfoSection(section, isOriginal);
+        return infoSection;
     }
 
     @PutMapping
-    String updateCarriageById(@RequestBody InfoCarriage infoCarriage) {
-        Carriage carriage = (Carriage) generator.readPosition(infoCarriage.getId());
-        infoCarriage.updateCarriage(carriage, generator);
+    String updateSectionById(@RequestBody InfoSection infoSection) {
+        Section section = (Section) generator.readPosition(infoSection.getId());
+        infoSection.updateSection(section, generator);
         return "success";
     }
 
     @GetMapping("/test")
-    String getCarriage() {
-        return "carriage";
+    String getSection() {
+        return "section";
     }
 
     @PostMapping("/add/{trackId}")
-    void addCarriage(@PathVariable String trackId) {
-        generator.findTrack(trackId).addNewCarriage();
+    void addSection(@PathVariable String trackId) {
+        generator.findTrack(trackId).addNewSection();
     }
 
     @PostMapping("/reset")
@@ -57,93 +59,108 @@ public class CarriageController {
         generator.read("./data/testsw");
     }
 
+
+    @PostMapping("/upload")
+    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
+        saveUploadedFiles(uploadfile);
+    }
+
+    private String saveUploadedFiles(final MultipartFile file) throws IOException {
+        final byte[] bytes = file.getBytes();
+        final Path path = Paths.get("./" + file.getOriginalFilename());
+        Files.write(path, bytes);
+        generator.resetGenerator();
+        generator.read("./" + file.getOriginalFilename());
+        return "success";
+    }
+
     @PostMapping("/switch")
-    void addSwitch(@RequestBody String[] carriageIds) {
-        Carriage carriage1 = (Carriage) generator.readPosition(carriageIds[0]);
-        Carriage carriage2 = (Carriage) generator.readPosition(carriageIds[1]);
-        Switch sw = new Switch(carriage1, carriage2);
+    void addSwitch(@RequestBody String[] sectionIds) {
+        Section section1 = (Section) generator.readPosition(sectionIds[0]);
+        Section section2 = (Section) generator.readPosition(sectionIds[1]);
+        Switch sw = new Switch(section1, section2);
         generator.switchs.add(sw);
     }
 
     @PostMapping("/bridge")
-    void addBridge(@RequestBody String[] carriageId_BridgeId) {
-        Carriage carriage = (Carriage) generator.readPosition(carriageId_BridgeId[0]);
-        Bridge bridge = new Bridge(carriageId_BridgeId[1], carriage);
+    void addBridge(@RequestBody String[] sectionId_BridgeId) {
+        Section section = (Section) generator.readPosition(sectionId_BridgeId[0]);
+        Bridge bridge = new Bridge(sectionId_BridgeId[1], section);
         generator.bridges.add(bridge);
     }
 
     @PostMapping("/group")
     void addGroup(@RequestBody String[] update) {
-        Carriage carriage = (Carriage) generator.readPosition(update[0]);
+        Section section = (Section) generator.readPosition(update[0]);
         int number = Integer.parseInt(update[2]);
         String name = update[1];
-        Group group = new Group(number, carriage, name);
+        Group group = new Group(number, section, name);
         generator.groups.add(group);
     }
 
     @GetMapping("/{id}/switch")
     List<String> getSwitch(@PathVariable String id) {
-        Carriage carriage = (Carriage) generator.readPosition(id);
+        Section section = (Section) generator.readPosition(id);
         List<String> ls = new ArrayList<>();
-        ls.add(carriage.getSwitch().getOtherCarriage(carriage).toString());
-        ls.add(carriage.toString());
+        ls.add(section.getSwitch().getOtherSection(section).toString());
+        ls.add(section.toString());
         return ls;
     }
 
     @GetMapping("/{id}/bridge/name")
     String getBridgeName(@PathVariable String id) {
-        Carriage carriage = (Carriage) generator.readPosition(id);
+        Section section = (Section) generator.readPosition(id);
         List<String> ls = new ArrayList<>();
-        Bridge b = carriage.getBridge();
+        Bridge b = section.getBridge();
         return b.getName();
     }
 
     @GetMapping("/{id}/group")
     List<String> getGroupInfo(@PathVariable String id) {
-        Carriage carriage = (Carriage) generator.readPosition(id);
+        Section section = (Section) generator.readPosition(id);
         List<String> ls = new ArrayList<>();
-        Group g = carriage.getGroup();
+        Group g = section.getGroup();
         ls.add(g.getName());
         ls.add(Integer.toString(g.getNb()));
         return ls;
     }
 
-    @DeleteMapping("/{carriageId}")
-    String deleteCarriageById(@PathVariable("carriageId") String carriageId) {
-        Carriage carriage = (Carriage) generator.readPosition(carriageId);
-        if (carriage == null) {
+    @DeleteMapping("/{sectionId}")
+    String deleteSectionById(@PathVariable("sectionId") String sectionId) {
+        Section section = (Section) generator.readPosition(sectionId);
+        if (section == null) {
             return "fail";
         }
-        Track track = generator.findTrack(carriage.getTrack());
-        track.remove(carriage);
+        Track track = generator.findTrack(section.getTrack());
+        track.remove(section);
         return "sucess";
     }
 
-    @DeleteMapping("/switch/{carriageId}")
-    String deleteSwitchById(@PathVariable("carriageId") String carriageId) {
-        Carriage carriage = (Carriage) generator.readPosition(carriageId);
-        carriage.deleteSwitch();
+    @DeleteMapping("/switch/{sectionId}")
+    String deleteSwitchById(@PathVariable("sectionId") String sectionId) {
+        Section section = (Section) generator.readPosition(sectionId);
+        section.deleteSwitch();
         return "sucess";
     }
 
-    @DeleteMapping("/group/{carriageId}")
-    String deleteGroupById(@PathVariable("carriageId") String carriageId) {
-        Carriage carriage = (Carriage) generator.readPosition(carriageId);
-        carriage.deleteGroup();
+    @DeleteMapping("/group/{sectionId}")
+    String deleteGroupById(@PathVariable("sectionId") String sectionId) {
+        Section section = (Section) generator.readPosition(sectionId);
+        section.deleteGroup();
         return "sucess";
     }
 
-    @DeleteMapping("/bridge/{carriageId}")
-    String deleteBridgeById(@PathVariable("carriageId") String carriageId) {
-        Carriage carriage = (Carriage) generator.readPosition(carriageId);
-        carriage.deleteBridge();
+    @DeleteMapping("/bridge/{sectionId}")
+    String deleteBridgeById(@PathVariable("sectionId") String sectionId) {
+        Section section = (Section) generator.readPosition(sectionId);
+        section.deleteBridge();
         return "sucess";
     }
 
     @PostMapping("/{id}")
     String setOriginalPosition(@PathVariable String id) {
-        Carriage carriage = (Carriage) generator.readPosition(id);
-        generator.train.setOriginPosition(carriage);
+        Section section = (Section) generator.readPosition(id);
+        generator.train.setOriginPosition(section);
         return "success";
     }
 
@@ -177,8 +194,8 @@ public class CarriageController {
     }
 
     @PostMapping("/command")
-    String postCommand(@RequestBody String line) {
-        generator.readInformation(line, 0);
+    String postCommand(@RequestBody Map<String, String> map) {
+        generator.readInformation(map.get("content"), 0);
         return "success";
     }
 
@@ -246,11 +263,11 @@ public class CarriageController {
         return generator.train.getOriginPosition().getName();
     }
 
-    @PostMapping("/addCarriage")
-    String addCarriage(@RequestBody Map<String, String> map) {
+    @PostMapping("/addSection")
+    String addSection(@RequestBody Map<String, String> map) {
         String trackName = ClingoCausal.findCompleteCommande(map.get("name"), '(').get(0);
         Track track = generator.findTrack(trackName);
-        track.addNewCarriage();
+        track.addNewSection();
         return "sucess";
     }
 
@@ -262,10 +279,10 @@ public class CarriageController {
     }
 
     @PostMapping("/deleteTrack")
-    String deleteTrack(@RequestBody Map<String, String> map){
+    String deleteTrack(@RequestBody Map<String, String> map) {
         String trackName = ClingoCausal.findCompleteCommande(map.get("name"), '(').get(0);
         Track track = generator.findTrack(trackName);
-        if (track!=null){
+        if (track != null) {
             track.delete();
             generator.tracks.remove(track);
         }

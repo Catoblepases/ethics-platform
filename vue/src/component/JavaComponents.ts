@@ -174,10 +174,10 @@ export const deleteSwitch = (data: Data) => {
   data.switchs = null;
 };
 
-export const deleteCarriage = (data: Data) => {
-  ElMessage("try to delete this carriage");
-  axios.delete("api/carriage/" + data.id).then(() => {
-    ElMessage("delete carriage successfully");
+export const deleteSection = (data: Data) => {
+  ElMessage("try to delete this section");
+  axios.delete("api/section/" + data.id).then(() => {
+    ElMessage("delete section successfully");
   });
 };
 

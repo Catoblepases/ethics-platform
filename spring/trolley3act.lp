@@ -1,6 +1,6 @@
 % -------------DOMAINS------------- %
 time(0..6).
-track(side(0..11);main(0..11)).
+track(side(0..10);main(0..10)).
 object(g1;g2;g3).
 group(g1;g2;g3).
 numberInGroup(g1,5;g2,2;g3,1).
@@ -26,11 +26,6 @@ performs(s1,switch(main(0)),0).
 % ------------ EVENT SPECIFICATION ------------------------------ %
 
 % SWITCH
-act(switch(M,N)):-buttonOn(M,N).
-prec(on(train,M),switch(M,N)):-act(switch(M,N)).
-effect(switch(M,N),neg(on(train,M))):-act(switch(M,N)).
-effect(switch(M,N),on(train,N)):-act(switch(M,N)).
-
 act(switch(M)):-buttonOn(M).
 prec(on(train,M),switch(M)):-act(switch(M)).
 effect(switch(M),neg(on(train,M))):-act(switch(M)).

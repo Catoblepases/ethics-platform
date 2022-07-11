@@ -123,7 +123,7 @@ const setTableData = (data: any) => {
 };
 
 const getEvent = async () => {
-  await axios.get("api/carriage/events").then((res) => {
+  await axios.get("api/section/events").then((res) => {
     setTableData(res.data);
     for (let index = 0; index < tableData.value.length; index++) {
       tableData.value[index].valid = false;
@@ -183,7 +183,7 @@ const apply = () => {
     return;
   }
   console.log(out);
-  axios.post("api/carriage/simulation", out).then((res) => {
+  axios.post("api/section/simulation", out).then((res) => {
     console.log(res);
     update();
     updateClingo();

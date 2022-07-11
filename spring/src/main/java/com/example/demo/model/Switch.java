@@ -6,41 +6,41 @@ package com.example.demo.model;
 public class Switch implements Event {
 
     //le troncon depart
-    private Carriage trackBegin;
+    private Section trackBegin;
     //la destination
-    private Carriage trackEnd;
+    private Section trackEnd;
     //la position actuelle
-    private Carriage present;
+    private Section present;
     //Activé ou non
     private boolean valid;
     //Moment de l'activation
     private int time;
 
-    public Switch(Carriage t1, Carriage t2) {
+    public Switch(Section t1, Section t2) {
         trackBegin = t1;
         trackEnd = t2;
-        present = t1;
+        present = t2;
         valid = true;
         t1.add(this);
     }
 
-    public Switch(Carriage present) {
+    public Switch(Section present) {
         trackBegin = present;
         this.present = present;
         present.add(this);
     }
 
     /*Ajouter une destination*/
-    public void addCarriage(Carriage carriage) {
-        trackEnd = carriage;
-        carriage.add(this);
+    public void addSection(Section section) {
+        trackEnd = section;
+        section.add(this);
     }
 
-    public Carriage getTrackBegin() {
+    public Section getTrackBegin() {
         return trackBegin;
     }
 
-    public Carriage getTrackEnd() {
+    public Section getTrackEnd() {
         return trackEnd;
     }
 
@@ -54,20 +54,21 @@ public class Switch implements Event {
     }
 
     /*retourne la prochain troncons de la position actuelle*/
-    public Carriage next() {
-        return present.suivant;
+    public Section next() {
+        return trackEnd;
     }
 
     /*Retourne la prochain troncon si le troncon donnée est la position actuelle,sinon retourne la position actuelle*/
-    public Carriage next(Carriage carriage) {
-        if (carriage.equals(present)) {
+    public Section next(Section section) {
+        if (section.equals(present)) {
             return present.suivant;
         }
-        return present;
+        return trackEnd;
     }
 
     /*retourne le troncons de l'autre côté de troncon donnée*/
-    public Carriage getOtherCarriage(Carriage c) {
+
+    public Section getOtherSection(Section c) {
         if (c == trackBegin) {
             return trackEnd;
         } else {
@@ -76,12 +77,12 @@ public class Switch implements Event {
     }
 
 
-    public void setTrackBegin(Carriage trackBegin) {
+    public void setTrackBegin(Section trackBegin) {
         this.trackBegin = trackBegin;
         trackBegin.setSwitch(this);
     }
 
-    public void setTrackEnd(Carriage trackEnd) {
+    public void setTrackEnd(Section trackEnd) {
         this.trackEnd = trackEnd;
         trackEnd.setSwitch(this);
     }
@@ -92,7 +93,7 @@ public class Switch implements Event {
     }
 
     /*Supprimer un des tronçon dans le switch*/
-    public void delCarriage(Carriage c) {
+    public void delSection(Section c) {
         c.setSwitch(null);
         if (trackBegin == c) {
             trackBegin = null;
@@ -120,6 +121,11 @@ public class Switch implements Event {
 
     /*Affiche le switch*/
     public String getEventInfo() {
-        return "switch(" + trackBegin.toString() + ")";
+        if (trackEnd.getIndex() == trackBegin.getIndex()) {
+            return "switch(" + trackBegin.toString() + ")";
+        } else {
+            return "switch(" + trackBegin.toString() + "," + trackEnd.toString() + ")";
+        }
+
     }
 }

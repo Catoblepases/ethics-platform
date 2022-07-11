@@ -9,10 +9,10 @@ public class Train implements ComponentTrolley {
     // Quand le train heurte une personne, il s'arrête.
     public static final boolean STOPAFTERCOLLISION = true;
     // la position originale
-    public Carriage             originPosition;
+    public Section             originPosition;
     //position actuelle
-    private Carriage            present;
-    public Train(Carriage originPosition) {
+    private Section            present;
+    public Train(Section originPosition) {
         this.originPosition = originPosition;
         present             = originPosition;
     }
@@ -59,17 +59,16 @@ public class Train implements ComponentTrolley {
     }
 
     /*retourn la position actuelle*/
-    public Carriage getPresent() { return this.present; }
+    public Section getPresent() { return this.present; }
     /*retourn la position originale*/
-    public Carriage getOriginPosition() { return this.originPosition; }
+    public Section getOriginPosition() { return this.originPosition; }
     /*Définir la position*/
-    public void     setPresent(Carriage present) { this.present = present; }
+    public void     setPresent(Section present) { this.present = present; }
     /*Définir la position originale*/
-    public void     setOriginPosition(Carriage originPosition) {
+    public void     setOriginPosition(Section originPosition) {
         this.originPosition = originPosition;
         this.present        = originPosition;
     }
-
     /*retourn le train*/
     public String getName() { return "train"; }
 

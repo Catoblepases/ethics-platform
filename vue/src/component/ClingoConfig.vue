@@ -45,7 +45,7 @@
 
       <el-form-item>
         <el-row>
-          <el-button type="primary" @click="onSubmit">Download</el-button>
+          <el-button type="primary" @click="onSubmit">Submit</el-button>
           <el-button>Cancel</el-button>
         </el-row>
       </el-form-item>

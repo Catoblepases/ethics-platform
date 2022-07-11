@@ -14,16 +14,16 @@ public class Bridge extends Position {
     public Bridge(String name, Position position) {
         super(name);
         this.position = position;
-        if (this.position instanceof Carriage) {
-            Carriage tmp = (Carriage) this.position;
+        if (this.position instanceof Section) {
+            Section tmp = (Section) this.position;
             tmp.add(this);
         }
         push = true;
     }
 
     public void delPosition() {
-        if (this.position instanceof Carriage) {
-            Carriage tmp = (Carriage) this.position;
+        if (this.position instanceof Section) {
+            Section tmp = (Section) this.position;
             tmp.deleteBridge();
         }
         position = null;
@@ -31,8 +31,8 @@ public class Bridge extends Position {
 
     public void setPosition(Position p) {
         position = p;
-        if (this.position instanceof Carriage) {
-            Carriage tmp = (Carriage) this.position;
+        if (this.position instanceof Section) {
+            Section tmp = (Section) this.position;
             tmp.add(this);
         }
     }

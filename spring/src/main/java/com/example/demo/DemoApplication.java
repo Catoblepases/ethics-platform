@@ -1,7 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.mapper.EdgeMapper;
-import com.example.demo.model.Carriage;
+import com.example.demo.model.Section;
 import com.example.demo.model.Generator;
 import com.example.demo.model.clingo.ClingoCausal;
 import com.example.demo.model.clingo.ClingoResult;

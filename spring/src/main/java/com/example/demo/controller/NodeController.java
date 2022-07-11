@@ -74,9 +74,9 @@ public class NodeController {
         String[] fills = {"#90CAF9", "#5C6BC0", "#FFF176", "green", "darkgrey", "pink"};
         int i = 0;
         for (Track track : tracks) {
-            for (Carriage carriage : track) {
-                boolean original = carriage.equals(generator.train.getOriginPosition());
-                Node node = new Node(carriage.getName(), 0, 0, "track", carriage.getInformation(), fills[i], carriage, original);
+            for (Section section : track) {
+                boolean original = section.equals(generator.train.getOriginPosition());
+                Node node = new Node(section.getName(), 0, 0, "track", section.getInformation(), fills[i], section, original);
                 nodeMapper.addNode(node);
             }
             i++;
@@ -86,17 +86,17 @@ public class NodeController {
         }
         List<Switch> ls = new ArrayList<>();
         for (Track track : tracks) {
-            for (Carriage carriage : track) {
-                NodeStandard node = getNodeById(carriage.getName());
-                if (carriage.suivant != null) {
-                    NodeStandard target = getNodeById(carriage.suivant.getName());
+            for (Section section : track) {
+                NodeStandard node = getNodeById(section.getName());
+                if (section.suivant != null) {
+                    NodeStandard target = getNodeById(section.suivant.getName());
                     if (target != null) {
                         edgeMapper.addEdge(new Edge(node.getId(), target.getId()));
                     }
                 }
-                Switch sw = carriage.getSwitch();
+                Switch sw = section.getSwitch();
                 if ((sw != null) && (!ls.contains(sw))) {
-                    NodeStandard target = getNodeById(carriage.getSwitch().next(carriage).getName());
+                    NodeStandard target = getNodeById(section.getSwitch().next(section).getName());
                     if (target != null) {
                         edgeMapper.addEdge(new Edge(sw.getTrackBegin().getName(), sw.getTrackEnd().getName()));
                         ls.add(sw);

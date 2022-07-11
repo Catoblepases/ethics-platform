@@ -23,11 +23,14 @@ public class ClingoAction {
     /*Transform les informations stokee à les information utile pour graphe*/
     public G6Info toG6Graph(Generator generator) {
         List<String> ls = ClingoCausal.findCompleteCommande(action, ',');
+        if (ls.size() == 0) {
+            return null;
+        }
         return switch (ls.get(0)) {
             case "on" -> G6Info.createMove(ls.get(2), ls.get(1), time, generator);
             case "run" -> G6Info.createMoveTrain(ls.get(2), time);
             case "crash" -> G6Info.createSetGroup(ls.get(1), generator, time);
-            case "alive" ->G6Info.createAlive(ls.get(1),generator,time);
+            case "alive" -> G6Info.createAlive(ls.get(1), generator, time);
             default -> null;
         };
     }

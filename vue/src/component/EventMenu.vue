@@ -66,7 +66,7 @@ const setTableData = (data: any) => {
 };
 
 const getEvent = () => {
-  axios.get("api/carriage/events").then((res) => {
+  axios.get("api/section/events").then((res) => {
     setTableData(res.data);
   });
 };
