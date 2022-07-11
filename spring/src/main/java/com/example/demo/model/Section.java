@@ -1,16 +1,16 @@
 package com.example.demo.model;
 
 
-public class Carriage extends Position {
+public class Section extends Position {
     private String track;
-    public Carriage suivant;
-    public Carriage before;
+    public Section suivant;
+    public Section before;
     private Switch sw;
     private Bridge bridge;
     private int index;
 
 
-    public Carriage(String name, String track, int index) {
+    public Section(String name, String track, int index) {
         super(name);
         this.track = track;
         this.index = index;
@@ -28,7 +28,7 @@ public class Carriage extends Position {
         return this.track;
     }
 
-    public Carriage getSuivant() {
+    public Section getSuivant() {
         return this.suivant;
     }
 
@@ -44,11 +44,11 @@ public class Carriage extends Position {
         return index;
     }
 
-    public void addBefore(Carriage before) {
+    public void addBefore(Section before) {
         this.before = before;
     }
 
-    public void add(Carriage suivant) {
+    public void add(Section suivant) {
         this.suivant = suivant;
     }
 
@@ -74,8 +74,8 @@ public class Carriage extends Position {
 
     public void deleteSwitch() {
         if (sw != null) {
-            Carriage c1 = sw.getTrackBegin();
-            Carriage c2 = sw.getTrackEnd();
+            Section c1 = sw.getTrackBegin();
+            Section c2 = sw.getTrackEnd();
             c1.setSwitch(null);
         }
     }
@@ -96,7 +96,7 @@ public class Carriage extends Position {
         before.suivant = suivant;
     }
 
-    public Carriage next() {
+    public Section next() {
         if (sw != null) {
             return sw.next();
         }
