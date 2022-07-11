@@ -53,7 +53,7 @@ public class InfoSection {
         }
     }
     /*Ajouter et sauver un troncon*/
-    public void updateCarriage(Carriage carriage, Generator generator) {
+    public void updateSection(Section section, Generator generator) {
         //ajouter et sauver un group
         if (group != null) {
             group.updateGroup(section,generator);

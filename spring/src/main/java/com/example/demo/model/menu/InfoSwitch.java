@@ -41,10 +41,10 @@ public class InfoSwitch {
     }
 
     /*Ajouter et Sauver un switch*/
-    void update(Carriage carriage, Generator generator) {
-        Switch s = carriage.getSwitch();
-        Carriage begin = (Carriage) generator.readPosition(trackBegin);
-        Carriage end = (Carriage) generator.readPosition(trackEnd);
+    void update(Section section, Generator generator) {
+        Switch s = section.getSwitch();
+        Section begin = (Section) generator.readPosition(trackBegin);
+        Section end = (Section) generator.readPosition(trackEnd);
         if (s == null) {
             Switch sw = new Switch(begin, end);
             generator.switchs.add(sw);

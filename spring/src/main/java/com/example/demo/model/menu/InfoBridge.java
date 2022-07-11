@@ -22,7 +22,7 @@ public class InfoBridge {
     }
 
     /*Ajouter et sauver un pont*/
-    void updateBridge(Carriage carriage, Generator generator) {
+    void updateBridge(Section section, Generator generator) {
         if (name == "" || name == null) {
             section.setBridge(null);
             return;
