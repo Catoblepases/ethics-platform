@@ -3,6 +3,7 @@
 
 # Démarrage rapide
 Afin d'exécuter le programme correctement, il est recommandé d'exécuter d'abord le back-end puis le front-end, le back-end sur le port 8080 et le front-end sur 9000, vérifiez les résultats à l'adresse http://localhost:9000/.
+
 ```
 cd spring
 java -jar target/spring-1.0.0.jar
@@ -13,5 +14,5 @@ npm run dev
 ```
 
 ## Référence
-Ce projet utilise les deux projets open source suivants :
+Ce projet utilise les projets open source suivants :
 [electron-vue-spring](https://github.com/wuruoyun/electron-vue-spring) licence: [MIT](LICENSE)

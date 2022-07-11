@@ -1,5 +1,4 @@
 <template>
-
   <el-dialog v-model="analyse" title="Clingo Result Analyse" width="90%" height="90%">
     <el-tabs v-model="editableTabsValue" type="card" class="demo-tabs">
       <el-tab-pane
