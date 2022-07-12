@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/*Le classe ClingoTrace est une liste de trace de la simulation par lire le fichier de trace obtenu par clingo ,  */
 public class ClingoTrace {
 
     public List<ClingoSimulation> getClingoSimulations() {
@@ -41,6 +42,7 @@ public class ClingoTrace {
         }
     }
 
+    /*Trouver un simulation sinon l'ajouter*/
     public ClingoSimulation findOrAddClingoSimulation(String name) {
         for (int i = 0; i < clingoSimulations.size(); i++) {
             if (clingoSimulations.get(i).getName().equals(name)) {
@@ -52,6 +54,7 @@ public class ClingoTrace {
         return clingoSimulation;
     }
 
+    /*Ajouter une action */
     public void addAction(String line, Generator generator) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         if (ls.size() == 4) {

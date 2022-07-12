@@ -70,6 +70,7 @@ public class Group implements ComponentTrolley {
         return name;
     }
 
+    /*Retourne le nom et le nombre du groupe*/
     public String getInformation() {
         return name + "," + nb;
     }

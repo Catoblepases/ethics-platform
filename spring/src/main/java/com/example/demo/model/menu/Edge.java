@@ -3,7 +3,7 @@ package com.example.demo.model.menu;
 
 import lombok.Builder;
 import lombok.Data;
-
+/*Le classe Edge, le connexion des nœuds d'un graphe*/
 @Data
 public class Edge {
     static int cpt = 0;

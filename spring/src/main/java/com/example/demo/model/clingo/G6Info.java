@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.HashMap;
 import java.util.Map;
 
+/*Le classe G6Info represente les information du graphe*/
 @Data
 @NoArgsConstructor
 public class G6Info {
@@ -32,6 +33,7 @@ public class G6Info {
         }
     }
 
+    //creer la mouvement du train
     public static G6Info createMoveTrain(String pid, int time) {
         G6Info g = new G6Info("train", time);
         g.position = pid;
@@ -39,6 +41,7 @@ public class G6Info {
         return g;
     }
 
+    //creer la mouvement du groupe
     public static G6Info createMoveGroup(String pid, String gid, int time, Generator generator) {
         G6Info g = new G6Info("moveGroup", time);
         Position pos = generator.findGroup(gid).getPosition();
@@ -52,6 +55,7 @@ public class G6Info {
         return null;
     }
 
+    /*Définir le statut d'un groupe*/
     public static G6Info createAlive(String gid, Generator generator, int time) {
         if (time != 0) {
             return null;
@@ -67,11 +71,13 @@ public class G6Info {
         return g;
     }
 
+    /*Définir la position de la groupe*/
     public static G6Info createSetGroup(String gid, Generator generator, int time) {
         G6Info g = new G6Info("group", time);
         Group group = generator.findGroup(gid);
         Position pos = group.getPosition();
         g.gid = gid;
+        //si le groupe est sur un pont
         if (pos instanceof Bridge) {
             Bridge bridge = (Bridge) pos;
             g.pType = "bridge";

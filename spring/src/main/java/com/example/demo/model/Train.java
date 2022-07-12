@@ -2,10 +2,15 @@ package com.example.demo.model;
 
 
 
-
+/*
+*La classe represente le train
+* */
 public class Train implements ComponentTrolley {
+    // Quand le train heurte une personne, il s'arrête.
     public static final boolean STOPAFTERCOLLISION = true;
+    // la position originale
     public Section             originPosition;
+    //position actuelle
     private Section            present;
     public Train(Section originPosition) {
         this.originPosition = originPosition;
@@ -14,6 +19,7 @@ public class Train implements ComponentTrolley {
     public Train() {}
 
     @Override
+    /*Affiche la position du train*/
     public String toString() {
         if (present == null) {
             return "Train: null";
@@ -21,6 +27,7 @@ public class Train implements ComponentTrolley {
         return "Train: " + present.getName();
     }
 
+    /*Avancer d'un etap*/
     public int run() {
         if (present == null) {
             return -1;
@@ -51,15 +58,21 @@ public class Train implements ComponentTrolley {
         return 0;
     }
 
+    /*retourn la position actuelle*/
     public Section getPresent() { return this.present; }
+    /*retourn la position originale*/
     public Section getOriginPosition() { return this.originPosition; }
+    /*Définir la position*/
     public void     setPresent(Section present) { this.present = present; }
+    /*Définir la position originale*/
     public void     setOriginPosition(Section originPosition) {
         this.originPosition = originPosition;
         this.present        = originPosition;
     }
-
+    /*retourn le train*/
     public String getName() { return "train"; }
+
+    /*Affiche les infomation de la position actuelle de train*/
     public String getInformation() { return "Train," + present.getInformation(); }
     public void   simulation() {
         while (present != null)

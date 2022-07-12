@@ -5,7 +5,7 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*Le classe ClingoCausalTree est l'arbre causal*/
 @Data
 public class ClingoCausalTree {
 
@@ -21,6 +21,7 @@ public class ClingoCausalTree {
         edgeEvents = new ArrayList<>();
     }
 
+    /*Trouver un evenement, ou ajouter*/
     public NodeEvent findOrAddNodeEvent(String event) {
         if (!listEvent.contains(event)) {
             listEvent.add(event);
@@ -46,6 +47,7 @@ public class ClingoCausalTree {
         return null;
     }
 
+    /*Ajouter un evenement*/
     public void addEvent(String event1, String event2, String connectType) {
         findOrAddNodeEvent(event1);
         findOrAddNodeEvent(event2);

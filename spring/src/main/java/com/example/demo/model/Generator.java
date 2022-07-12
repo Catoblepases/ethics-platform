@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.*;
 
+/*Le classe Generator, contient tous les information de simulation*/
 public class Generator {
     public static final Pattern PATTERN = Pattern.compile("[^(;),]+");
     public static final String TRACK = "track";
@@ -111,6 +112,7 @@ public class Generator {
         System.out.println("The final reading:\n" + toString());
     }
 
+    /*Lire un fichier*/
     public void read(String fileName) {
         printWithSeparator("Begin of creation");
         readFile(fileName);
@@ -118,8 +120,10 @@ public class Generator {
         System.out.println("The final reading:\n" + toString());
     }
 
+    /*Lire un fichier de type File*/
     public void readFile(File file) {
         try {
+            //Analyse ligne par ligne
             Scanner scanner = new Scanner(file);
             int lineNumber = 0;
             while (scanner.hasNextLine()) {
@@ -134,6 +138,7 @@ public class Generator {
         }
     }
 
+    /*Analyse une ligne*/
     public void readInformation(String line, int lineNumber) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         if (((Pattern.compile("%.+%").matcher(line)).find()) || (line == "") || (ls.size() <= 1)) {
@@ -149,6 +154,7 @@ public class Generator {
         }
     }
 
+    /*Lire un fichier*/
     public void readFile(String fileName) {
         try {
             Path path = Paths.get(fileName);
@@ -160,10 +166,12 @@ public class Generator {
         }
     }
 
+    /*Combinaison de deux chaînes de caractere*/
     public String combineContent(String s1, String s2) {
         return s1 + "(" + s2 + ")";
     }
 
+    /*Retourne tous les informations de Trolley*/
     public String writeComponentTrolley(ComponentTrolley[] listComponentTrolleys) {
         String content = "";
         for (int i = 0; i < listComponentTrolleys.length; i++) {
@@ -172,7 +180,6 @@ public class Generator {
         }
         return content;
     }
-
     public static boolean judgeContainsStr(String str) {
         String regex = ".*[A-Z]+.*";
         Matcher m = Pattern.compile(regex).matcher(str);
@@ -180,7 +187,7 @@ public class Generator {
         // str 能够匹配regex,返回true
         return m.matches();
     }
-
+    /*Sauvegarder le fichier*/
     public void save(String fileName) {
         try {
             File file = new File(fileName);
@@ -192,6 +199,7 @@ public class Generator {
         }
     }
 
+    /*Sauvegarder le fichier de type File*/
     public void saveFile(File file) {
         try {
             FileWriter fileWriter = new FileWriter(file);
@@ -292,6 +300,7 @@ public class Generator {
         }
     }
 
+    /*réinitialiser la modèle*/
     public void reset() {
         train.setPresent(train.getOriginPosition());
         for (Group group : groups) {
@@ -310,6 +319,7 @@ public class Generator {
         printWithSeparator("Simulation ends");
     }
 
+    /*Analyse une partie de la ligne */
     public void read_information(Matcher matcher, String line) {
         switch (matcher.group()) {
             case TRACK -> readTrack(matcher);
@@ -328,6 +338,7 @@ public class Generator {
 
     public List<Simulation> simulations;
 
+    /*Trouver un simulation*/
     public Simulation findSimulation(String id) {
         for (int i = 0; i < simulations.size(); i++) {
             if (simulations.get(i).getName().equals(id)) {
@@ -337,6 +348,7 @@ public class Generator {
         return null;
     }
 
+    /*creer un senario par fichier*/
     private void readSim(String line) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         String[] lsim = ls.get(1).split(";");
@@ -348,6 +360,7 @@ public class Generator {
         System.out.println("finish creating simulations");
     }
 
+    /*ajouter les informationde de senario*/
     private void readSimulationConfig(String line) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         Simulation simulation = findSimulation(ls.get(1));
@@ -374,6 +387,7 @@ public class Generator {
         }
     }
 
+    /*creer un switch par une ligne de ficier*/
     public void readButtonOn(String line) {
         List<String> ls = ClingoCausal.findCompleteCommande(line, ',');
         Section section = (Section) readPosition(ls.get(1));
@@ -419,6 +433,7 @@ public class Generator {
         }
     }
 
+    /*Lire un evenement*/
     public Event readEvent(String event) {
         Matcher matcher = PATTERN.matcher(event);
         if (matcher.find()) {
@@ -447,6 +462,7 @@ public class Generator {
         }
     }
 
+    /*Lire une action*/
     public void readAct(Matcher matcher) {
         if (matcher.find()) {
             switch (matcher.group()) {
@@ -455,6 +471,7 @@ public class Generator {
         }
     }
 
+    /*Lire les informations d'initialisation*/
     public void readInitial(Matcher matcher) {
         if (matcher.find()) {
             switch (matcher.group()) {
@@ -464,6 +481,7 @@ public class Generator {
         }
     }
 
+    /*Lire l'interrupteur*/
     public Switch readSwitch(Matcher matcher) {
         matcher.usePattern(Pattern.compile("([a-z]+)\\(([0-9]+)"));
         if (matcher.find()) {
@@ -478,10 +496,12 @@ public class Generator {
         return null;
     }
 
+    /*combiner le numero*/
     public static String generateNumber(int max) {
         return "0.." + max;
     }
 
+    /*Trouver la position */
     public static int find(ComponentTrolley[] l, String name) {
         for (int i = 0; i < l.length; i++) {
             if (l[i].getName().equals(name)) {
@@ -491,6 +511,7 @@ public class Generator {
         return -1;
     }
 
+    /*Trouver un troncon*/
     public Track findTrack(String name) {
         Track[] l = tracks.toArray(new Track[tracks.size()]);
         int idx = find(l, name);
@@ -500,6 +521,7 @@ public class Generator {
         return null;
     }
 
+    /*Trouver un groupe*/
     public Group findGroup(String name) {
         Group[] l = groups.toArray(new Group[groups.size()]);
         int idx = find(l, name);
@@ -509,6 +531,7 @@ public class Generator {
         return null;
     }
 
+    /*Lire et Ajouter les voies */
     public void readTrack(Matcher m) {
         int num = -1;
         String name;
@@ -535,6 +558,7 @@ public class Generator {
         return number;
     }
 
+    /*Lire et ajouter un groupe*/
     public void readGroups(Matcher m) {
         while (m.find() && !m.group().equals(".")) {
             groups.add(new Group(m.group()));
@@ -542,6 +566,7 @@ public class Generator {
         }
     }
 
+    /*Lire le nombre de personne*/
     public void readNumberInGroup(Matcher m) {
         m.usePattern(Pattern.compile("([a-z0-9]+),([0-9]+)")); // numOrAlphabet,num
         while ((m.find()) && (m.groupCount() == 2)) {
@@ -554,6 +579,8 @@ public class Generator {
         }
     }
 
+
+    /*Lire la postion*/
     public Position readPosition(String line) {
         try {
             Matcher matcher = PATTERN.matcher(line);
@@ -599,6 +626,7 @@ public class Generator {
         return initial;
     }
 
+    /*lire la Position des éléments*/
     public void readOn(Matcher matcher) {
         Pattern on = Pattern.compile("([a-z0-9]+),([a-z]+)\\(*([0-9]*)");
         matcher.usePattern(on);
@@ -709,6 +737,7 @@ public class Generator {
         }
     }
 
+    /*supprimer la senario*/
     public void removeSimulation(String id) {
         Simulation sim = findSimulation(id);
         if (sim != null) {

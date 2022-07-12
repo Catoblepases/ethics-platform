@@ -4,6 +4,7 @@ import com.example.demo.model.*;
 import lombok.Builder;
 import lombok.Data;
 
+/*le classe InfoBridge, information de pont*/
 @Data
 @Builder
 public class InfoBridge {
@@ -20,6 +21,7 @@ public class InfoBridge {
         return bridge;
     }
 
+    /*Ajouter et sauver un pont*/
     void updateBridge(Section section, Generator generator) {
         if (name == "" || name == null) {
             section.setBridge(null);

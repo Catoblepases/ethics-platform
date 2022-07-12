@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/*le classe InfoCarriage, information de carriage*/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,14 +45,16 @@ public class InfoSection {
         Switch s = section.getSwitch();
         this.index = section.getIndex();
 
+
         if (s != null) {
             this.switchs = new InfoSwitch(s.getTrackBegin(), s.getTrackEnd());
         } else {
             this.switchs = null;
         }
     }
-
+    /*Ajouter et sauver un troncon*/
     public void updateSection(Section section, Generator generator) {
+        //ajouter et sauver un group
         if (group != null) {
             group.updateGroup(section,generator);
         } else {
@@ -60,6 +63,7 @@ public class InfoSection {
             }
             section.setGroup(null);
         }
+        //ajouter et sauver un pont s'il l'exsite
         if (bridge != null) {
             bridge.updateBridge(section, generator);
         } else {
@@ -68,6 +72,7 @@ public class InfoSection {
             }
             section.setBridge(null);
         }
+        //ajouter et sauver un interrupteur  s'il l'exsite
         if (switchs != null) {
             switchs.update(section, generator);
         } else {

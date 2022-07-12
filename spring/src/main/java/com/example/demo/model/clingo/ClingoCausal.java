@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/*Le classe  ClingoCausal est une liste de l'arbre causal */
 @Data
 public class ClingoCausal {
     List<ClingoCausalTree> causalTrees;

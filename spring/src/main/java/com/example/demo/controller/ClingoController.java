@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/*Le classe ClingoController transmet les données du resultat de clingo avec le front-end. */
 @RestController
 @RequestMapping("/clingo")
 public class ClingoController {

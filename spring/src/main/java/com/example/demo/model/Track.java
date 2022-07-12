@@ -33,6 +33,7 @@ public class Track extends ArrayList<Section> implements ComponentTrolley {
         this.name = name;
     }
 
+    /*Ajouter un troncon */
     public void addNewSection() {
         add(new Section(name + "(" + size() + ")", name, size()));
         if (size() >= 2) {
@@ -43,6 +44,7 @@ public class Track extends ArrayList<Section> implements ComponentTrolley {
         }
     }
 
+    /*Ajouter des troncons*/
     public void addNewSection(int idx) {
         add(idx, new Section(name + "(" + size() + ")", name, size()));
         if (idx >= 1) {
@@ -53,10 +55,12 @@ public class Track extends ArrayList<Section> implements ComponentTrolley {
         }
     }
 
+    /*retourne la longeur de la voie*/
     public String getInformation() {
         return name + "(" + Generator.generateNumber(size()) + ")";
     }
 
+    /*retourne le nombre de switch  */
     public int nbSwitch() {
         int nb = 0;
         for (int i = 0; i < size(); i++) {
@@ -67,6 +71,7 @@ public class Track extends ArrayList<Section> implements ComponentTrolley {
         return nb;
     }
 
+    /*Supprimer une voie*/
     public void delete() {
         for (int i = 0; i < size(); i++) {
             Section c = get(i);

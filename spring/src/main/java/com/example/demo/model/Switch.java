@@ -1,11 +1,19 @@
 package com.example.demo.model;
 
+/*
+*Le classe commutateur
+*  */
 public class Switch implements Event {
 
+    //le troncon depart
     private Section trackBegin;
+    //la destination
     private Section trackEnd;
+    //la position actuelle
     private Section present;
+    //Activé ou non
     private boolean valid;
+    //Moment de l'activation
     private int time;
 
     public Switch(Section t1, Section t2) {
@@ -22,6 +30,7 @@ public class Switch implements Event {
         present.add(this);
     }
 
+    /*Ajouter une destination*/
     public void addSection(Section section) {
         trackEnd = section;
         section.add(this);
@@ -35,6 +44,7 @@ public class Switch implements Event {
         return trackEnd;
     }
 
+    /*Changer la voie*/
     public void changeTrack(String track) {
         if (present == trackBegin) {
             present = trackEnd;
@@ -43,16 +53,20 @@ public class Switch implements Event {
         }
     }
 
+    /*retourne la prochain troncons de la position actuelle*/
     public Section next() {
         return trackEnd;
     }
 
+    /*Retourne la prochain troncon si le troncon donnée est la position actuelle,sinon retourne la position actuelle*/
     public Section next(Section section) {
         if (section.equals(present)) {
             return present.suivant;
         }
         return trackEnd;
     }
+
+    /*retourne le troncons de l'autre côté de troncon donnée*/
 
     public Section getOtherSection(Section c) {
         if (c == trackBegin) {
@@ -78,6 +92,7 @@ public class Switch implements Event {
         return "switch: " + trackBegin.toString() + "-" + present.toString();
     }
 
+    /*Supprimer un des tronçon dans le switch*/
     public void delSection(Section c) {
         c.setSwitch(null);
         if (trackBegin == c) {
@@ -86,6 +101,7 @@ public class Switch implements Event {
             trackEnd = null;
         }
     }
+
 
     public boolean isValid() {
         return valid;
@@ -103,6 +119,7 @@ public class Switch implements Event {
         this.time = time;
     }
 
+    /*Affiche le switch*/
     public String getEventInfo() {
         if (trackEnd.getIndex() == trackBegin.getIndex()) {
             return "switch(" + trackBegin.toString() + ")";

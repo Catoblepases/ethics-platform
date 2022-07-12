@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/*Le classe CarriageController echange d'informations les données du trolley avec le front-end. */
 @RestController
 @RequestMapping("/section")
 public class SectionController {

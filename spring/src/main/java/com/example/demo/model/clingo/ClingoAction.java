@@ -7,6 +7,7 @@ import org.python.antlr.ast.Str;
 import java.util.List;
 import java.util.Map;
 
+/*Le classe ClingoAction represente les action de chaque moment*/
 @Data
 public class ClingoAction {
     String action;
@@ -19,6 +20,7 @@ public class ClingoAction {
         this.time = time;
     }
 
+    /*Transform les informations stokee à les information utile pour graphe*/
     public G6Info toG6Graph(Generator generator) {
         List<String> ls = ClingoCausal.findCompleteCommande(action, ',');
         if (ls.size() == 0) {

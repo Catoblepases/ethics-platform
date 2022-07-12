@@ -10,6 +10,8 @@ import java.util.*;
 
 @Data
 @NoArgsConstructor
+
+/*Lq classe simulation*/
 public class Simulation {
     List<EventItem> actions;
     String name;
@@ -19,15 +21,18 @@ public class Simulation {
         this.actions = new ArrayList<>();
     }
 
+    /*Ajouter une action*/
     public void addAction(String action, int time) {
         actions.add(new EventItem(true, "", action, time));
     }
 
+    /*mise à jour une simulation*/
     public void update(Simulation simulation) {
         this.name = simulation.getName();
         this.actions = simulation.getActions();
     }
 
+    /*Supprimer les action non activé */
     public void normalize() {
         EventItem[] le = actions.toArray(new EventItem[actions.size()]);
         for (EventItem action : le) {

@@ -2,6 +2,7 @@ package com.example.demo.model.clingo;
 
 import lombok.Data;
 
+/*Le classe Permissible represente les actions admissibles*/
 @Data
 public class Permissible{
     String name;
