@@ -4,14 +4,14 @@
 # Démarrage rapide
 Afin d'exécuter le programme correctement, il est recommandé d'exécuter d'abord le back-end puis le front-end, le back-end sur le port 8080 et le front-end sur 9000, vérifiez les résultats à l'adresse http://localhost:9000/.
 
-```
-//back-end
+```shell
+echo "back-end"
 cd spring
 mvn clean
 mvn install
 mvn package
 java -jar target/spring-1.0.0.jar
-//front-end
+echo "front-end (need to start another terminal)"
 cd ..
 cd vue 
 npm install
