@@ -59,3 +59,20 @@ Pour faciliter la gestion, nous avons divisé le projet en un front-end et un ba
 Le front-end crée une page web et est responsable de la visualisation et de l'interaction avec l'utilisateur, et le back-end  lit et traite les données.
 
 Le front-end envoie des demandes au back-end lorsqu'il s'agit de modifications et de traitement de la base de données, et le back-end traite les demandes du front-end.
+
+### GUIDE DE L'UTILISATEUR
+Dans cette section, nous décrirons comment cette interface présente des dilemme logiques et analyse chaque evenement par le biais d'arbres de cause et de jugement.
+
+Nous avons créé une vidéo pour présenter notre interface.
+
+Dans la vidéo, nous avons mentionné l'arbre des causes, où chaque rectangle représente un événement différent.Gris pour les situations, bleu pour les événements volontaire，et rose pour les evenements automatique.En arête, vert signifie causer et rouge signifie empêcher l’événement ou situation de
+se produire. Prenons cet exemple. Si nous choisissons de pousser la personne du pont, elle tombera sur les rails et le train la tuera, mais il empêchera aussi la mort des cinq personnes qui suivent.
+
+Dans le tableau final des résultats, nous verrons de nombreuses conclusions éthiques différentes à l'analyse des résultats, comme celle-ci, où nous pouvons voir que l'acte de pousser une personne d'un pont serait accepté par la proscription d'actions purement préjudiciables.
+
+### Conclusion
+Dans ce projet, nous avons realise une partie de la plateforme de comparaison éthique, en créant une interface graphique pour les questions éthiques liées au problème du train. 
+
+Auparavant, nous ne savions que très peu de choses sur ce type de problème de logique informatique, mais grâce à ce projet, nous avons appris quelques concepts de base de l'éthique informatique et nous avons eu un premier aperçu du langage des ensembles de réponses, en plus de nous familiariser avec la conception et le développement d'applications web et le langage.
+
+Nous espérons que le fait de permettre une représentation graphique des chaînes de causalité pour modéliser tout type de problème permettra d'élever l'abstraction d'un cran.
