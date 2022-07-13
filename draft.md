@@ -1,8 +1,10 @@
 Notre projet porte sur la Génération de problèmes éthiques parconstruction graphique, et nous avons commencé ce projet sous la supervision de M. Gauvain Bourgne.
 
+Nous commencerons par une introduction au dilemme du tramway  suivie d'une présentation de la structure principale du projet, puis du raisonnement éthique utilisé dans le projet, et enfin de la manière dont les utilisateurs peuvent construire des questions éthiques et les analyser à l'aide d'agents autonomes éthiques via le logiciel.
+
 # Prep
 
-Avant de commencer à présenter notre projet, on va vous poser une question. Avez-vous entendu parler du dilemme du tramway ?
+Avez-vous entendu parler du dilemme du tramway ?
 
 Le dilemme du tramway est une expérience de pensée éthique.
 
@@ -32,8 +34,6 @@ C'est le problème que notre projet espère résoudre, mais comme notre titre, p
 Le projet fait partie d'une plate-forme comparative pour le développement de modèles de raisonnement éthique (c'est a dire des mécanismes permettant de déterminer si une décision est considérée comme permissible dans une situation donnée, sur la base de différents principes éthiques).
 
 Dans ce projet, en raison des contraintes de temps, nous nous sommes concentrés sur les problemes éthiques liées au dilemme du tramway, principalement l'interface graphique et l'expérience utilisateur.
-
-Nous présenterons d'abord la structure principale du projet, puis l'inférence éthique utilisée dans le projet, et enfin nous présenterons comment les utilisateurs peuvent construire des problèmes éthiques et les analyser en utilisant des agents autonomes éthiques grâce à ce logiciel.
 
 ## raisonement ethique
 
