@@ -37,9 +37,9 @@ Dans ce projet, en raison des contraintes de temps, nous nous sommes concentrés
 
 ## raisonement ethique
 
-Un modèle d’action A permet à l’agent de représenter son environnement et les changements qui s’y produisent. Il prend en entrée un ensemble d’actions réalisées.
+Un modèle d’action A permet à l’agent de représenter son environnement.
 
-En fait, cette partie concerne la présentation formelle des probleme éthiques.
+En fait, cette partie concerne la présentation formelle des probleme éthiques et un scénario, qui peut être défni comme un ensemble de couples (A ; T) indiquant que l’action A est exécutée au moment T..
 
 Le modèle causal C retrace la causalité des actions et permet de déduire la responsabilité d'un agent. Il est composé d’un moteur causal qui permet la création de l’arbre causal qui caractérise la senario.
 
