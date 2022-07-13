@@ -1,7 +1,3 @@
-Notre projet porte sur la Génération de problèmes éthiques parconstruction graphique, et nous avons commencé ce projet sous la supervision de M. Gauvain Bourgne.
-
-# Prep
-
 Avant de commencer à présenter notre projet, on va vous poser une question. Avez-vous entendu parler du dilemme du tramway ?
 
 Le dilemme du tramway est une expérience de pensée éthique.
@@ -41,7 +37,10 @@ Un modèle d’action A permet à l’agent de représenter son environnement et
 
 En fait, cette partie concerne la présentation formelle des probleme éthiques.
 
-Le modèle causal C retrace la causalité des actions et permet de déduire la responsabilité d'un agent. Il est composé d’un moteur causal qui permet la création de l’arbre causal qui caractérise la simulation. 
+Le modèle causal C retrace la causalité des actions et permet de déduire la responsabilité d'un agent.
+Il prend en entrée la trace des événements donnée par le modèle d’action et une spécifcation des événements contenant un ensemble d’événements et de relations de dépendance.
+
+Il est composé d’un moteur causal qui permet la création de l’arbre causal qui caractérise la simulation. 
 
 Il génère une trace causale de chaque simulation qui désigne pour chaque point temporel les relations causales qui s’établissent entre les événements et les ﬂuents.
 
