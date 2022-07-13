@@ -84,3 +84,5 @@ Dans ce projet, nous avons realise une partie de la plateforme de comparaison é
 Auparavant, nous ne savions que très peu de choses sur ce type de problème de logique informatique, mais grâce à ce projet, nous avons appris quelques concepts de base de l'éthique informatique et nous avons eu un premier aperçu du langage des ensembles de réponses, en plus de nous familiariser avec la conception et le développement d'applications web et le langage.
 
 Nous espérons que le fait de permettre une représentation graphique des chaînes de causalité pour modéliser tout type de problème permettra d'élever l'abstraction d'un cran.
+
+Notre plateforme actuelle ne peut fonctionner que localement, mais il est possible de la déployer sur le web.
