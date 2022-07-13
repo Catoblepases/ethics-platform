@@ -18,8 +18,8 @@ Si vous tirez ce levier, le train se déplacera vers une autre voie. Cependant, 
 
 Vous avez deux choix.
 
-1. ne rien faire et laisser le train écraser les cinq hommes
-2. abaissez le levier et passez sur l'autre voie pour que le train passe sur l'homme qui se trouve sur l'autre voie.
+1. ne rien faire et laisser le train écraser les cinq hommes.
+2. abaissez le levier et le train va passer sur l'autre voie pour que le train passe sur l'homme qui se trouve sur l'autre voie.
 
 Cette dilemme peut sembler déconnectée de la réalité, mais elle est en fait pertinente pour de nombreuses questions actuelles, comme la conduite autonome, où l'intelligence artificielle remplace les conducteurs humains dans les décisions et les opérations de conduite. 
 
@@ -41,11 +41,11 @@ Un modèle d’action A permet à l’agent de représenter son environnement et
 
 En fait, cette partie concerne la présentation formelle des probleme éthiques.
 
-Le modèle causal C retrace la causalité des actions et permet de déduire la responsabilité d'un agent. Il est composé d’un moteur causal qui permet la création de l’arbre causal qui caractérise la simulation. 
+Le modèle causal C retrace la causalité des actions et permet de déduire la responsabilité d'un agent. Il est composé d’un moteur causal qui permet la création de l’arbre causal qui caractérise la senario.
 
-Il génère une trace causale de chaque simulation qui désigne pour chaque point temporel les relations causales qui s’établissent entre les événements et les ﬂuents.
+Il génère une trace causale de chaque senario qui désigne pour chaque point temporel les relations causales qui s’établissent entre les événements et les ﬂuents.
 
-Un modèle éthique fait une déclaration sur la valeur intrinsèque d'un objectif ou d'un événement et envisage ce que l'agent devrait faire. Il prend en entrée le traçage causal donné par le modèle causal et produit des jugements moraux.
+Un modèle éthique fait une déclaration sur la valeur d'un objectif ou d'un événement et envisage ce que l'agent devrait faire. Il prend en entrée le traçage causal donné par le modèle causal et produit des jugements ethique.
 
 ## technique
 
@@ -69,7 +69,7 @@ Ce modèle est ensuite automatiquement traduit dans le formalisme précédemment
 
 ## GUIDE DE L'UTILISATEUR
 
-Dans cette section, nous décrirons comment cette interface présente des dilemme logiques et analyse chaque evenement par l'arbres causals et de jugement ethique.
+Dans cette section, nous décrirons comment utilisateur peut construire des dilemme logiques et les analyse par l'arbres causals et de jugement ethique.
 
 Nous avons créé une vidéo pour présenter notre interface.
 
