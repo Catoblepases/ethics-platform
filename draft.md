@@ -65,7 +65,7 @@ Le front-end envoie des demandes au back-end lorsqu'il s'agit de modifications e
 
 Les utilisateurs peuvent construire des problemes éthiques grâce à l'interface graphique du site web.
 
-Ce modèle est ensuite automatiquement traduit dans le formalisme précédemment défini et envoyé à clingo, qui calcule le modèle causal et le raisonnement moral, le back-end le lit, et la sortie de clingo est envoyée au front-end, où l'utilisateur peut voir le tableau des jugements éthiques et l'arbre causal.
+Ce modèle est ensuite automatiquement traduit dans le formalisme précédemment défini et envoyé à clingo, qui calcule le modèle causal et le raisonnement ethique, le back-end le lit, et la sortie de clingo est envoyée au front-end, où l'utilisateur peut voir le tableau des jugements éthiques et l'arbre causal.
 
 ## GUIDE DE L'UTILISATEUR
 
